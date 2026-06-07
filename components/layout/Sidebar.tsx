@@ -148,17 +148,17 @@ export function Sidebar() {
         {/* PERFIL */}
         <div className="flex flex-col items-center p-8">
           <Image
-            src="/profile.jpg.jpg"
+            src="/profile.jpg"
             alt="Zenaldo Oliveira"
             width={120}
             height={120}
             className="
-              rounded-full
-              border-2 border-cyan-400
-              shadow-lg shadow-cyan-500/30
-              transition-all duration-300
-              hover:scale-105
-            "
+    rounded-full
+    border-2
+    border-cyan-400
+    shadow-lg
+    shadow-cyan-500/30
+  "
           />
 
           <h1 className="mt-4 text-center text-xl font-bold text-white">
