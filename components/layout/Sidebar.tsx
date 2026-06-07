@@ -78,25 +78,25 @@ export function Sidebar() {
         aria-label="Abrir menu"
         onClick={() => setIsOpen(true)}
         className="
-    fixed
-    left-4
-    top-4
-    z-50
-    rounded-2xl
-    border
-    border-cyan-500/20
-    bg-[#0f172a]/90
-    p-3
-    text-cyan-400
-    backdrop-blur-xl
-    shadow-[0_0_20px_rgba(6,182,212,0.20)]
-    transition-all
-    duration-300
-    hover:scale-105
-    hover:border-cyan-500/50
-    hover:bg-cyan-500/10
-    md:hidden
-  "
+            fixed
+            left-4
+            top-4
+            z-50
+            rounded-2xl
+            border
+            border-cyan-500/20
+            bg-[#0f172a]/90
+            p-3
+            text-cyan-400
+            backdrop-blur-xl
+            shadow-[0_0_20px_rgba(6,182,212,0.20)]
+            transition-all
+            duration-300
+            hover:scale-105
+            hover:border-cyan-500/50
+            hover:bg-cyan-500/10
+            md:hidden
+          "
       >
         <Menu
           size={22}
@@ -116,15 +116,14 @@ export function Sidebar() {
       {/* SIDEBAR */}
       <aside
         className={`
-          fixed left-0 top-0 z-50 h-screen w-[280px]
-          border-r border-zinc-800
-          bg-[#0f172a]
-          transition-transform duration-300
-
-          ${isOpen ? "translate-x-0" : "-translate-x-full"}
-
-          md:translate-x-0
-        `}
+        fixed left-0 top-0 z-50 h-screen w-[280px]
+        border-r border-zinc-800
+        bg-[#0f172a]
+        flex flex-col
+        transition-transform duration-300
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}
+        md:translate-x-0
+      `}
       >
         {/* BOTÃO FECHAR */}
         <button
@@ -153,12 +152,12 @@ export function Sidebar() {
             width={120}
             height={120}
             className="
-    rounded-full
-    border-2
-    border-cyan-400
-    shadow-lg
-    shadow-cyan-500/30
-  "
+          rounded-full
+          border-2
+          border-cyan-400
+          shadow-lg
+          shadow-cyan-500/30
+        "
           />
 
           <h1 className="mt-4 text-center text-xl font-bold text-white">
@@ -173,7 +172,7 @@ export function Sidebar() {
         </div>
 
         {/* MENU */}
-        <nav className="px-6">
+        <nav className="flex-1 overflow-y-auto px-6 pb-6">
           <ul className="space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon;
@@ -204,28 +203,28 @@ export function Sidebar() {
         </nav>
 
         {/* RODAPÉ */}
-        <div className="absolute bottom-8 left-0 flex w-full justify-center gap-3">
+        <div className="mt-auto flex w-full justify-center gap-2 p-4">
           <Link
             href="https://linkedin.com/in/seu-link"
             target="_blank"
             className="
-          flex
-          w-[100px]
-          items-center
-          justify-center
-          gap-2
-          rounded-xl
-          bg-[#0A66C2]
-          px-4
-          py-2
-          text-sm
-          font-semibold
-          text-white
-          transition-all
-          duration-300
-          hover:-translate-y-1
-          hover:bg-[#004182]
-        "
+              flex
+              w-[85px]
+              items-center
+              justify-center
+              gap-2
+              rounded-xl
+              bg-[#0A66C2]
+              px-4
+              py-2
+              text-sm
+              font-semibold
+              text-white
+              transition-all
+              duration-300
+              hover:-translate-y-1
+              hover:bg-[#004182]
+            "
           >
             LinkedIn
           </Link>
@@ -235,7 +234,7 @@ export function Sidebar() {
             target="_blank"
             className="
           flex
-          w-[100px]
+          w-[85px]
           items-center
           justify-center
           gap-2
