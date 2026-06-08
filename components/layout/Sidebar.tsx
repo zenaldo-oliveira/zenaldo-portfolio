@@ -164,10 +164,13 @@ export function Sidebar() {
             Zenaldo Oliveira
           </h1>
 
-          <p className="text-sm text-cyan-400">Full Stack Developer</p>
+          <p className="mt-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-cyan-300">
+            Full Stack Developer
+          </p>
 
-          <p className="mt-4 text-center text-sm text-zinc-400">
-            Desenvolvedor focado em React, Next.js, IA e automações.
+          <p className="mt-4 text-center text-sm leading-relaxed text-zinc-300">
+            Especialista em React, Next.js, Inteligência Artificial e automações
+            para empresas.
           </p>
         </div>
 
@@ -182,19 +185,18 @@ export function Sidebar() {
                   <Link
                     href={item.href}
                     className={`
-                      flex items-center gap-3
-                      rounded-lg px-4 py-3
-                      transition-all duration-300
-
-                      ${
-                        pathname === item.href
-                          ? "border border-cyan-500 bg-cyan-500/20 text-cyan-400"
-                          : "hover:bg-cyan-500/10"
-                      }
-                    `}
+    flex items-center gap-3
+    rounded-lg px-4 py-3
+    transition-all duration-300
+    ${
+      pathname === item.href
+        ? "border border-cyan-500 bg-cyan-500/20 text-cyan-400 shadow-lg shadow-cyan-500/10"
+        : "text-zinc-200 hover:bg-cyan-500/10 hover:text-white"
+    }
+  `}
                   >
                     <Icon size={18} />
-                    {item.label}
+                    <span>{item.label}</span>
                   </Link>
                 </li>
               );
