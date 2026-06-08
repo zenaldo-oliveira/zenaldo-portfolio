@@ -66,15 +66,20 @@ export default function SkillsSection() {
     <section
       id="skills"
       className="
-      relative
-      flex
-      min-h-screen
-      items-center
-      justify-center
-      overflow-hidden
-      px-6
-      py-8
-    "
+    relative
+    flex
+    min-h-screen
+    items-center
+    justify-center
+    overflow-hidden
+    bg-gradient-to-b
+    from-[#020617]
+    via-[#0f172a]
+    to-[#020617]
+    px-6
+    py-8
+    text-white
+  "
     >
       {/* Blur Background */}
       <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-cyan-500/20 blur-[120px]" />
