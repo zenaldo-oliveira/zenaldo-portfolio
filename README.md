@@ -1,36 +1,164 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 👨‍💻 ZenaldoDev - Portfólio Full Stack
 
-## Getting Started
+<div align="center">
 
-First, run the development server:
+# 🚀 Transformando ideias em soluções digitais
+
+Desenvolvedor Full Stack especializado na criação de sites modernos, sistemas web e aplicações escaláveis.
+
+🌐 https://zenaldodev.com.br
+
+</div>
+
+---
+
+## 📖 Sobre
+
+Este portfólio foi desenvolvido para apresentar minha trajetória, habilidades técnicas e projetos desenvolvidos ao longo da minha jornada como Desenvolvedor Full Stack.
+
+Meu objetivo é ajudar empresas e profissionais a fortalecerem sua presença digital através de soluções modernas, rápidas e responsivas.
+
+---
+
+## 🛠️ Tecnologias
+
+### Front-end
+
+- HTML5
+- CSS3
+- JavaScript
+- TypeScript
+- React
+- Next.js
+- Tailwind CSS
+
+### Back-end
+
+- Node.js
+- Express
+- Prisma ORM
+- PostgreSQL
+- MongoDB
+
+### Ferramentas
+
+- Git
+- GitHub
+- Vercel
+- Figma
+- VS Code
+
+---
+
+## ✨ Funcionalidades
+
+✅ Design moderno e responsivo
+
+✅ Apresentação profissional
+
+✅ Projetos em destaque
+
+✅ Seção de habilidades
+
+✅ Contato direto pelo WhatsApp
+
+✅ Navegação otimizada para mobile
+
+✅ Performance otimizada
+
+---
+
+## 📂 Estrutura do Projeto
+
+```bash
+├── app
+├── components
+├── public
+├── README.md
+├── package.json
+└── next.config.ts
+```
+
+---
+
+## 🚀 Executando o Projeto
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/zenaldo-oliveira/zenaldo-portfolio.git
+```
+
+Acesse a pasta:
+
+```bash
+cd zenaldo-portfolio
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Execute:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 💼 Serviços
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🌐 Sites Institucionais
 
-## Learn More
+Sites profissionais para empresas e prestadores de serviços.
 
-To learn more about Next.js, take a look at the following resources:
+### 🎯 Landing Pages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Páginas focadas em conversão e geração de clientes.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### ⚙️ Sistemas Web
 
-## Deploy on Vercel
+Painéis administrativos, dashboards e sistemas personalizados.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🤖 Soluções com IA
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Automação de processos e integração com Inteligência Artificial.
+
+---
+
+## 📸 Preview
+
+Adicione uma captura de tela do seu portfólio aqui.
+
+```md
+![Preview](public/preview.png)
+```
+
+---
+
+## 📞 Contato
+
+📱 WhatsApp: Seu número
+
+📧 E-mail: Seu e-mail
+
+🌐 Site: https://zenaldodev.com.br
+
+💼 LinkedIn: https://linkedin.com/in/zenaldo-oliveira
+
+🐙 GitHub: https://github.com/zenaldo-oliveira
+
+---
+
+## 👨‍💻 Autor
+
+### Zenaldo Oliveira
+
+Desenvolvedor Full Stack apaixonado por tecnologia, desenvolvimento web e criação de soluções digitais que geram resultados.
+
+> "Cada projeto é uma oportunidade de transformar uma ideia em algo real."
+
+⭐ Se gostou do projeto, deixe uma estrela no repositório.
