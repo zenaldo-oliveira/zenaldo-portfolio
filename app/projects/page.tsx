@@ -5,42 +5,75 @@ import { TypeAnimation } from "react-type-animation";
 
 export default function ProjectsPage() {
   const projects = [
-    /* =========================
-      ⭐ PROJETOS DESTAQUE
-  ========================= */
-    {
-      title: "Sistema de Clínicas",
-      description: "Gerenciamento de pacientes, médicos e consultas.",
-      technologies: ["Next.js", "Prisma", "PostgreSQL"],
-      demo: "#",
-      github: "#",
-      status: "Em desenvolvimento",
-    },
+
+{
+  title: "🥗 Dieta IA",
+  description:
+    "Aplicativo mobile Full Stack com Inteligência Artificial (Gemini AI) capaz de gerar dietas personalizadas com base em peso, altura, idade, objetivo e nível de atividade física.",
+  image: "",
+  technologies: [
+    "React Native",
+    "Expo",
+    "TypeScript",
+    "Fastify",
+    "Gemini AI",
+    "Railway",
+    "React Query",
+    "Zustand",
+  ],
+  demo: "https://expo.dev/accounts/zenaldo/projects/Dieta-mobile/builds/95262f1b-a2c4-4227-8709-fa5574c90d8d",
+  github: "https://github.com/zenaldo-oliveira/dietaapp-mobile",
+  status: "🚀 Projeto Destaque",
+  featured: true,
+},
 
     {
-      title: "Sistema Self Checkup",
-      description: "Sistema de autoatendimento inspirado no McDonald's.",
-      technologies: ["React", "Prisma", "Tailwind"],
+      title: "Pet Shop Website",
+      description:
+        "Site profissional para pet shop com apresentação de serviços, integração com WhatsApp e design responsivo.",
+      technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
       demo: "#",
-      github: "#",
+      github: "https://github.com/zenaldo-oliveira/petshop-dev",
       status: "Concluído",
     },
 
     {
-      title: "Dashboard Administrativo",
-      description: "Painel completo com métricas e gerenciamento.",
-      technologies: ["Next.js", "TypeScript", "Chart.js"],
-      demo: "#",
-      github: "#",
+      title: "Barber Shop Landing Page",
+      description:
+        "Site profissional para barbearias com design responsivo, integração com WhatsApp e foco em geração de agendamentos.",
+      technologies: ["HTML", "SCSS", "JavaScript", "AOS"],
+      demo: "https://barber-premium-site.netlify.app/",
+      github: "https://github.com/zenaldo-oliveira/BARBER",
       status: "Concluído",
     },
 
     {
-      title: "Sistema de Agendamento",
-      description: "Controle de horários e gestão de atendimentos.",
-      technologies: ["React", "Node.js", "PostgreSQL"],
+      title: "Climatech Fullstack",
+      description:
+        "Aplicação fullstack com interface moderna e integração entre frontend e backend para gerenciamento de informações.",
+      technologies: ["HTML", "CSS", "JavaScript"],
       demo: "#",
-      github: "#",
+      github: "https://github.com/zenaldo-oliveira/climatech-fullstack",
+      status: "Concluído",
+    },
+
+    {
+      title: "EasyCar Mobile",
+      description:
+        "Aplicativo para gestão automotiva com integração entre frontend mobile e backend para gerenciamento de dados.",
+      technologies: ["React Native", "JavaScript", "Node.js"],
+      demo: "#",
+      github: "https://github.com/zenaldo-oliveira/Frontend-easycar-mobile",
+      status: "Concluído",
+    },
+
+    {
+      title: "Text to Voice",
+      description:
+        "Aplicação web para conversão de texto em áudio utilizando síntese de voz através da Web Speech API.",
+      technologies: ["HTML", "CSS", "JavaScript"],
+      demo: "#",
+      github: "https://github.com/zenaldo-oliveira/Text-to-Voice",
       status: "Concluído",
     },
   ];
@@ -142,18 +175,15 @@ export default function ProjectsPage() {
 
               {/* Conteúdo */}
               <div className="flex h-full flex-col p-3">
-                <span
-                  className="
-                    rounded-full
-                    bg-green-500/10
-                    px-3 py-1
-                    text-xs
-                    font-medium
-                    text-green-400
-                  "
-                >
-                  {project.status}
-                </span>
+               <span
+              className={`rounded-full px-3 py-1 text-xs font-medium ${
+                project.featured
+                  ? "bg-yellow-500/20 text-yellow-300"
+                  : "bg-green-500/10 text-green-400"
+              }`}
+            >
+              {project.status}
+            </span>
 
                 <h2 className="mt-3 text-xl font-bold text-white">
                   {project.title}

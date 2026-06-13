@@ -95,6 +95,7 @@ export default function AboutPage() {
         </div>
         {/* Foto + Cards */}
         <div className="mt-10 grid gap-8 lg:grid-cols-2">
+
           {/* Foto */}
           <div className="flex justify-center">
             <div
