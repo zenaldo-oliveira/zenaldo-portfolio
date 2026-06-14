@@ -47,13 +47,13 @@ export default function ProjectsPage() {
     },
 
     {
-      title: "Climatech Fullstack",
+      title: "🔊 Text To Voice AI",
       description:
-        "Aplicação fullstack com interface moderna e integração entre frontend e backend para gerenciamento de informações.",
-      technologies: ["HTML", "CSS", "JavaScript"],
-      demo: "#",
-      github: "https://github.com/zenaldo-oliveira/climatech-fullstack",
-      status: "Concluído",
+        "Aplicação web para conversão de texto em áudio utilizando síntese de voz através da Web Speech API, oferecendo uma experiência acessível e interativa para os usuários.",
+      technologies: ["HTML", "CSS", "JavaScript", "Web Speech API"],
+      demo: "https://conversortxt.netlify.app/",
+      github: "https://github.com/zenaldo-oliveira/Text-to-Voice",
+      status: "🌐 Online",
     },
 
     {
