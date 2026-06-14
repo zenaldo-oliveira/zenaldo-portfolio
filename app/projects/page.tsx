@@ -27,12 +27,12 @@ export default function ProjectsPage() {
     },
 
     {
-      title: "🐾 Pet Shop Website",
+      title: "🐾 Pet Shop Premium",
       description:
-        "Site profissional para pet shop com apresentação de serviços, integração com WhatsApp, design responsivo e foco em conversão de clientes.",
+        "Website profissional desenvolvido para pet shop com design moderno, responsivo e integração direta com WhatsApp para captação de clientes.",
       technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
-      demo: "SEU_LINK_DO_NETLIFY",
-      github: "https://github.com/zenaldo-oliveira/petshop-dev",
+      demo: "https://petshop-zenaldo.netlify.app/",
+      github: "https://github.com/zenaldo-oliveira/petshop-blad",
       status: "🌐 Online",
     },
 
