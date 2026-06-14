@@ -37,13 +37,13 @@ export default function ProjectsPage() {
     },
 
     {
-      title: "Barber Shop Landing Page",
+      title: "💈 Barber Shop Premium",
       description:
         "Site profissional para barbearias com design responsivo, integração com WhatsApp e foco em geração de agendamentos.",
       technologies: ["HTML", "SCSS", "JavaScript", "AOS"],
       demo: "https://barber-premium-site.netlify.app/",
       github: "https://github.com/zenaldo-oliveira/BARBER",
-      status: "Concluído",
+      status: "🌐 Online",
     },
 
     {
@@ -206,12 +206,14 @@ export default function ProjectsPage() {
                 <div className="mt-6 flex gap-3">
                   <a
                     href={project.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="
-                  flex flex-1 items-center justify-center gap-1
-                  rounded-lg bg-cyan-500 px-3 py-2
-                  text-xs font-semibold text-white
-                  transition hover:bg-cyan-600
-                "
+                    flex flex-1 items-center justify-center gap-1
+                    rounded-lg bg-cyan-500 px-3 py-2
+                    text-xs font-semibold text-white
+                    transition hover:bg-cyan-600
+                  "
                   >
                     <ExternalLink size={16} />
                     Demo
@@ -219,6 +221,8 @@ export default function ProjectsPage() {
 
                   <a
                     href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="
                     flex flex-1 items-center justify-center gap-1
                     rounded-lg border border-white/10
