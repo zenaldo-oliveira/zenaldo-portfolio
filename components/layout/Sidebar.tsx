@@ -39,19 +39,14 @@ export function Sidebar() {
       icon: User,
     },
     {
-      href: "/projects",
-      label: "Projetos",
-      icon: Briefcase,
-    },
-    {
-      href: "/blog",
-      label: "Blog",
-      icon: BookOpen,
-    },
-    {
       href: "/services",
       label: "Serviços",
       icon: Wrench,
+    },
+    {
+      href: "/projects",
+      label: "Projetos",
+      icon: Briefcase,
     },
     {
       href: "/skills",
@@ -117,7 +112,7 @@ export function Sidebar() {
       <aside
         className={`
         fixed left-0 top-0 z-50 h-screen w-[280px]
-        border-r border-zinc-800
+        border-border-cyan-500/10
         bg-[#0f172a]
         flex flex-col
         transition-transform duration-300
@@ -147,17 +142,19 @@ export function Sidebar() {
         {/* PERFIL */}
         <div className="flex flex-col items-center p-8">
           <Image
-            src="/profile.jpg"
+            src="/projects/profile.jpeg"
             alt="Zenaldo Oliveira"
             width={120}
             height={120}
             className="
-          rounded-full
-          border-2
-          border-cyan-400
-          shadow-lg
-          shadow-cyan-500/30
-        "
+    rounded-full
+    border-4
+    border-cyan-400
+    shadow-[0_0_30px_rgba(34,211,238,0.6)]
+    transition-all
+    duration-500
+    hover:scale-110
+  "
           />
 
           <h1 className="mt-4 text-center text-xl font-bold text-white">
@@ -168,9 +165,14 @@ export function Sidebar() {
             Full Stack Developer
           </p>
 
+          <div className="mt-3 flex items-center gap-2 rounded-full bg-green-500/10 px-3 py-1 text-xs text-green-400">
+            <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+            Disponível para Projetos
+          </div>
+
           <p className="mt-4 text-center text-sm leading-relaxed text-zinc-300">
-            Especialista em React, Next.js, Inteligência Artificial e automações
-            para empresas.
+            Desenvolvedor Full Stack especializado em criação de sistemas, sites
+            profissionais e automações para empresas.
           </p>
         </div>
 
@@ -185,15 +187,17 @@ export function Sidebar() {
                   <Link
                     href={item.href}
                     className={`
-    flex items-center gap-3
-    rounded-lg px-4 py-3
-    transition-all duration-300
-    ${
-      pathname === item.href
-        ? "border border-cyan-500 bg-cyan-500/20 text-cyan-400 shadow-lg shadow-cyan-500/10"
-        : "text-zinc-200 hover:bg-cyan-500/10 hover:text-white"
-    }
-  `}
+          flex items-center gap-3
+          rounded-lg px-4 py-3
+          transition-all duration-300
+          ${
+            pathname === item.href
+              ? "border border-cyan-500 bg-cyan-500/20 text-cyan-400"
+              : item.href === "/contact"
+                ? "bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20"
+                : "text-zinc-200 hover:bg-cyan-500/10 hover:text-white"
+          }
+        `}
                   >
                     <Icon size={18} />
                     <span>{item.label}</span>

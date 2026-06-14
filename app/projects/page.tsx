@@ -1,40 +1,39 @@
 "use client";
 
-import { ExternalLink, FolderKanban, Code2, Globe } from "lucide-react";
 import { TypeAnimation } from "react-type-animation";
+import { ExternalLink, FolderKanban, Code2, Globe } from "lucide-react";
 
 export default function ProjectsPage() {
   const projects = [
+    {
+      title: "🥗 Dieta IA",
+      description:
+        "Aplicativo mobile Full Stack com Inteligência Artificial (Gemini AI) capaz de gerar dietas personalizadas com base em peso, altura, idade, objetivo e nível de atividade física.",
 
-{
-  title: "🥗 Dieta IA",
-  description:
-    "Aplicativo mobile Full Stack com Inteligência Artificial (Gemini AI) capaz de gerar dietas personalizadas com base em peso, altura, idade, objetivo e nível de atividade física.",
-  image: "",
-  technologies: [
-    "React Native",
-    "Expo",
-    "TypeScript",
-    "Fastify",
-    "Gemini AI",
-    "Railway",
-    "React Query",
-    "Zustand",
-  ],
-  demo: "https://expo.dev/accounts/zenaldo/projects/Dieta-mobile/builds/95262f1b-a2c4-4227-8709-fa5574c90d8d",
-  github: "https://github.com/zenaldo-oliveira/dietaapp-mobile",
-  status: "🚀 Projeto Destaque",
-  featured: true,
-},
+      technologies: [
+        "React Native",
+        "Expo",
+        "TypeScript",
+        "Fastify",
+        "Gemini AI",
+        "Railway",
+        "React Query",
+        "Zustand",
+      ],
+      demo: "https://expo.dev/accounts/zenaldo/projects/Dieta-mobile/builds/95262f1b-a2c4-4227-8709-fa5574c90d8d",
+      github: "https://github.com/zenaldo-oliveira/dietaapp-mobile",
+      status: "🏆 Projeto Principal",
+      featured: true,
+    },
 
     {
-      title: "Pet Shop Website",
+      title: "🐾 Pet Shop Website",
       description:
-        "Site profissional para pet shop com apresentação de serviços, integração com WhatsApp e design responsivo.",
+        "Site profissional para pet shop com apresentação de serviços, integração com WhatsApp, design responsivo e foco em conversão de clientes.",
       technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
-      demo: "#",
+      demo: "SEU_LINK_DO_NETLIFY",
       github: "https://github.com/zenaldo-oliveira/petshop-dev",
-      status: "Concluído",
+      status: "🌐 Online",
     },
 
     {
@@ -95,7 +94,7 @@ export default function ProjectsPage() {
         "
       />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1700px] flex-col items-center">
         {/* Badge */}
         <span
           className="
@@ -110,17 +109,17 @@ export default function ProjectsPage() {
         </span>
 
         {/* Título */}
-        <h1 className="mb-4 text-center text-4xl font-black md:text-5xl">
+        <h1 className="mb-3 min-h-[80px] text-center text-3xl font-black md:min-h-[100px] md:text-5xl">
           <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-300 bg-clip-text text-transparent">
             <TypeAnimation
               sequence={[
-                "Aplicações Modernas",
+                "Sistemas para Empresas",
                 2000,
-                "Projetos Full Stack",
+                "Sites Profissionais",
                 2000,
-                "Soluções Digitais",
+                "Automações Inteligentes",
                 2000,
-                "Produtos SaaS",
+                "Aplicações Full Stack",
                 2000,
               ]}
               speed={50}
@@ -131,70 +130,64 @@ export default function ProjectsPage() {
 
         {/* Descrição */}
         <p className="mb-4 max-w-2xl text-center text-sm text-zinc-400">
-          Projetos desenvolvidos com React, Next.js, TypeScript, Prisma e
-          PostgreSQL.
+          Projetos Full Stack desenvolvidos com React, Next.js, React Native,
+          Inteligência Artificial e soluções escaláveis para empresas.
         </p>
 
         {/* Cards */}
-        <div className="grid w-full gap-6 md:grid-cols-2 xl:grid-cols-2">
+        <div className="grid w-full auto-rows-fr gap-4 md:grid-cols-2 xl:grid-cols-3">
           {projects.map((project, index) => (
             <div
               key={index}
-              className="
-                group overflow-hidden rounded-3xl
-                border border-white/10
-                bg-white/[0.03]
-                backdrop-blur-xl
-                transition-all duration-300
-                hover:-translate-y-2
-                hover:border-cyan-500/40
-                hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]
-              "
+              className={`
+        h-full
+        group overflow-hidden rounded-3xl
+        border
+        ${
+          project.featured
+            ? "border-yellow-400 shadow-[0_0_40px_rgba(250,204,21,0.25)]"
+            : "border-white/10"
+        }
+        bg-white/[0.03]
+        backdrop-blur-xl
+        transition-all duration-300
+        hover:-translate-y-2
+        hover:border-cyan-500/40
+      `}
             >
-              {/* Topo */}
-              <div
-                className="
-                  flex items-center justify-center
-                  border-b border-white/10
-                  bg-gradient-to-br
-                  from-cyan-500/10
-                  to-blue-500/5
-                  p-5
-                "
-              >
-                <Code2
-                  size={28}
-                  className="
+              {/* Conteúdo */}
+              <div className="flex h-full flex-col p-4">
+                <div className="mb-3 flex justify-center">
+                  <Code2
+                    size={24}
+                    className="
                     text-cyan-400
                     transition-transform
                     duration-300
                     group-hover:scale-110
                   "
-                />
-              </div>
+                  />
+                </div>
 
-              {/* Conteúdo */}
-              <div className="flex h-full flex-col p-3">
-               <span
-              className={`rounded-full px-3 py-1 text-xs font-medium ${
-                project.featured
-                  ? "bg-yellow-500/20 text-yellow-300"
-                  : "bg-green-500/10 text-green-400"
-              }`}
-            >
-              {project.status}
-            </span>
-
+                <span
+                  className={`w-fit rounded-full px-3 py-1 text-xs font-medium ${
+                    project.featured
+                      ? "bg-yellow-500/20 text-yellow-300"
+                      : "bg-green-500/10 text-green-400"
+                  }`}
+                >
+                  {project.status}
+                </span>
                 <h2 className="mt-3 text-xl font-bold text-white">
                   {project.title}
                 </h2>
 
-                <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                <p className="mt-2 text-sm text-zinc-400 line-clamp-2">
                   {project.description}
                 </p>
 
                 <div className="mt-4 flex flex-wrap gap-2">
-                  {project.technologies.map((tech) => (
+                  {project.technologies.slice(0, 3).map((tech) => (
                     <span
                       key={tech}
                       className="
@@ -214,11 +207,11 @@ export default function ProjectsPage() {
                   <a
                     href={project.demo}
                     className="
-                      flex flex-1 items-center justify-center gap-2
-                      rounded-xl bg-cyan-500 px-4 py-2
-                      text-sm font-semibold text-white
-                      transition hover:bg-cyan-600
-                    "
+                  flex flex-1 items-center justify-center gap-1
+                  rounded-lg bg-cyan-500 px-3 py-2
+                  text-xs font-semibold text-white
+                  transition hover:bg-cyan-600
+                "
                   >
                     <ExternalLink size={16} />
                     Demo
@@ -227,12 +220,12 @@ export default function ProjectsPage() {
                   <a
                     href={project.github}
                     className="
-                    flex flex-1 items-center justify-center gap-2
-                    rounded-xl border border-white/10
-                    bg-white/5 px-4 py-2
-                    text-sm text-white
+                    flex flex-1 items-center justify-center gap-1
+                    rounded-lg border border-white/10
+                    bg-white/5 px-3 py-2
+                    text-xs text-white
                     transition hover:bg-white/10
-                    "
+                  "
                   >
                     <Globe size={16} />
                     GitHub

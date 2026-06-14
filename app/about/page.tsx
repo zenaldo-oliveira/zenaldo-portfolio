@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import Image from "next/image";
 
@@ -7,18 +8,19 @@ export default function AboutPage() {
   return (
     <section className="relative min-h-screen overflow-hidden px-6 py-10">
       {/* Background SaaS */}
-      <div className="absolute inset-0 bg-[#020617]" />
+
+      <div className="absolute inset-0 bg-gradient-to-br from-[#020617] via-[#0a1f52] to-[#020617]" />
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#06b6d420,transparent_50%)]" />
 
-      <div className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/10 blur-[120px]" />
+      <div className="absolute left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[150px]" />
 
       <div
         className="
           absolute inset-0 opacity-[0.05]
           bg-[linear-gradient(rgba(255,255,255,0.15)_1px,transparent_1px),
           linear-gradient(90deg,rgba(255,255,255,0.15)_1px,transparent_1px)]
-          bg-[size:50px_50px]
+          bg-[size:40px_40px]
         "
       />
 
@@ -95,20 +97,20 @@ export default function AboutPage() {
         </div>
         {/* Foto + Cards */}
         <div className="mt-10 grid gap-8 lg:grid-cols-2">
-
           {/* Foto */}
           <div className="flex justify-center">
             <div
               className="
                 relative
-                h-[280px]
-                md:h-[340px]
+                h-[320px]
+                md:h-[400px]
                 w-full
-                max-w-[280px]
+                max-w-[380px]
+                perspective-[1000px]
                 overflow-hidden
                 rounded-3xl
                 border
-                border-zinc-800
+                border-cyan-500/10
                 bg-white/[0.03]
                 backdrop-blur-xl
                 transition-all
@@ -120,16 +122,50 @@ export default function AboutPage() {
             >
               <div className="absolute inset-0 bg-cyan-500/10 blur-3xl" />
 
-              <Image
-                src="/profile.jpg"
-                alt="Zenaldo Oliveira"
-                fill
-                sizes="(max-width: 768px) 280px, 340px"
-                className="object-cover"
-              />
+              <motion.div
+                animate={{
+                  y: [0, -15, 0],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                whileHover={{
+                  scale: 1.08,
+                  rotateY: 12,
+                  rotateX: 8,
+                }}
+                style={{
+                  transformStyle: "preserve-3d",
+                }}
+                className="
+                relative
+                h-full
+                w-full
+                transition-all
+                duration-500
+                hover:drop-shadow-[0_0_40px_rgba(34,211,238,0.7)]
+              "
+              >
+                <Image
+                  src="/projects/profile.jpeg"
+                  alt="Zenaldo Oliveira"
+                  fill
+                  style={{
+                    objectPosition: "center 15%",
+                  }}
+                  className="
+                  object-cover
+                  rounded-3xl
+                  border-2
+                  border-cyan-500/30
+                  shadow-[0_0_25px_rgba(34,211,238,0.4)]
+                "
+                />
+              </motion.div>
             </div>
           </div>
-
           {/* Cards */}
           <div className="grid gap-5 md:grid-cols-2">
             {/* Quem Sou */}
@@ -137,7 +173,7 @@ export default function AboutPage() {
               className="
                 rounded-3xl
                 border
-                border-zinc-800
+                border-cyan-500/10
                 bg-white/[0.03]
                 p-5
                 backdrop-blur-xl
@@ -157,30 +193,26 @@ export default function AboutPage() {
             </div>
 
             {/* Formação */}
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
               className="
-                rounded-3xl
-                border
-                border-zinc-800
-                bg-white/[0.03]
-                p-5
-                backdrop-blur-xl
-                transition-all
-                duration-300
-                hover:-translate-y-1
-                hover:border-cyan-500/40
-                hover:shadow-[0_0_30px_rgba(34,211,238,0.15)]
-              "
+    rounded-3xl
+    border
+    border-cyan-500/10
+    bg-white/[0.03]
+    p-5
+  "
             >
               <h2 className="text-xl font-semibold text-white">Formação</h2>
 
               <ul className="mt-4 space-y-2 text-zinc-400">
                 <li>🎓 Análise e Desenvolvimento de Sistemas</li>
                 <li>📚 React e Next.js</li>
-                <li>⚡ Desenvolvimento Full Stack</li>
-                <li>🤖 IA e Automações</li>
               </ul>
-            </div>
+            </motion.div>
 
             {/* Áreas de Interesse */}
             <div
@@ -188,7 +220,7 @@ export default function AboutPage() {
                 md:col-span-2
                 rounded-3xl
                 border
-                border-zinc-800
+                border-cyan-500/10
                 bg-white/[0.03]
                 p-5
                 backdrop-blur-xl

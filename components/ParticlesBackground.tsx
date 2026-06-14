@@ -1,5 +1,3 @@
-
-
 export default function ParticlesBackground() {
   return (
     <>
@@ -38,7 +36,7 @@ export default function ParticlesBackground() {
           absolute inset-0 opacity-[0.03]
           bg-[linear-gradient(rgba(255,255,255,0.15)_1px,transparent_1px),
           linear-gradient(90deg,rgba(255,255,255,0.15)_1px,transparent_1px)]
-          bg-[size:50px_50px]
+          bg-[size:40px_40px]
         "
       />
       <div
