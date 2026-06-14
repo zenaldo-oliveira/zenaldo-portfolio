@@ -63,17 +63,17 @@ export default function ProjectsPage() {
       technologies: ["React Native", "JavaScript", "Node.js"],
       demo: "#",
       github: "https://github.com/zenaldo-oliveira/Frontend-easycar-mobile",
-      status: "Concluído",
+      status: "Em Desenvolvimento",
     },
 
     {
-      title: "Text to Voice",
+      title: "......",
       description:
         "Aplicação web para conversão de texto em áudio utilizando síntese de voz através da Web Speech API.",
       technologies: ["HTML", "CSS", "JavaScript"],
       demo: "#",
-      github: "https://github.com/zenaldo-oliveira/Text-to-Voice",
-      status: "Concluído",
+      github: "#",
+      status: "Em Desenvolvimento",
     },
   ];
 
