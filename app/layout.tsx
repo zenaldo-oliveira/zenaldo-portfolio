@@ -2,6 +2,7 @@ import { FloatingWhatsapp } from "@/components/floating-whatsapp";
 import { Sidebar } from "@/components/layout/Sidebar";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import AIAssistant from "@/components/AIAssistant";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -35,6 +36,8 @@ export default function RootLayout({
         <main className="min-h-screen md:ml-[280px]">{children}</main>
 
         <FloatingWhatsapp />
+
+        <AIAssistant />
       </body>
     </html>
   );

@@ -270,7 +270,7 @@ export default function CertificatesPage() {
               <span
                 key={item}
                 className="
-                  rounded-xl
+                  rounded-2xl
                   border
                   border-cyan-500/20
                   bg-cyan-500/10

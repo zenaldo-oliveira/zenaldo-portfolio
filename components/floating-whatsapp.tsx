@@ -13,7 +13,7 @@ export function FloatingWhatsapp() {
         fixed
         bottom-6
         right-6
-        z-[9999]
+        z-30
         flex
         items-center
         justify-center

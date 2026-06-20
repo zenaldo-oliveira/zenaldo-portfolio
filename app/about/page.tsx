@@ -33,7 +33,7 @@ export default function AboutPage() {
             inline-flex items-center gap-2
             rounded-full
             border border-cyan-500/20
-            bg-cyan-500/10
+            bg-gradient-to-r from-cyan-500 to-blue-600
             px-4 py-2
             text-sm font-medium
             text-cyan-400
@@ -199,12 +199,12 @@ export default function AboutPage() {
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
               className="
-    rounded-3xl
-    border
-    border-cyan-500/10
-    bg-white/[0.03]
-    p-5
-  "
+              rounded-3xl
+              border
+              border-cyan-500/10
+              bg-white/[0.03]
+              p-5
+            "
             >
               <h2 className="text-xl font-semibold text-white">Formação</h2>
 
