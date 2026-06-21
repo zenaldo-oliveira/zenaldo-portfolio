@@ -7,13 +7,28 @@ const openai = new OpenAI({
 
 export async function POST(req: Request) {
   try {
-    const { message } = await req.json();
+    const { message, messages } = await req.json();
+
+    // MONTA O HISTÓRICO DA CONVERSA
+    const conversation = messages
+      ?.map(
+        (msg: { role: string; content: string }) =>
+          `${msg.role}: ${msg.content}`,
+      )
+      .join("\n");
 
     const response = await openai.responses.create({
-
       model: "gpt-4.1-mini",
       max_output_tokens: 120,
-      input: message,
+      input: `
+Histórico da conversa:
+
+${conversation}
+
+Nova mensagem do usuário:
+
+${message}
+`,
       instructions: `
 
 Você é o Consultor Comercial da ZDTech.

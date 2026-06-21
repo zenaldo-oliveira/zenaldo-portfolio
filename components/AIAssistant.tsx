@@ -8,8 +8,15 @@ export default function AIAssistant() {
   const [message, setMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
-  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const [leadSaved, setLeadSaved] = useState(false);
 
+  const [lead, setLead] = useState({
+    nome: "",
+    whatsapp: "",
+    interesse: "",
+  });
+
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<
     { role: "user" | "assistant"; content: string }[]
   >([
@@ -30,18 +37,124 @@ export default function AIAssistant() {
     });
   }, [messages, isTyping]);
 
+  // MONITORA E SALVA O LEAD NO SUPABASE
+  // MONITORA E SALVA O LEAD NO SUPABASE
+  useEffect(() => {
+    console.log("LEAD:", lead);
+
+    // Evita salvar mais de uma vez
+    if (leadSaved) return;
+
+    // Só salva quando tiver nome e WhatsApp
+    if (!lead.nome || !lead.whatsapp) return;
+
+    fetch("/api/leads", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(lead),
+    })
+      .then((data) => {
+        console.log("LEAD SALVO:", data);
+
+        setLeadSaved(true);
+
+        setLead({
+          nome: "",
+          whatsapp: "",
+          interesse: "",
+        });
+      })
+      .catch((err) => {
+        console.error("ERRO AO SALVAR LEAD:", err);
+      });
+  }, [lead, leadSaved]);
+
+  const isPhoneNumber = (text: string) => {
+    const numbers = text.replace(/\D/g, "");
+    return numbers.length >= 10;
+  };
+
+  // CAPTURA NOME
+  const isName = (text: string) => {
+    const msg = text.toLowerCase();
+
+    if (
+      msg.includes("site") ||
+      msg.includes("automacao") ||
+      msg.includes("automação") ||
+      msg.includes("whatsapp") ||
+      msg.includes("ia") ||
+      msg.includes("agente") ||
+      msg.includes("sistema")
+    ) {
+      return false;
+    }
+
+    const words = text.trim().split(" ");
+
+    return words.length >= 2 && words.length <= 4 && !isPhoneNumber(text);
+  };
+
+  // CAPTURA INTERESSE
+  const getInterest = (text: string) => {
+    const msg = text.toLowerCase();
+
+    if (msg.includes("site")) return "site";
+    if (msg.includes("automação")) return "automacao";
+    if (msg.includes("automacao")) return "automacao";
+    if (msg.includes("whatsapp")) return "automacao";
+    if (msg.includes("ia")) return "ia";
+    if (msg.includes("agente")) return "ia";
+    if (msg.includes("sistema")) return "sistema";
+
+    return "";
+  };
+
   const sendMessage = async () => {
     if (!message.trim()) return;
 
     const currentMessage = message;
 
-    setMessages((prev) => [
-      ...prev,
+    // CAPTURA INTERESSE
+    const interest = getInterest(currentMessage);
+
+    if (interest) {
+      setLead((prev) => ({
+        ...prev,
+        interesse: interest,
+      }));
+    }
+
+    // CAPTURA WHATSAPP
+    if (isPhoneNumber(currentMessage)) {
+      setLead((prev) => ({
+        ...prev,
+        whatsapp: currentMessage,
+      }));
+    }
+
+    // CAPTURA NOME
+    if (isName(currentMessage) && !lead.nome) {
+      setLead((prev) => ({
+        ...prev,
+        nome: currentMessage,
+      }));
+    }
+
+    const updatedMessages: {
+      role: "user" | "assistant";
+      content: string;
+    }[] = [
+      ...messages,
       {
         role: "user",
         content: currentMessage,
       },
-    ]);
+    ];
+
+    setMessages(updatedMessages);
 
     setMessage("");
     setIsTyping(true);
@@ -54,8 +167,10 @@ export default function AIAssistant() {
         },
         body: JSON.stringify({
           message: currentMessage,
+          messages,
         }),
       });
+      console.log("STATUS:", response.status);
 
       const data = await response.json();
 
