@@ -90,19 +90,21 @@ export default function SkillsSection() {
         <div className="mb-16 text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-4 py-2 text-sm text-cyan-400">
             <Sparkles size={16} />
-            Minhas Habilidades
+            Tecnologias & Soluções
           </span>
 
           <h2 className="mt-6 min-h-[80px] text-4xl font-bold md:text-6xl">
             <TypeAnimation
               sequence={[
-                "Desenvolvimento Full Stack",
+                "Sites que Vendem",
+                2000,
+                "Sistemas para Empresas",
                 2000,
                 "Agentes de IA",
                 2000,
-                "Automação para WhatsApp",
+                "Automação de Processos",
                 2000,
-                "Integrações Inteligentes",
+                "Tecnologia para Negócios",
                 2000,
               ]}
               wrapper="span"

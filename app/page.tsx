@@ -18,41 +18,41 @@ export default function Home() {
         {/* Badge */}
         <span className="inline-flex items-center gap-2 rounded-full border border-cyan-500/40 bg-cyan-500/5 px-4 py-2 text-sm text-cyan-400 backdrop-blur-md">
           <Sparkles size={16} />
-          Desenvolvedor Full Stack
+          Desenvolvimento • Automação • IA
         </span>
 
         {/* Título */}
         <h1 className="mt-6 text-4xl font-black leading-tight text-white md:text-5xl">
-          Transformando ideias em
-          <span className="mt-2 block bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-            <TypeAnimation
-              sequence={[
-                "soluções digitais",
-                1500,
-                "aplicações web",
-                1500,
-                "projetos Full Stack",
-                1500,
-                "automações inteligentes",
-                1500,
-              ]}
-              wrapper="span"
-              speed={60}
-              repeat={Infinity}
-              cursor
-            />
-          </span>
+          Transformando negócios com
         </h1>
+
+        <span className="mt-2 block bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent text-4xl font-black md:text-5xl">
+          <TypeAnimation
+            sequence={[
+              "Agentes de IA",
+              2000,
+              "Sites Profissionais",
+              2000,
+              "Sistemas Web",
+              2000,
+              "Automações Inteligentes",
+              2000,
+            ]}
+            speed={50}
+            repeat={Infinity}
+            wrapper="span"
+          />
+        </span>
 
         {/* Descrição */}
         <p className="mx-auto mt-6 max-w-3xl text-sm leading-7 text-zinc-400 md:text-base">
-          Desenvolvedor Full Stack especializado em
+          Transformamos ideias em soluções digitais através de
           <span className="font-medium text-cyan-400">
             {" "}
-            React, Next.js, TypeScript, Prisma e PostgreSQL
+            sites profissionais, sistemas web, automações e agentes de IA
           </span>
-          , criando aplicações modernas, escaláveis e focadas na melhor
-          experiência do usuário.
+          , ajudando empresas a vender mais, economizar tempo e automatizar
+          processos.
         </p>
 
         {/* Botões */}

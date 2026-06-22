@@ -140,29 +140,35 @@ export function Sidebar() {
         </button>
 
         {/* PERFIL */}
-        <div className="flex flex-col items-center p-8">
-          <Image
-            src="/projects/profile.jpeg"
-            alt="Zenaldo Oliveira"
-            width={120}
-            height={120}
-            className="
-    rounded-full
-    border-4
-    border-cyan-400
-    shadow-[0_0_30px_rgba(34,211,238,0.6)]
-    transition-all
-    duration-500
-    hover:scale-110
+        <div
+          className="
+    flex flex-col items-center
+    p-8
   "
+        >
+          <Image
+            src="/projects/logo-ztech.png"
+            alt="ZTech Solution"
+            width={150}
+            height={150}
+            priority
+            className="
+      rounded-full
+      border-2
+      border-cyan-400/40
+      shadow-[0_0_40px_rgba(34,211,238,0.6)]
+      transition-all
+      duration-500
+      hover:scale-105
+    "
           />
 
           <h1 className="mt-4 text-center text-xl font-bold text-white">
-            Zenaldo Oliveira
+            ZTech Solution
           </h1>
 
-          <p className="mt-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-cyan-300">
-            Full Stack Developer
+          <p className="mt-1 text-xs uppercase tracking-[0.2em] text-cyan-400">
+            Tecnologia que impulsiona negócios
           </p>
 
           <div className="mt-3 flex items-center gap-2 rounded-full bg-green-500/10 px-3 py-1 text-xs text-green-400">
@@ -171,8 +177,8 @@ export function Sidebar() {
           </div>
 
           <p className="mt-4 text-center text-sm leading-relaxed text-zinc-300">
-            Desenvolvedor Full Stack especializado em criação de sistemas, sites
-            profissionais e automações para empresas.
+            Sites profissionais, sistemas web, automações inteligentes e agentes
+            de IA para empresas.
           </p>
         </div>
 
@@ -211,7 +217,7 @@ export function Sidebar() {
         {/* RODAPÉ */}
         <div className="mt-auto flex w-full justify-center gap-2 p-4">
           <Link
-            href="https://linkedin.com/in/seu-link"
+            href="https://www.linkedin.com/in/zenaldo-pereira-oliveira/"
             target="_blank"
             className="
               flex

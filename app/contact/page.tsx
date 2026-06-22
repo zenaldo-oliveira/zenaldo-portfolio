@@ -164,7 +164,7 @@ ${message}
 
           {/* LinkedIn */}
           <Link
-            href="https://linkedin.com/in/seu-link"
+            href="https://www.linkedin.com/in/zenaldo-pereira-oliveira/"
             target="_blank"
             className="
       rounded-2xl

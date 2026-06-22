@@ -184,7 +184,9 @@ export default function AboutPage() {
                 hover:shadow-[0_0_30px_rgba(34,211,238,0.15)]
               "
             >
-              <h2 className="text-xl font-semibold text-white">Quem Sou</h2>
+              <h2 className="text-xl font-semibold text-white">
+                👨‍💻 Fundador da ZTech Solution
+              </h2>
 
               <p className="mt-4 leading-7 text-zinc-400">
                 Sou Desenvolvedor Full Stack focado em aplicações web modernas
