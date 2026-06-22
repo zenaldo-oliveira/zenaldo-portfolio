@@ -44,17 +44,17 @@ export default function AboutPage() {
 
           {/* Título */}
           <h1 className="mt-6 min-h-[90px] text-center text-3xl font-black text-white md:min-h-[110px] md:text-5xl">
-            Conheça minha{" "}
+            Transformando ideias em{" "}
             <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-300 bg-clip-text text-transparent">
               <TypeAnimation
                 sequence={[
-                  "trajetória na tecnologia",
+                  "Sites Profissionais",
                   2000,
-                  "evolução profissional",
+                  "Sistemas Web",
                   2000,
-                  "paixão por desenvolvimento",
+                  "Automações Inteligentes",
                   2000,
-                  "busca por conhecimento",
+                  "Agentes de IA",
                   2000,
                 ]}
                 speed={50}

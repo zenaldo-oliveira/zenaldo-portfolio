@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Bot, X, Send } from "lucide-react";
+
+import { Sparkles, X, Send } from "lucide-react";
 
 export default function AIAssistant() {
   const [open, setOpen] = useState(false);
@@ -203,22 +204,31 @@ export default function AIAssistant() {
           aria-label="Abrir assistente virtual"
           onClick={() => setOpen(true)}
           className="
-    fixed
-    bottom-24
-    right-6
-    z-[9999]
-    w-14
-    h-14
-    rounded-full
-    bg-cyan-500
-    text-white
-    flex
-    items-center
-    justify-center
-    shadow-xl
-  "
+ai-glow
+
+fixed
+bottom-24
+right-6
+z-[9999]
+w-14
+h-14
+rounded-full
+bg-gradient-to-br
+from-cyan-500
+to-blue-600
+text-white
+flex
+items-center
+justify-center
+shadow-xl
+transition-all
+duration-300
+hover:scale-110
+border
+border-cyan-400/20
+"
         >
-          <Bot size={24} />
+          <Sparkles size={24} />
         </button>
       )}
 
@@ -338,15 +348,15 @@ export default function AIAssistant() {
               aria-label="Enviar mensagem"
               onClick={sendMessage}
               className="
-    w-12
-    h-12
-    rounded-lg
-    bg-cyan-500
-    text-white
-    flex
-    items-center
-    justify-center
-  "
+              w-12
+              h-12
+              rounded-lg
+              bg-cyan-500
+              text-white
+              flex
+              items-center
+              justify-center
+            "
             >
               <Send size={18} />
             </button>
