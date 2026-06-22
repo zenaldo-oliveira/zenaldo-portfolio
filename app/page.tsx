@@ -99,8 +99,8 @@ export default function Home() {
             <h3 className="text-lg font-semibold text-white">Sistemas Web</h3>
 
             <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-              Desenvolvimento de APIs REST, autenticação, Prisma ORM e
-              PostgreSQL.
+              Sistemas personalizados para gestão, controle e automação de
+              processos.
             </p>
           </div>
 
@@ -113,7 +113,8 @@ export default function Home() {
             <h3 className="text-lg font-semibold text-white">Agentes de IA</h3>
 
             <p className="mt-2 text-sm text-zinc-400">
-              IA, automações e integração com modelos inteligentes.
+              Atendimento automático, WhatsApp inteligente e captação de leads
+              24h.
             </p>
           </div>
         </div>
