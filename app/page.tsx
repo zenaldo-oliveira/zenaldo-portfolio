@@ -18,7 +18,7 @@ export default function Home() {
         {/* Badge */}
         <span className="inline-flex items-center gap-2 rounded-full border border-cyan-500/40 bg-cyan-500/5 px-4 py-2 text-sm text-cyan-400 backdrop-blur-md">
           <Sparkles size={16} />
-          Desenvolvimento • Automação • IA
+          Soluções Digitais para Empresas
         </span>
 
         {/* Título */}
@@ -81,10 +81,12 @@ export default function Home() {
               className="mx-auto mb-3 text-cyan-400 transition-transform group-hover:scale-110"
             />
 
-            <h3 className="text-lg font-semibold text-white">Frontend</h3>
+            <h3 className="text-lg font-semibold text-white">
+              Sites Profissionais
+            </h3>
 
             <p className="mt-2 text-sm text-zinc-400">
-              React, Next.js, TypeScript e interfaces modernas.
+              Sites modernos, responsivos e focados em gerar mais clientes.
             </p>
           </div>
 
@@ -94,7 +96,7 @@ export default function Home() {
               className="mx-auto mb-3 text-cyan-400 transition-transform group-hover:scale-110"
             />
 
-            <h3 className="text-lg font-semibold text-white">Backend & APIs</h3>
+            <h3 className="text-lg font-semibold text-white">Sistemas Web</h3>
 
             <p className="mt-2 text-sm leading-relaxed text-zinc-400">
               Desenvolvimento de APIs REST, autenticação, Prisma ORM e
@@ -108,9 +110,7 @@ export default function Home() {
               className="mx-auto mb-3 text-cyan-400 transition-transform group-hover:scale-110"
             />
 
-            <h3 className="text-lg font-semibold text-white">
-              Inteligência Artificial
-            </h3>
+            <h3 className="text-lg font-semibold text-white">Agentes de IA</h3>
 
             <p className="mt-2 text-sm text-zinc-400">
               IA, automações e integração com modelos inteligentes.
