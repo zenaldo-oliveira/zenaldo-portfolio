@@ -23,8 +23,16 @@ export default function AIAssistant() {
   >([
     {
       role: "assistant",
-      content:
-        "👋 Bem-vindo à ZDTech! Ajudamos empresas a vender mais, automatizar processos e economizar tempo com tecnologia. Como posso ajudar você hoje?",
+      content: `🚀 Olá! Sou o assistente virtual da ZDTech.
+
+    Posso ajudar com:
+
+    1️⃣ Criação de Sites
+    2️⃣ Agentes de IA
+    3️⃣ Automação para WhatsApp
+    4️⃣ Sistemas Web
+
+    Qual solução você procura?`,
     },
   ]);
 
