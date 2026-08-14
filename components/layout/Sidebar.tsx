@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { BookOpen } from "lucide-react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 import {
   Menu,
@@ -16,16 +16,42 @@ import {
   Award,
   FileText,
   Mail,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
+
+const COLLAPSE_STORAGE_KEY = "sidebar-collapsed";
+const COLLAPSED_WIDTH = "5rem"; // 80px — mesmo valor de w-20, usado no <style> abaixo
 
 export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
+  const [lastPathname, setLastPathname] = useState(pathname);
 
-  // Fecha o menu ao trocar de página
-  useEffect(() => {
+  // Fecha o menu mobile ao trocar de página
+  if (pathname !== lastPathname) {
+    setLastPathname(pathname);
     setIsOpen(false);
-  }, [pathname]);
+  }
+
+  // Lê a preferência salva só no client, depois da hidratação (evita mismatch SSR/client).
+  // Sincronizar com localStorage (sistema externo) exige setState pós-montagem — não há
+  // como ler localStorage durante a renderização, que também roda no servidor.
+  useEffect(() => {
+    const stored = window.localStorage.getItem(COLLAPSE_STORAGE_KEY);
+
+    if (stored === "true") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsCollapsed(true);
+    }
+  }, []);
+
+  // Sincroniza o estado com <body> (para o <main> reagir via CSS) e persiste a escolha.
+  useEffect(() => {
+    document.body.classList.toggle("sidebar-collapsed", isCollapsed);
+    window.localStorage.setItem(COLLAPSE_STORAGE_KEY, String(isCollapsed));
+  }, [isCollapsed]);
 
   const menuItems = [
     {
@@ -40,12 +66,12 @@ export function Sidebar() {
     },
     {
       href: "/services",
-      label: "Serviços",
+      label: "Soluções",
       icon: Wrench,
     },
     {
       href: "/projects",
-      label: "Projetos",
+      label: "Cases",
       icon: Briefcase,
     },
     {
@@ -67,6 +93,30 @@ export function Sidebar() {
 
   return (
     <>
+      {/* Faz o <main> (definido em app/layout.tsx) respeitar a largura recolhida
+          no desktop, sem precisar alterar layout.tsx nem globals.css.
+          Também esconde o indicador visual da barra de rolagem da Sidebar
+          SOMENTE quando recolhida no desktop — o scroll continua funcional
+          (overflow-y-auto nunca vira "hidden"), então nenhum ícone fica
+          inacessível em viewports muito baixas; só o traço cinza some. */}
+      <style>{`
+        @media (min-width: 768px) {
+          main {
+            transition: margin-left 300ms ease;
+          }
+          body.sidebar-collapsed main {
+            margin-left: ${COLLAPSED_WIDTH};
+          }
+          body.sidebar-collapsed .sidebar-scroll {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+          body.sidebar-collapsed .sidebar-scroll::-webkit-scrollbar {
+            display: none;
+          }
+        }
+      `}</style>
+
       {/* BOTÃO MENU MOBILE */}
       <button
         type="button"
@@ -111,16 +161,20 @@ export function Sidebar() {
       {/* SIDEBAR */}
       <aside
         className={`
+        sidebar-scroll
         fixed left-0 top-0 z-50 h-screen w-[280px]
         border-border-cyan-500/10
         bg-[#0f172a]
         flex flex-col
+        overflow-y-auto overflow-x-hidden
         transition-transform duration-300
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
         md:translate-x-0
+        ${isCollapsed ? "md:w-20" : "md:w-[280px]"}
+        md:transition-[width]
       `}
       >
-        {/* BOTÃO FECHAR */}
+        {/* BOTÃO FECHAR (mobile) */}
         <button
           type="button"
           aria-label="Fechar menu"
@@ -139,51 +193,79 @@ export function Sidebar() {
           <X size={20} />
         </button>
 
+        {/* TOGGLE EXPANDIR/RECOLHER (desktop) — no topo, junto ao cabeçalho */}
+        <div
+          className={`hidden md:flex px-3 pt-3 ${
+            isCollapsed ? "justify-center" : "justify-end"
+          }`}
+        >
+          <button
+            type="button"
+            aria-label={isCollapsed ? "Expandir menu" : "Recolher menu"}
+            aria-expanded={!isCollapsed}
+            onClick={() => setIsCollapsed((prev) => !prev)}
+            className="
+              flex h-7 w-7 items-center justify-center
+              rounded-lg
+              text-cyan-400
+              transition-all duration-300
+              hover:bg-cyan-500/10 hover:text-cyan-300
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
+            "
+          >
+            {isCollapsed ? (
+              <ChevronRight size={16} />
+            ) : (
+              <ChevronLeft size={16} />
+            )}
+          </button>
+        </div>
+
         {/* PERFIL */}
         <div
-          className="
-    flex flex-col items-center
-    p-8
-  "
+          className={`flex flex-col items-center ${isCollapsed ? "p-4" : "p-8"}`}
         >
           <Image
             src="/projects/logo-ztech.png"
-            alt="ZTech Solution"
+            alt="ZTech Solutions"
             width={150}
             height={150}
             priority
-            className="
+            className={`
       rounded-full
       border-2
       border-cyan-400/40
       shadow-[0_0_40px_rgba(34,211,238,0.6)]
       transition-all
-      duration-500
+      duration-300
       hover:scale-105
-    "
+      ${isCollapsed ? "h-10 w-10" : "h-[150px] w-[150px]"}
+    `}
           />
 
-          <h1 className="mt-4 text-center text-xl font-bold text-white">
-            ZTech Solution
-          </h1>
+          <div className={isCollapsed ? "sr-only" : ""}>
+            <p className="mt-4 text-center text-xl font-bold text-white">
+              ZTech Solutions
+            </p>
 
-          <p className="mt-1 text-xs uppercase tracking-[0.2em] text-cyan-400">
-            Tecnologia que impulsiona negócios
-          </p>
+            <p className="mt-1 text-xs uppercase tracking-[0.2em] text-cyan-400">
+              Tecnologia que impulsiona negócios
+            </p>
 
-          <div className="mt-3 flex items-center gap-2 rounded-full bg-green-500/10 px-3 py-1 text-xs text-green-400">
-            <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-            Disponível para Projetos
+            <div className="mt-3 flex items-center gap-2 rounded-full bg-green-500/10 px-3 py-1 text-xs text-green-400">
+              <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+              Disponível para Projetos
+            </div>
+
+            <p className="mt-4 text-center text-sm leading-relaxed text-zinc-300">
+              Sites profissionais, sistemas web, automações inteligentes e agentes
+              de IA para empresas.
+            </p>
           </div>
-
-          <p className="mt-4 text-center text-sm leading-relaxed text-zinc-300">
-            Sites profissionais, sistemas web, automações inteligentes e agentes
-            de IA para empresas.
-          </p>
         </div>
 
         {/* MENU */}
-        <nav className="flex-1 overflow-y-auto px-6 pb-6">
+        <nav className={isCollapsed ? "flex-1 px-2 pb-6" : "flex-1 px-6 pb-6"}>
           <ul className="space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon;
@@ -192,10 +274,13 @@ export function Sidebar() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
+                    title={item.label}
                     className={`
           flex items-center gap-3
           rounded-lg px-4 py-3
           transition-all duration-300
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
+          ${isCollapsed ? "justify-center" : ""}
           ${
             pathname === item.href
               ? "border border-cyan-500 bg-cyan-500/20 text-cyan-400"
@@ -206,7 +291,9 @@ export function Sidebar() {
         `}
                   >
                     <Icon size={18} />
-                    <span>{item.label}</span>
+                    <span className={isCollapsed ? "sr-only" : ""}>
+                      {item.label}
+                    </span>
                   </Link>
                 </li>
               );
@@ -215,20 +302,23 @@ export function Sidebar() {
         </nav>
 
         {/* RODAPÉ */}
-        <div className="mt-auto flex w-full justify-center gap-2 p-4">
+        <div
+          className={`mt-auto flex w-full border-t border-white/5 p-4 ${
+            isCollapsed ? "flex-col items-center gap-2" : "justify-center gap-2"
+          }`}
+        >
           <Link
             href="https://www.linkedin.com/in/zenaldo-pereira-oliveira/"
             target="_blank"
-            className="
+            title="LinkedIn"
+            aria-label="LinkedIn"
+            className={`
               flex
-              w-[85px]
               items-center
               justify-center
               gap-2
               rounded-xl
               bg-[#0A66C2]
-              px-4
-              py-2
               text-sm
               font-semibold
               text-white
@@ -236,17 +326,20 @@ export function Sidebar() {
               duration-300
               hover:-translate-y-1
               hover:bg-[#004182]
-            "
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
+              ${isCollapsed ? "h-10 w-10" : "w-[85px] px-4 py-2"}
+            `}
           >
-            LinkedIn
+            {isCollapsed ? <FaLinkedin size={18} /> : "LinkedIn"}
           </Link>
 
           <Link
             href="https://github.com/zenaldo-oliveira"
             target="_blank"
-            className="
+            title="GitHub"
+            aria-label="GitHub"
+            className={`
           flex
-          w-[85px]
           items-center
           justify-center
           gap-2
@@ -254,8 +347,6 @@ export function Sidebar() {
           border
           border-[#F4F2EE]/20
           bg-[#F4F2EE]/10
-          px-3
-          py-2
           text-sm
           font-medium
           text-[#F4F2EE]
@@ -264,9 +355,11 @@ export function Sidebar() {
           hover:-translate-y-1
           hover:border-[#F4F2EE]/50
           hover:bg-[#F4F2EE]/15
-        "
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
+          ${isCollapsed ? "h-10 w-10" : "w-[85px] px-3 py-2"}
+        `}
           >
-            GitHub
+            {isCollapsed ? <FaGithub size={18} /> : "GitHub"}
           </Link>
         </div>
       </aside>

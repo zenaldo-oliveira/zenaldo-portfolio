@@ -1,15 +1,47 @@
-"use client";
-
-import { TypeAnimation } from "react-type-animation";
+import { AnimatedHeadline } from "@/components/AnimatedHeadline";
 import { ExternalLink, FolderKanban, Code2, Globe } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Cases e Projetos | ZTech Solutions",
+  description:
+    "Cases e projetos desenvolvidos pela ZTech Solutions: sistemas, plataformas e aplicações reais, com o problema resolvido e a solução entregue em cada um.",
+  keywords: [
+    "cases de desenvolvimento de software",
+    "projetos full stack",
+    "sistema de gestão",
+    "React Native",
+    "Next.js",
+    "inteligência artificial",
+  ],
+  alternates: {
+    canonical: "/projects",
+  },
+};
 
 export default function ProjectsPage() {
   const projects = [
     {
-      title: "🥗 Dieta IA",
-      description:
-        "Aplicativo mobile Full Stack com Inteligência Artificial (Gemini AI) capaz de gerar dietas personalizadas com base em peso, altura, idade, objetivo e nível de atividade física.",
+      title: "🛗 ZLift Manager",
+      category: "Plataforma / SaaS",
+      problema:
+        "Empresas de manutenção de elevadores costumam operar com processos manuais e informações dispersas entre clientes, equipamentos, técnicos e ordens de serviço.",
+      solucao:
+        "Plataforma própria que centraliza todo o fluxo operacional: clientes, elevadores, técnicos, ordens de serviço, execução, checklist, fotos, observações, assinatura e relatório.",
+      technologies: [] as string[],
+      demo: "#",
+      github: "#",
+      status: "Produto próprio",
+      featured: true,
+    },
 
+    {
+      title: "🥗 Dieta IA",
+      category: "Aplicativo Mobile",
+      problema:
+        "Montar uma dieta personalizada normalmente depende de acompanhamento manual, sem cruzar automaticamente todos os dados do usuário.",
+      solucao:
+        "Aplicativo mobile Full Stack com Inteligência Artificial (Gemini AI) que gera dietas personalizadas a partir de peso, altura, idade, objetivo e nível de atividade física.",
       technologies: [
         "React Native",
         "Expo",
@@ -28,8 +60,11 @@ export default function ProjectsPage() {
 
     {
       title: "🐾 Pet Shop Premium",
-      description:
-        "Website profissional desenvolvido para pet shop com design moderno, responsivo e integração direta com WhatsApp para captação de clientes.",
+      category: "Site Institucional",
+      problema:
+        "Pet shops locais sem presença digital profissional perdem clientes para concorrentes com site e canal de contato direto.",
+      solucao:
+        "Website profissional com design moderno, responsivo e integração direta com WhatsApp para captação de clientes.",
       technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
       demo: "https://petshop-zenaldo.netlify.app/",
       github: "https://github.com/zenaldo-oliveira/petshop-blad",
@@ -38,8 +73,11 @@ export default function ProjectsPage() {
 
     {
       title: "💈 Barber Shop Premium",
-      description:
-        "Site profissional para barbearias com design responsivo, integração com WhatsApp e foco em geração de agendamentos.",
+      category: "Site Institucional",
+      problema:
+        "Barbearias que dependem só de indicação ou redes sociais têm dificuldade para converter interesse em agendamento.",
+      solucao:
+        "Site profissional com design responsivo, integração com WhatsApp e foco em geração de agendamentos.",
       technologies: ["HTML", "SCSS", "JavaScript", "AOS"],
       demo: "https://barber-premium-site.netlify.app/",
       github: "https://github.com/zenaldo-oliveira/BARBER",
@@ -48,8 +86,11 @@ export default function ProjectsPage() {
 
     {
       title: "🔊 Text To Voice AI",
-      description:
-        "Aplicação web para conversão de texto em áudio utilizando síntese de voz através da Web Speech API, oferecendo uma experiência acessível e interativa para os usuários.",
+      category: "Ferramenta Web",
+      problema:
+        "Conteúdo em texto nem sempre é acessível para todos os usuários ou contextos de uso.",
+      solucao:
+        "Aplicação web que converte texto em áudio usando síntese de voz via Web Speech API, sem depender de serviços pagos de terceiros.",
       technologies: ["HTML", "CSS", "JavaScript", "Web Speech API"],
       demo: "https://conversortxt.netlify.app/",
       github: "https://github.com/zenaldo-oliveira/Text-to-Voice",
@@ -58,21 +99,14 @@ export default function ProjectsPage() {
 
     {
       title: "EasyCar Mobile",
-      description:
-        "Aplicativo para gestão automotiva com integração entre frontend mobile e backend para gerenciamento de dados.",
+      category: "Aplicativo Mobile",
+      problema:
+        "Gestão automotiva (veículos, clientes, serviços) sem um sistema dedicado costuma ficar espalhada entre planilhas e anotações.",
+      solucao:
+        "Aplicativo mobile integrado a um backend próprio para centralizar a gestão automotiva.",
       technologies: ["React Native", "JavaScript", "Node.js"],
       demo: "#",
       github: "https://github.com/zenaldo-oliveira/Frontend-easycar-mobile",
-      status: "Em Desenvolvimento",
-    },
-
-    {
-      title: "......",
-      description:
-        "Aplicação web para conversão de texto em áudio utilizando síntese de voz através da Web Speech API.",
-      technologies: ["HTML", "CSS", "JavaScript"],
-      demo: "#",
-      github: "#",
       status: "Em Desenvolvimento",
     },
   ];
@@ -105,13 +139,13 @@ export default function ProjectsPage() {
         "
         >
           <FolderKanban size={16} />
-          Projetos Desenvolvidos
+          Cases e Projetos
         </span>
 
         {/* Título */}
         <h1 className="mb-3 min-h-[80px] text-center text-3xl font-black md:min-h-[100px] md:text-5xl">
           <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-300 bg-clip-text text-transparent">
-            <TypeAnimation
+            <AnimatedHeadline
               sequence={[
                 "Sistemas para Empresas",
                 2000,
@@ -122,16 +156,15 @@ export default function ProjectsPage() {
                 "Aplicações Full Stack",
                 2000,
               ]}
-              speed={50}
-              repeat={Infinity}
             />
           </span>
         </h1>
 
         {/* Descrição */}
         <p className="mb-4 max-w-2xl text-center text-sm text-zinc-400">
-          Projetos Full Stack desenvolvidos com React, Next.js, React Native,
-          Inteligência Artificial e soluções escaláveis para empresas.
+          Cada case abaixo mostra o problema real e a solução entregue —
+          desenvolvidos com React, Next.js, React Native, Inteligência
+          Artificial e soluções escaláveis para empresas.
         </p>
 
         {/* Cards */}
@@ -169,39 +202,64 @@ export default function ProjectsPage() {
                   />
                 </div>
 
-                <span
-                  className={`w-fit rounded-full px-3 py-1 text-xs font-medium ${
-                    project.featured
-                      ? "bg-yellow-500/20 text-yellow-300"
-                      : "bg-green-500/10 text-green-400"
-                  }`}
-                >
-                  {project.status}
-                </span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    className={`w-fit rounded-full px-3 py-1 text-xs font-medium ${
+                      project.featured
+                        ? "bg-yellow-500/20 text-yellow-300"
+                        : "bg-green-500/10 text-green-400"
+                    }`}
+                  >
+                    {project.status}
+                  </span>
+
+                  <span className="w-fit rounded-full bg-white/5 px-3 py-1 text-xs font-medium text-zinc-400">
+                    {project.category}
+                  </span>
+                </div>
+
                 <h2 className="mt-3 text-xl font-bold text-white">
                   {project.title}
                 </h2>
 
-                <p className="mt-2 text-sm text-zinc-400 line-clamp-2">
-                  {project.description}
-                </p>
+                <div className="mt-3 space-y-3 text-sm">
+                  <div>
+                    <span className="block text-xs font-semibold uppercase tracking-wide text-cyan-400">
+                      Problema
+                    </span>
+                    <p className="mt-1 text-zinc-400 line-clamp-2">
+                      {project.problema}
+                    </p>
+                  </div>
 
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {project.technologies.slice(0, 3).map((tech) => (
-                    <span
-                      key={tech}
-                      className="
+                  <div>
+                    <span className="block text-xs font-semibold uppercase tracking-wide text-cyan-400">
+                      Solução
+                    </span>
+                    <p className="mt-1 text-zinc-400 line-clamp-2">
+                      {project.solucao}
+                    </p>
+                  </div>
+                </div>
+
+                {project.technologies.length > 0 && (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {project.technologies.slice(0, 3).map((tech) => (
+                      <span
+                        key={tech}
+                        className="
                         rounded-lg
                         bg-cyan-500/10
                         px-3 py-1
                         text-xs
                         text-cyan-300
                       "
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                )}
 
                 <div className="mt-6 flex gap-3">
                   <a

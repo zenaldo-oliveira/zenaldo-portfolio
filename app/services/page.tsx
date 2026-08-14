@@ -1,5 +1,3 @@
-"use client";
-
 /* ==========================================================
    IMPORTAÇÕES
 ========================================================== */
@@ -7,13 +5,72 @@
 import Link from "next/link";
 import {
   Brain,
+  Building2,
   Code2,
-  Database,
   Layers3,
+  Plug,
+  Workflow,
   ArrowRight,
   Sparkles,
 } from "lucide-react";
-import { TypeAnimation } from "react-type-animation";
+import { AnimatedHeadline } from "@/components/AnimatedHeadline";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Serviços | ZTech Solutions — Desenvolvimento de Software",
+  description:
+    "Sistemas empresariais, SaaS, inteligência artificial, automação, sistemas web e integrações — desenvolvidos com React, Next.js, TypeScript, Prisma e PostgreSQL.",
+  keywords: [
+    "sistemas empresariais",
+    "desenvolvimento de SaaS",
+    "inteligência artificial para empresas",
+    "automação de processos",
+    "integração de sistemas",
+    "desenvolvimento de software",
+  ],
+  alternates: {
+    canonical: "/services",
+  },
+};
+
+const services = [
+  {
+    icon: Building2,
+    title: "Sistemas Empresariais",
+    description:
+      "Sistemas sob medida para gestão, operação, clientes e processos — no lugar de planilhas soltas e controle manual.",
+  },
+  {
+    icon: Layers3,
+    title: "SaaS",
+    description:
+      "Transformamos uma solução em produto: plataforma escalável, pronta para atender vários clientes.",
+  },
+  {
+    icon: Brain,
+    title: "Inteligência Artificial",
+    description:
+      "IA aplicada a atendimento, qualificação de leads e suporte, reduzindo trabalho manual repetitivo.",
+  },
+  {
+    icon: Workflow,
+    title: "Automação",
+    description:
+      "Processos repetitivos automatizados entre sistemas, WhatsApp e ferramentas do dia a dia da empresa.",
+  },
+  {
+    icon: Code2,
+    title: "Sistemas Web",
+    description:
+      "Aplicações modernas e responsivas, desenvolvidas de acordo com a necessidade real do negócio.",
+  },
+  {
+    icon: Plug,
+    title: "Integrações",
+    description:
+      "Conectamos APIs, bancos de dados e serviços para eliminar retrabalho entre sistemas que não conversam entre si.",
+  },
+];
 
 export default function ServicesPage() {
   return (
@@ -87,7 +144,7 @@ export default function ServicesPage() {
 
         <h1 className="mb-4 min-h-[70px] text-center text-4xl font-black md:min-h-[80px] md:text-5xl">
           <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-300 bg-clip-text text-transparent">
-            <TypeAnimation
+            <AnimatedHeadline
               sequence={[
                 "Desenvolvendo Soluções Digitais",
                 2000,
@@ -98,8 +155,6 @@ export default function ServicesPage() {
                 "IA e Automações",
                 2000,
               ]}
-              speed={50}
-              repeat={Infinity}
             />
           </span>
         </h1>
@@ -109,7 +164,8 @@ export default function ServicesPage() {
         ========================================================== */}
 
         <p className="mb-8 max-w-2xl text-center text-sm text-zinc-400 md:text-base">
-          Desenvolvimento de aplicações modernas utilizando React, Next.js,
+          Desenvolvimento de sistemas empresariais, SaaS, automações e
+          soluções com inteligência artificial, usando React, Next.js,
           TypeScript, Prisma e PostgreSQL.
         </p>
 
@@ -117,91 +173,33 @@ export default function ServicesPage() {
             GRID DE SERVIÇOS
         ========================================================== */}
 
-        <div className="grid w-full max-w-6xl gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {/* ==========================================================
-              CARD 1 - DESENVOLVIMENTO WEB
-          ========================================================== */}
+        <div className="grid w-full max-w-6xl gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {services.map((service) => {
+            const Icon = service.icon;
 
-          <div className="group rounded-3xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-cyan-500/40">
-            <Code2
-              size={32}
-              className="mb-4 text-cyan-400 transition-transform duration-300 group-hover:scale-110"
-            />
+            return (
+              <div
+                key={service.title}
+                className="group rounded-3xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-cyan-500/40"
+              >
+                <Icon
+                  size={32}
+                  className="mb-4 text-cyan-400 transition-transform duration-300 group-hover:scale-110"
+                />
 
-            <h3 className="mb-3 text-xl font-semibold text-white">
-              Desenvolvimento Web
-            </h3>
+                <h2 className="mb-3 text-xl font-semibold text-white">
+                  {service.title}
+                </h2>
 
-            <p className="text-sm text-zinc-400">
-              Sites modernos, landing pages e interfaces responsivas.
-            </p>
-          </div>
-
-          {/* ==========================================================
-              CARD 2 - SISTEMAS FULL STACK
-          ========================================================== */}
-
-          <div className="group rounded-3xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-cyan-500/40">
-            <Layers3
-              size={32}
-              className="mb-4 text-cyan-400 transition-transform duration-300 group-hover:scale-110"
-            />
-
-            <h3 className="mb-3 text-xl font-semibold text-white">
-              Sistemas Full Stack
-            </h3>
-
-            <p className="text-sm text-zinc-400">
-              Frontend, backend, autenticação e banco de dados.
-            </p>
-          </div>
-
-          {/* ==========================================================
-              CARD 3 - APIS E BACKEND
-          ========================================================== */}
-
-          <div className="group rounded-3xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-cyan-500/40">
-            <Database
-              size={32}
-              className="mb-4 text-cyan-400 transition-transform duration-300 group-hover:scale-110"
-            />
-
-            <h3 className="mb-3 text-xl font-semibold text-white">
-              APIs & Backend
-            </h3>
-
-            <p className="text-sm text-zinc-400">
-              APIs REST, integrações, Prisma ORM e PostgreSQL.
-            </p>
-          </div>
-
-          {/* ==========================================================
-              CARD 4 - IA E AUTOMAÇÃO
-          ========================================================== */}
-
-          <div className="group rounded-3xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-cyan-500/40">
-            <Brain
-              size={32}
-              className="mb-4 text-cyan-400 transition-transform duration-300 group-hover:scale-110"
-            />
-
-            <h3 className="mb-3 text-xl font-semibold text-white">
-              IA & Automação
-            </h3>
-
-            <p className="text-sm text-zinc-400">
-              IA, WhatsApp, Make e automação de processos.
-            </p>
-          </div>
+                <p className="text-sm text-zinc-400">{service.description}</p>
+              </div>
+            );
+          })}
         </div>
 
         {/* ==========================================================
             CTA FINAL
         ========================================================== */}
-
-        {/* ==========================================================
-    CTA FINAL
-========================================================== */}
 
         <div className="mt-10 text-center">
           <h2 className="text-2xl font-bold text-white">
@@ -221,6 +219,7 @@ export default function ServicesPage() {
         transition-all
         duration-300
         hover:scale-105
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
       "
             >
               Entrar em Contato
@@ -241,6 +240,7 @@ export default function ServicesPage() {
         duration-300
         hover:bg-white/10
         hover:border-cyan-500/30
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
       "
             >
               Ver Projetos

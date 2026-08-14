@@ -1,11 +1,25 @@
-"use client";
-
 /* ==========================================================
    IMPORTAÇÕES
 ========================================================== */
 
-import { TypeAnimation } from "react-type-animation";
+import { AnimatedHeadline } from "@/components/AnimatedHeadline";
 import { Award, GraduationCap, Sparkles } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Certificados | Zenaldo Oliveira — Desenvolvedor Full Stack",
+  description:
+    "Formação em Análise e Desenvolvimento de Sistemas, especializações e certificações em React, Next.js, TypeScript e IA & Automação.",
+  keywords: [
+    "certificados desenvolvedor",
+    "formação Análise e Desenvolvimento de Sistemas",
+    "certificação React",
+    "certificação Next.js",
+  ],
+  alternates: {
+    canonical: "/certificates",
+  },
+};
 
 /* ==========================================================
    CERTIFICADOS E FORMAÇÕES
@@ -111,7 +125,7 @@ export default function CertificatesPage() {
         <div className="mt-8 text-center">
           <h1 className="min-h-[60px] text-3xl font-black md:text-5xl">
             <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-300 bg-clip-text text-transparent">
-              <TypeAnimation
+              <AnimatedHeadline
                 sequence={[
                   "Formação e Certificações",
                   2000,
@@ -122,8 +136,6 @@ export default function CertificatesPage() {
                   "Construindo Conhecimento",
                   2000,
                 ]}
-                speed={50}
-                repeat={Infinity}
               />
             </span>
           </h1>
@@ -237,7 +249,7 @@ export default function CertificatesPage() {
                     {certificate.status}
                   </span>
 
-                  <span className="text-xs text-zinc-500">
+                  <span className="text-xs text-zinc-400">
                     {certificate.year}
                   </span>
                 </div>

@@ -1,6 +1,4 @@
-"use client";
-
-import { TypeAnimation } from "react-type-animation";
+import { AnimatedHeadline } from "@/components/AnimatedHeadline";
 
 import {
   Code2,
@@ -10,6 +8,25 @@ import {
   Sparkles,
   ArrowUpRight,
 } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Habilidades | Zenaldo Oliveira — Desenvolvedor Full Stack",
+  description:
+    "Desenvolvimento Full Stack, Inteligência Artificial e automações para criar soluções modernas, escaláveis e focadas em resultados.",
+  keywords: [
+    "habilidades desenvolvedor full stack",
+    "React",
+    "Next.js",
+    "Node.js",
+    "PostgreSQL",
+    "OpenAI",
+    "automação WhatsApp",
+  ],
+  alternates: {
+    canonical: "/skills",
+  },
+};
 
 const skills = [
   {
@@ -93,8 +110,8 @@ export default function SkillsSection() {
             Tecnologias & Soluções
           </span>
 
-          <h2 className="mt-6 min-h-[80px] text-4xl font-bold md:text-6xl">
-            <TypeAnimation
+          <h1 className="mt-6 min-h-[80px] text-4xl font-bold md:text-6xl">
+            <AnimatedHeadline
               sequence={[
                 "Sites que Vendem",
                 2000,
@@ -107,9 +124,6 @@ export default function SkillsSection() {
                 "Tecnologia para Negócios",
                 2000,
               ]}
-              wrapper="span"
-              speed={50}
-              repeat={Infinity}
               className="
               bg-gradient-to-r
               from-cyan-400
@@ -119,7 +133,7 @@ export default function SkillsSection() {
               text-transparent
               "
             />
-          </h2>
+          </h1>
 
           <p className="mx-auto mt-5 max-w-2xl text-zinc-400">
             Desenvolvimento Full Stack, Inteligência Artificial e automações
@@ -183,9 +197,9 @@ export default function SkillsSection() {
 
                   {/* Title */}
                   <div className="mb-6 flex items-center justify-between">
-                    <h3 className="text-xl font-semibold text-white">
+                    <h2 className="text-xl font-semibold text-white">
                       {skill.title}
-                    </h3>
+                    </h2>
 
                     <ArrowUpRight
                       size={18}
@@ -232,17 +246,17 @@ export default function SkillsSection() {
         {/* Footer Stats */}
         <div className="mt-20 grid gap-6 md:grid-cols-3">
           <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 text-center">
-            <h4 className="text-4xl font-bold text-cyan-400">15+</h4>
+            <h3 className="text-4xl font-bold text-cyan-400">15+</h3>
             <p className="mt-2 text-zinc-400">Tecnologias</p>
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 text-center">
-            <h4 className="text-4xl font-bold text-purple-400">Full Stack</h4>
+            <h3 className="text-4xl font-bold text-purple-400">Full Stack</h3>
             <p className="mt-2 text-zinc-400">Frontend & Backend</p>
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 text-center">
-            <h4 className="text-4xl font-bold text-emerald-400">IA</h4>
+            <h3 className="text-4xl font-bold text-emerald-400">IA</h3>
             <p className="mt-2 text-zinc-400">Automações Inteligentes</p>
           </div>
         </div>

@@ -1,52 +1,26 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { TypeAnimation } from "react-type-animation";
+import { AnimatedHeadline } from "@/components/AnimatedHeadline";
+import { ContactForm } from "@/components/contact/ContactForm";
 
-import {
-  Sparkles,
-  Phone,
-  Mail,
-  Send,
-  Globe,
-  Clock3,
-  Briefcase,
-  Rocket,
-  Code2,
-} from "lucide-react";
+import { Sparkles, Phone, Mail, Code2 } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contato | Zenaldo Oliveira — Desenvolvedor Full Stack",
+  description:
+    "Estou disponível para freelas, desenvolvimento de sistemas, landing pages, dashboards, integrações com APIs e projetos Full Stack. Entre em contato pelo WhatsApp, e-mail, GitHub ou LinkedIn.",
+  keywords: [
+    "contato desenvolvedor full stack",
+    "orçamento site profissional",
+    "contratar desenvolvedor React Next.js",
+  ],
+  alternates: {
+    canonical: "/contact",
+  },
+};
 
 export default function ContactPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const text = `
-
-
-🚀 Novo contato pelo Portfólio
-
-👤 Nome: ${name}
-
-📧 E-mail: ${email}
-
-💬 Mensagem:
-${message}
-`;
-
-    const url = `https://wa.me/5565992832422?text=${encodeURIComponent(text)}`;
-
-    window.open(url, "_blank");
-
-    setName("");
-    setEmail("");
-    setMessage("");
-  };
-
   return (
     <section className="relative min-h-[85vh] overflow-hidden bg-[#020617]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#06b6d420,transparent_50%)]" />
@@ -73,7 +47,7 @@ ${message}
         <div className="mt-8 text-center">
           <h1 className="mx-auto max-w-4xl text-3xl font-black text-white md:text-5xl lg:text-6xl">
             <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-300 bg-clip-text text-transparent">
-              <TypeAnimation
+              <AnimatedHeadline
                 sequence={[
                   "Vamos criar algo incrível?",
                   2000,
@@ -84,8 +58,6 @@ ${message}
                   "React • Next.js • Node.js",
                   2000,
                 ]}
-                speed={50}
-                repeat={Infinity}
               />
             </span>
           </h1>
@@ -121,6 +93,7 @@ ${message}
           </Link>
 
           {/* Email */}
+          {/* TODO: substituir pelo e-mail profissional real assim que definido */}
           <Link
             href="mailto:seuemail@email.com"
             className="
@@ -199,7 +172,7 @@ ${message}
                   Desenvolvedor Full Stack
                 </h2>
 
-                <p className="text-zinc-500">
+                <p className="text-zinc-400">
                   React • Next.js • Node.js • TypeScript
                 </p>
               </div>
@@ -232,105 +205,12 @@ ${message}
               Enviar Mensagem
             </h2>
 
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <input
-                type="text"
-                required
-                placeholder="Seu nome"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="
-              w-full
-              rounded-xl
-              border
-              border-white/10
-              bg-white/5
-              px-4
-              py-2.5
-              text-sm
-              text-white
-              outline-none
-              transition-all
-              focus:border-cyan-500
-            "
-              />
-
-              <input
-                type="email"
-                required
-                placeholder="Seu e-mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="
-                w-full
-                rounded-xl
-                border
-                border-white/10
-                bg-white/5
-                px-4
-                py-2.5
-                text-sm
-                text-white
-                outline-none
-                transition-all
-                focus:border-cyan-500
-              "
-              />
-
-              <textarea
-                rows={3}
-                required
-                placeholder="Descreva seu projeto..."
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="
-              w-full
-              resize-none
-              rounded-xl
-              border
-              border-white/10
-              bg-white/5
-              px-4
-              py-2.5
-              text-sm
-              text-white
-              outline-none
-              transition-all
-              focus:border-cyan-500
-            "
-              />
-
-              <button
-                type="submit"
-                className="
-            flex
-            w-full
-            items-center
-            justify-center
-            gap-2
-            rounded-xl
-            bg-gradient-to-r
-            from-cyan-500
-            to-blue-600
-            px-4
-            py-3
-            text-sm
-            font-semibold
-            text-white
-            transition-all
-            duration-300
-            hover:scale-[1.01]
-          "
-              >
-                <Send size={16} />
-                Enviar para WhatsApp
-              </button>
-            </form>
+            <ContactForm />
           </div>
         </div>
       </div>
       <div className="mt-4 border-t border-white/10 pt-4 text-center">
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-zinc-400">
           © {new Date().getFullYear()} Zenaldo Oliveira • Full Stack Developer
         </p>
       </div>
