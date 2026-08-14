@@ -478,14 +478,13 @@ focus-visible:ring-cyan-500/60
             className="
             fixed
             top-0
-            left-0
-            right-0
+            left-3
+            right-3
             bottom-0
 
             z-[99999]
 
-            w-full
-            h-full
+            max-h-dvh
 
             bg-slate-900
 
@@ -497,8 +496,9 @@ focus-visible:ring-cyan-500/60
             md:right-6
             md:bottom-24
 
-            md:w-[380px]
+            md:w-[min(380px,calc(100vw-3rem))]
             md:h-[600px]
+            md:max-h-[min(600px,calc(100dvh-8rem))]
 
             md:rounded-2xl
             md:border
@@ -765,7 +765,7 @@ focus-visible:ring-cyan-500/60
                 )}
 
                 {/* COMPOSER */}
-                <div className="flex shrink-0 items-end gap-2 border-t border-slate-700 p-3">
+                <div className="flex shrink-0 items-end gap-2 border-t border-slate-700 px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
                   <input
                     ref={fileInputRef}
                     type="file"
