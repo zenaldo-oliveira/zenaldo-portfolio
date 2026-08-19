@@ -23,9 +23,9 @@ export function AboutProfilePhoto() {
         transformStyle: "preserve-3d",
       }}
       className="
-                relative
-                h-full
-                w-full
+                absolute
+                -inset-y-6
+                inset-x-0
                 transition-all
                 duration-500
                 hover:drop-shadow-[0_0_40px_rgba(34,211,238,0.7)]
