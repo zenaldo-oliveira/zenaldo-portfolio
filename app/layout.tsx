@@ -59,7 +59,7 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      <body className="bg-black text-white">
+      <body className="bg-[#020617] text-white">
         <Sidebar />
 
         <main className="min-h-screen md:ml-[280px]">{children}</main>

@@ -139,7 +139,7 @@ export default function Home() {
             {problems.map((problem) => (
               <div
                 key={problem}
-                className="rounded-2xl border border-zinc-800 bg-zinc-900/40 px-4 py-3 text-sm text-zinc-300"
+                className="rounded-3xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-zinc-300 backdrop-blur-xl"
               >
                 {problem}
               </div>
@@ -208,7 +208,7 @@ export default function Home() {
             {workSteps.map((step) => (
               <div
                 key={step.number}
-                className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4"
+                className="rounded-3xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-xl"
               >
                 <span className="text-2xl font-black text-cyan-400">
                   {step.number}

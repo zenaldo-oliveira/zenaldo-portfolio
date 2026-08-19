@@ -271,6 +271,7 @@ export default function ProjectsPage() {
                     rounded-lg bg-cyan-500 px-3 py-2
                     text-xs font-semibold text-white
                     transition hover:bg-cyan-600
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
                   "
                   >
                     <ExternalLink size={16} />
@@ -287,6 +288,7 @@ export default function ProjectsPage() {
                     bg-white/5 px-3 py-2
                     text-xs text-white
                     transition hover:bg-white/10
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
                   "
                   >
                     <Globe size={16} />

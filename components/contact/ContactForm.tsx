@@ -217,6 +217,9 @@ ${message}
             transition-all
             duration-300
             hover:scale-[1.01]
+            focus-visible:outline-none
+            focus-visible:ring-2
+            focus-visible:ring-cyan-500/60
             disabled:cursor-not-allowed
             disabled:opacity-60
             disabled:hover:scale-100

@@ -84,6 +84,9 @@ export default function ContactPage() {
       hover:-translate-y-1
       hover:border-[#25D366]
       hover:bg-[#25D366]/20
+      focus-visible:outline-none
+      focus-visible:ring-2
+      focus-visible:ring-cyan-500/60
     "
           >
             <div className="flex items-center gap-2">
@@ -105,6 +108,9 @@ export default function ContactPage() {
       transition-all duration-300
       hover:-translate-y-1
       hover:border-[#F4F2EE]/50
+      focus-visible:outline-none
+      focus-visible:ring-2
+      focus-visible:ring-cyan-500/60
     "
           >
             <div className="flex items-center gap-2">
@@ -127,6 +133,9 @@ export default function ContactPage() {
       hover:-translate-y-1
       hover:border-zinc-500
       hover:bg-zinc-800
+      focus-visible:outline-none
+      focus-visible:ring-2
+      focus-visible:ring-cyan-500/60
     "
           >
             <div className="flex items-center gap-2">
@@ -149,6 +158,9 @@ export default function ContactPage() {
       hover:-translate-y-1
       hover:border-[#0A66C2]
       hover:bg-[#0A66C2]/25
+      focus-visible:outline-none
+      focus-visible:ring-2
+      focus-visible:ring-cyan-500/60
     "
           >
             <div className="flex items-center gap-2">
