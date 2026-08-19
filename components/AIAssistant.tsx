@@ -73,6 +73,24 @@ type PendingAttachment = {
   previewUrl: string | null;
 };
 
+type LeadStatus = "cold" | "warm" | "hot";
+
+// Espelha o que /api/chat retorna — extraído e qualificado pela IA no
+// backend. O componente nunca decide sozinho se uma mensagem contém um lead.
+type LeadData = {
+  name: string | null;
+  whatsapp: string | null;
+  interest: string | null;
+  projectType: string | null;
+  need: string | null;
+  urgency: string | null;
+  budget: string | null;
+  intent: string | null;
+  score: number;
+  status: LeadStatus;
+  qualified: boolean;
+};
+
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
@@ -93,12 +111,6 @@ export default function AIAssistant() {
   );
 
   const [leadSaved, setLeadSaved] = useState(false);
-
-  const [lead, setLead] = useState({
-    nome: "",
-    whatsapp: "",
-    interesse: "",
-  });
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -174,74 +186,30 @@ export default function AIAssistant() {
     };
   }, [attachment]);
 
-  // MONITORA E SALVA O LEAD NO SUPABASE
-  useEffect(() => {
-    // Evita salvar mais de uma vez
-    if (leadSaved) return;
-
-    // Só salva quando tiver nome e WhatsApp
-    if (!lead.nome || !lead.whatsapp) return;
-
+  // Envia o lead para persistência + notificação assim que /api/chat sinaliza
+  // que ele está qualificado (status warm/hot). Nunca decide isso sozinho —
+  // só repassa o que o backend já determinou.
+  const saveQualifiedLead = (qualifiedLead: LeadData) => {
     fetch("/api/leads", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(lead),
-    })
-      .then(() => {
-        setLeadSaved(true);
-
-        setLead({
-          nome: "",
-          whatsapp: "",
-          interesse: "",
-        });
-      })
-      .catch((err) => {
-        console.error("ERRO AO SALVAR LEAD:", err);
-      });
-  }, [lead, leadSaved]);
-
-  const isPhoneNumber = (text: string) => {
-    const numbers = text.replace(/\D/g, "");
-    return numbers.length >= 10;
-  };
-
-  // CAPTURA NOME
-  const isName = (text: string) => {
-    const msg = text.toLowerCase();
-
-    if (
-      msg.includes("site") ||
-      msg.includes("automacao") ||
-      msg.includes("automação") ||
-      msg.includes("whatsapp") ||
-      msg.includes("ia") ||
-      msg.includes("agente") ||
-      msg.includes("sistema")
-    ) {
-      return false;
-    }
-
-    const words = text.trim().split(" ");
-
-    return words.length >= 2 && words.length <= 4 && !isPhoneNumber(text);
-  };
-
-  // CAPTURA INTERESSE
-  const getInterest = (text: string) => {
-    const msg = text.toLowerCase();
-
-    if (msg.includes("site")) return "site";
-    if (msg.includes("automação")) return "automacao";
-    if (msg.includes("automacao")) return "automacao";
-    if (msg.includes("whatsapp")) return "automacao";
-    if (msg.includes("ia")) return "ia";
-    if (msg.includes("agente")) return "ia";
-    if (msg.includes("sistema")) return "sistema";
-
-    return "";
+      body: JSON.stringify({
+        name: qualifiedLead.name,
+        whatsapp: qualifiedLead.whatsapp,
+        interest: qualifiedLead.interest,
+        projectType: qualifiedLead.projectType,
+        need: qualifiedLead.need,
+        urgency: qualifiedLead.urgency,
+        budget: qualifiedLead.budget,
+        intent: qualifiedLead.intent,
+        score: qualifiedLead.score,
+        status: qualifiedLead.status,
+      }),
+    }).catch((err) => {
+      console.error("ERRO AO SALVAR LEAD:", err);
+    });
   };
 
   const removeAttachment = () => {
@@ -276,39 +244,12 @@ export default function AIAssistant() {
   };
 
   // Aceita um texto opcional (usado pelas quick actions) para não duplicar
-  // a lógica de captura de lead + chamada ao /api/chat. Quick actions nunca
-  // carregam anexo.
+  // a lógica de chamada ao /api/chat. Quick actions nunca carregam anexo.
   const sendMessage = async (textOverride?: string) => {
     const currentMessage = (textOverride ?? message).trim();
     const currentAttachment = textOverride ? null : attachment;
 
     if ((!currentMessage && !currentAttachment) || isTyping) return;
-
-    // CAPTURA INTERESSE
-    const interest = getInterest(currentMessage);
-
-    if (interest) {
-      setLead((prev) => ({
-        ...prev,
-        interesse: interest,
-      }));
-    }
-
-    // CAPTURA WHATSAPP
-    if (isPhoneNumber(currentMessage)) {
-      setLead((prev) => ({
-        ...prev,
-        whatsapp: currentMessage,
-      }));
-    }
-
-    // CAPTURA NOME
-    if (isName(currentMessage) && !lead.nome) {
-      setLead((prev) => ({
-        ...prev,
-        nome: currentMessage,
-      }));
-    }
 
     const historyBeforeThisTurn = messages;
 
@@ -391,6 +332,13 @@ export default function AIAssistant() {
           attachmentNote,
         },
       ]);
+
+      const receivedLead: LeadData | undefined = data.lead;
+
+      if (receivedLead?.qualified && !leadSaved) {
+        setLeadSaved(true);
+        saveQualifiedLead(receivedLead);
+      }
     } catch {
       setMessages((prev) => [
         ...prev,

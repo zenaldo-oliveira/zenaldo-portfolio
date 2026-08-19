@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { Send } from "lucide-react";
+import { useTranslations } from "@/lib/i18n/LanguageContext";
 
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
 
 const WHATSAPP_NUMBER = "5565992832422";
-const GENERIC_ERROR_MESSAGE =
-  "Não foi possível registrar seu contato agora. Tente novamente em instantes.";
 
 export function ContactForm() {
+  const t = useTranslations();
   const [name, setName] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [email, setEmail] = useState("");
@@ -45,7 +45,7 @@ export function ContactForm() {
 
       if (!response.ok || !data?.success) {
         setStatus("error");
-        setErrorMessage(GENERIC_ERROR_MESSAGE);
+        setErrorMessage(t.contactForm.errorMessage);
         return;
       }
 
@@ -79,9 +79,7 @@ ${message}
       setTimeout(() => setStatus("idle"), 4000);
     } catch {
       setStatus("error");
-      setErrorMessage(
-        "Não foi possível registrar seu contato agora. Verifique sua conexão e tente novamente.",
-      );
+      setErrorMessage(t.contactForm.errorMessage);
     }
   };
 
@@ -90,7 +88,7 @@ ${message}
       <input
         type="text"
         required
-        placeholder="Seu nome"
+        placeholder={t.contactForm.namePlaceholder}
         value={name}
         onChange={(e) => setName(e.target.value)}
         disabled={isSubmitting}
@@ -98,15 +96,17 @@ ${message}
               w-full
               rounded-xl
               border
-              border-white/10
-              bg-white/5
+              border-border
+              bg-surface
               px-4
               py-2.5
               text-sm
-              text-white
+              text-text-primary
               outline-none
               transition-all
               focus:border-cyan-500
+              focus-visible:ring-2
+              focus-visible:ring-cyan-500/60
               disabled:opacity-60
             "
       />
@@ -114,7 +114,7 @@ ${message}
       <input
         type="tel"
         required
-        placeholder="Seu WhatsApp (com DDD)"
+        placeholder={t.contactForm.whatsappPlaceholder}
         value={whatsapp}
         onChange={(e) => setWhatsapp(e.target.value)}
         disabled={isSubmitting}
@@ -122,15 +122,17 @@ ${message}
               w-full
               rounded-xl
               border
-              border-white/10
-              bg-white/5
+              border-border
+              bg-surface
               px-4
               py-2.5
               text-sm
-              text-white
+              text-text-primary
               outline-none
               transition-all
               focus:border-cyan-500
+              focus-visible:ring-2
+              focus-visible:ring-cyan-500/60
               disabled:opacity-60
             "
       />
@@ -138,7 +140,7 @@ ${message}
       <input
         type="email"
         required
-        placeholder="Seu e-mail"
+        placeholder={t.contactForm.emailPlaceholder}
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         disabled={isSubmitting}
@@ -146,12 +148,12 @@ ${message}
                 w-full
                 rounded-xl
                 border
-                border-white/10
-                bg-white/5
+                border-border
+                bg-surface
                 px-4
                 py-2.5
                 text-sm
-                text-white
+                text-text-primary
                 outline-none
                 transition-all
                 focus:border-cyan-500
@@ -162,7 +164,7 @@ ${message}
       <textarea
         rows={3}
         required
-        placeholder="Descreva seu projeto..."
+        placeholder={t.contactForm.messagePlaceholder}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         disabled={isSubmitting}
@@ -171,15 +173,17 @@ ${message}
               resize-none
               rounded-xl
               border
-              border-white/10
-              bg-white/5
+              border-border
+              bg-surface
               px-4
               py-2.5
               text-sm
-              text-white
+              text-text-primary
               outline-none
               transition-all
               focus:border-cyan-500
+              focus-visible:ring-2
+              focus-visible:ring-cyan-500/60
               disabled:opacity-60
             "
       />
@@ -192,7 +196,7 @@ ${message}
 
       {status === "success" && (
         <p role="status" className="text-sm text-emerald-400">
-          Contato registrado! Abrindo o WhatsApp...
+          {t.contactForm.successMessage}
         </p>
       )}
 
@@ -226,7 +230,7 @@ ${message}
           "
       >
         <Send size={16} />
-        {isSubmitting ? "Enviando..." : "Enviar para WhatsApp"}
+        {isSubmitting ? t.contactForm.submitSending : t.contactForm.submitIdle}
       </button>
     </form>
   );

@@ -1,9 +1,22 @@
 import { FloatingWhatsapp } from "@/components/floating-whatsapp";
+import { GlobalControls } from "@/components/layout/GlobalControls";
 import { Sidebar } from "@/components/layout/Sidebar";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import AIAssistant from "@/components/AIAssistant";
+import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import "./globals.css";
+
+// O Chat ZTech AI (components/AIAssistant.tsx, app/api/chat/route.ts) foi
+// removido da interface pública nesta etapa, mas mantido como código legado
+// — nenhuma página depende dele (confirmado via auditoria) e /api/leads,
+// ContactForm e a notificação continuam funcionando normalmente sem ele.
+// Reative importando e renderizando <AIAssistant /> novamente se necessário.
+
+// Executa antes do primeiro paint para evitar flash: aplica o data-theme
+// salvo no <html> assim que possível. Sem isto, o tema só seria aplicado
+// depois da hidratação do ThemeToggle, causando um flash visual do estado
+// padrão. Sem dependências novas — script estático, sem dado do usuário.
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark");}catch(e){}})();`;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,14 +72,19 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      <body className="bg-[#020617] text-white">
-        <Sidebar />
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
+      <body className="bg-background text-foreground">
+        <LanguageProvider>
+          <Sidebar />
 
-        <main className="min-h-screen md:ml-[280px]">{children}</main>
+          <GlobalControls />
 
-        <FloatingWhatsapp />
+          <main className="min-h-screen md:ml-[280px]">{children}</main>
 
-        <AIAssistant />
+          <FloatingWhatsapp />
+        </LanguageProvider>
       </body>
     </html>
   );

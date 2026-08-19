@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { useTranslations } from "@/lib/i18n/LanguageContext";
 
 import {
   Menu,
@@ -28,6 +29,7 @@ export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
   const [lastPathname, setLastPathname] = useState(pathname);
+  const t = useTranslations();
 
   // Fecha o menu mobile ao trocar de página
   if (pathname !== lastPathname) {
@@ -56,37 +58,37 @@ export function Sidebar() {
   const menuItems = [
     {
       href: "/",
-      label: "Home",
+      label: t.nav.home,
       icon: Home,
     },
     {
       href: "/about",
-      label: "Sobre",
+      label: t.nav.about,
       icon: User,
     },
     {
       href: "/services",
-      label: "Soluções",
+      label: t.nav.services,
       icon: Wrench,
     },
     {
       href: "/projects",
-      label: "Cases",
+      label: t.nav.projects,
       icon: Briefcase,
     },
     {
       href: "/skills",
-      label: "Habilidades",
+      label: t.nav.skills,
       icon: Award,
     },
     {
       href: "/certificates",
-      label: "Certificados",
+      label: t.nav.certificates,
       icon: FileText,
     },
     {
       href: "/contact",
-      label: "Contato",
+      label: t.nav.contact,
       icon: Mail,
     },
   ];
@@ -129,10 +131,10 @@ export function Sidebar() {
             z-50
             rounded-2xl
             border
-            border-cyan-500/20
-            bg-[#0f172a]/90
+            border-border-accent
+            bg-surface-strong/90
             p-3
-            text-cyan-400
+            text-accent
             backdrop-blur-xl
             shadow-[0_0_20px_rgba(6,182,212,0.20)]
             transition-all
@@ -140,6 +142,9 @@ export function Sidebar() {
             hover:scale-105
             hover:border-cyan-500/50
             hover:bg-cyan-500/10
+            focus-visible:outline-none
+            focus-visible:ring-2
+            focus-visible:ring-cyan-500/60
             md:hidden
           "
       >
@@ -163,8 +168,8 @@ export function Sidebar() {
         className={`
         sidebar-scroll
         fixed left-0 top-0 z-50 h-screen w-[280px]
-        border-border-cyan-500/10
-        bg-[#0f172a]
+        border-r border-border
+        bg-surface-strong
         flex flex-col
         overflow-y-auto overflow-x-hidden
         transition-transform duration-300
@@ -187,6 +192,9 @@ export function Sidebar() {
             transition-all duration-300
             hover:rotate-180
             hover:bg-red-500
+            focus-visible:outline-none
+            focus-visible:ring-2
+            focus-visible:ring-cyan-500/60
             md:hidden
           "
         >
@@ -244,22 +252,21 @@ export function Sidebar() {
           />
 
           <div className={isCollapsed ? "sr-only" : ""}>
-            <p className="mt-4 text-center text-xl font-bold text-white">
+            <p className="mt-4 text-center text-xl font-bold text-text-primary">
               ZTech Solutions
             </p>
 
-            <p className="mt-1 text-xs uppercase tracking-[0.2em] text-cyan-400">
-              Tecnologia que impulsiona negócios
+            <p className="mt-1 text-xs uppercase tracking-[0.2em] text-accent">
+              {t.sidebar.tagline}
             </p>
 
             <div className="mt-3 flex items-center gap-2 rounded-full bg-green-500/10 px-3 py-1 text-xs text-green-400">
               <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-              Disponível para Projetos
+              {t.sidebar.availableForProjects}
             </div>
 
-            <p className="mt-4 text-center text-sm leading-relaxed text-zinc-300">
-              Sites profissionais, sistemas web, automações inteligentes e agentes
-              de IA para empresas.
+            <p className="mt-4 text-center text-sm leading-relaxed text-text-muted">
+              {t.sidebar.description}
             </p>
           </div>
         </div>
@@ -283,10 +290,10 @@ export function Sidebar() {
           ${isCollapsed ? "justify-center" : ""}
           ${
             pathname === item.href
-              ? "border border-cyan-500 bg-cyan-500/20 text-cyan-400"
+              ? "border border-cyan-500 bg-cyan-500/20 text-accent"
               : item.href === "/contact"
                 ? "bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20"
-                : "text-zinc-200 hover:bg-cyan-500/10 hover:text-white"
+                : "text-text-secondary hover:bg-cyan-500/10 hover:text-text-primary"
           }
         `}
                   >
@@ -303,7 +310,7 @@ export function Sidebar() {
 
         {/* RODAPÉ */}
         <div
-          className={`mt-auto flex w-full border-t border-white/5 p-4 ${
+          className={`mt-auto flex w-full border-t border-border p-4 ${
             isCollapsed ? "flex-col items-center gap-2" : "justify-center gap-2"
           }`}
         >

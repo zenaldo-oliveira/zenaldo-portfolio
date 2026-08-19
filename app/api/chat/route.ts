@@ -4,6 +4,11 @@ import {
   isAllowedAttachmentType,
   matchesFileSignature,
 } from "@/lib/attachments/validation";
+import {
+  computeQualificationScore,
+  classifyQualification,
+} from "@/lib/leads/scoring";
+import { normalizeWhatsapp } from "@/lib/leads/normalizeWhatsapp";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -15,6 +20,7 @@ const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_REQUESTS = 8;
 const MAX_ATTACHMENT_FILENAME_LENGTH = 80;
 const MAX_ATTACHMENT_TEXT_CHARS = 4000;
+const MAX_EXTRACTED_FIELD_LENGTH = 200;
 
 // Rate limit em memória (best-effort): funciona por instância do servidor.
 // Em ambientes serverless com múltiplas instâncias o limite é por instância,
@@ -111,6 +117,81 @@ async function buildAttachmentContext(
   };
 }
 
+type LeadExtraction = {
+  name: string | null;
+  whatsapp: string | null;
+  interest: string | null;
+  projectType: string | null;
+  need: string | null;
+  urgency: string | null;
+  budget: string | null;
+  intent: string | null;
+};
+
+// Nunca confia no que a IA devolveu: normaliza tipo e tamanho de cada campo,
+// descartando qualquer coisa que não seja string não vazia. O WhatsApp passa
+// pela normalização própria (dígitos + DDI), que também funciona como uma
+// validação leve — valores claramente inválidos viram null.
+function sanitizeExtractedField(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+
+  const trimmed = value.trim();
+
+  if (!trimmed) return null;
+
+  return trimmed.slice(0, MAX_EXTRACTED_FIELD_LENGTH);
+}
+
+function sanitizeLeadExtraction(raw: unknown): LeadExtraction {
+  const source = (raw && typeof raw === "object" ? raw : {}) as Record<
+    string,
+    unknown
+  >;
+
+  const whatsappField = sanitizeExtractedField(source.whatsapp);
+
+  return {
+    name: sanitizeExtractedField(source.name),
+    whatsapp: whatsappField ? normalizeWhatsapp(whatsappField) : null,
+    interest: sanitizeExtractedField(source.interest),
+    projectType: sanitizeExtractedField(source.projectType),
+    need: sanitizeExtractedField(source.need),
+    urgency: sanitizeExtractedField(source.urgency),
+    budget: sanitizeExtractedField(source.budget),
+    intent: sanitizeExtractedField(source.intent),
+  };
+}
+
+// Structured output (Responses API) — a IA sempre devolve reply + os campos
+// de qualificação (nulos quando ainda não identificados). additionalProperties
+// false e todos os campos em "required" são exigidos pelo modo strict.
+const CHAT_RESPONSE_SCHEMA = {
+  type: "object",
+  properties: {
+    reply: { type: "string" },
+    name: { type: ["string", "null"] },
+    whatsapp: { type: ["string", "null"] },
+    interest: { type: ["string", "null"] },
+    projectType: { type: ["string", "null"] },
+    need: { type: ["string", "null"] },
+    urgency: { type: ["string", "null"] },
+    budget: { type: ["string", "null"] },
+    intent: { type: ["string", "null"] },
+  },
+  required: [
+    "reply",
+    "name",
+    "whatsapp",
+    "interest",
+    "projectType",
+    "need",
+    "urgency",
+    "budget",
+    "intent",
+  ],
+  additionalProperties: false,
+};
+
 export async function POST(req: Request) {
   try {
     const ip = getClientIp(req);
@@ -200,7 +281,15 @@ export async function POST(req: Request) {
 
     const response = await openai.responses.create({
       model: "gpt-4.1-mini",
-      max_output_tokens: 120,
+      max_output_tokens: 400,
+      text: {
+        format: {
+          type: "json_schema",
+          name: "chat_response",
+          strict: true,
+          schema: CHAT_RESPONSE_SCHEMA,
+        },
+      },
       input: `
 Histórico da conversa:
 
@@ -339,13 +428,50 @@ REGRAS IMPORTANTES
 * Quando identificar interesse comercial, peça apenas nome e WhatsApp.
 * Seu objetivo principal é gerar oportunidades de negócio para a ZTech Solutions.
 
+EXTRAÇÃO DE DADOS (campos estruturados da resposta, além de "reply")
 
+Preencha os campos abaixo com o que você identificar em TODA a conversa
+(histórico + mensagem atual), não só na última mensagem:
+
+* name: nome da pessoa, se ela disse.
+* whatsapp: número de WhatsApp, se ela disse.
+* interest: o que ela busca (ex: "site institucional", "automação de atendimento").
+* projectType: tipo de projeto (ex: "SaaS", "sistema interno", "landing page").
+* need: o problema/necessidade real por trás do pedido.
+* urgency: urgência mencionada (ex: "para o mês que vem", "com urgência").
+* budget: orçamento ou faixa de valor, SOMENTE se a pessoa mencionar espontaneamente — nunca pergunte por iniciativa própria além do que já é natural na conversa.
+* intent: preencha com uma frase curta SOMENTE quando a pessoa expressar intenção clara de contratar/fechar negócio (ex: "quero contratar", "vamos fechar").
+
+Deixe um campo como null quando a informação não foi mencionada em nenhum momento da conversa. Nunca invente valores.
 
 `,
     });
 
+    let parsed: Record<string, unknown> = {};
+
+    try {
+      parsed = JSON.parse(response.output_text);
+    } catch {
+      parsed = {};
+    }
+
+    const reply =
+      typeof parsed.reply === "string" && parsed.reply.trim()
+        ? parsed.reply
+        : "Desculpe, não consegui processar sua mensagem agora. Pode reformular?";
+
+    const signals = sanitizeLeadExtraction(parsed);
+    const score = computeQualificationScore(signals);
+    const status = classifyQualification(score);
+
     return Response.json({
-      reply: response.output_text,
+      reply,
+      lead: {
+        ...signals,
+        score,
+        status,
+        qualified: status !== "cold",
+      },
     });
   } catch (error) {
     console.error("Erro ao processar mensagem no /api/chat:", error);

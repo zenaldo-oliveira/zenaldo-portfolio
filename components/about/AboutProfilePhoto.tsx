@@ -1,24 +1,33 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 
 export function AboutProfilePhoto() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <motion.div
-      animate={{
-        y: [0, -15, 0],
-      }}
-      transition={{
-        duration: 4,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-      whileHover={{
-        scale: 1.08,
-        rotateY: 12,
-        rotateX: 8,
-      }}
+      animate={prefersReducedMotion ? undefined : { y: [0, -15, 0] }}
+      transition={
+        prefersReducedMotion
+          ? undefined
+          : { duration: 4, repeat: Infinity, ease: "easeInOut" }
+      }
+      whileHover={
+        prefersReducedMotion
+          ? undefined
+          : { scale: 1.08, rotateY: 12, rotateX: 8 }
+      }
+      // Interação discreta baseada em entrada na viewport — cobre o mobile,
+      // que não tem hover. Dispara uma vez, independente da flutuação
+      // contínua acima (propriedades diferentes, não conflitam).
+      whileInView={
+        prefersReducedMotion
+          ? undefined
+          : { scale: [1, 1.04, 1], transition: { duration: 1.1, ease: "easeOut" } }
+      }
+      viewport={{ once: true, margin: "-40px" }}
       style={{
         transformStyle: "preserve-3d",
       }}
