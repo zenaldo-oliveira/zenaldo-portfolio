@@ -1,6 +1,6 @@
 "use client";
 
-import ParticlesBackground from "@/components/ParticlesBackground";
+import { ParticlesBackground } from "@/components/background/ParticlesBackground";
 import { AnimatedHeadline } from "@/components/AnimatedHeadline";
 import { SolutionsTeaser } from "@/components/home/SolutionsTeaser";
 import { CasesTeaser } from "@/components/home/CasesTeaser";
