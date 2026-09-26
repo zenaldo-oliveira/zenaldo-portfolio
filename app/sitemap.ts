@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
-
-const BASE_URL = "https://zenaldodev.com.br";
+import { SITE_URL } from "@/lib/site";
 
 const PUBLIC_ROUTES = [
   "",
@@ -14,7 +13,7 @@ const PUBLIC_ROUTES = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return PUBLIC_ROUTES.map((route) => ({
-    url: `${BASE_URL}${route}`,
+    url: `${SITE_URL}${route}`,
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority: route === "" ? 1 : 0.8,

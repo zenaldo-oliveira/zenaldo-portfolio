@@ -369,7 +369,9 @@ export const en: Dictionary = {
     messagePlaceholder: "Describe your project...",
     submitIdle: "Send via WhatsApp",
     submitSending: "Sending...",
-    successMessage: "Contact registered! Opening WhatsApp...",
+    successMessage:
+      "Contact registered! If WhatsApp doesn't open automatically, tap the button below.",
+    openWhatsapp: "Open WhatsApp chat",
     errorMessage:
       "We couldn't register your contact right now. Please try again shortly.",
   },

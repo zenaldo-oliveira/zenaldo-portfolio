@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { AnimatedHeadline } from "@/components/AnimatedHeadline";
 import { ContactForm } from "@/components/contact/ContactForm";
-import { Sparkles, Phone, Mail, Code2 } from "lucide-react";
+import { Sparkles, Phone, Code2 } from "lucide-react";
 import { useTranslations } from "@/lib/i18n/LanguageContext";
 
 export function ContactContent() {
@@ -76,29 +76,10 @@ export function ContactContent() {
             </div>
           </Link>
 
-          {/* Email */}
-          {/* TODO: substituir pelo e-mail profissional real assim que definido */}
-          <Link
-            href="mailto:seuemail@email.com"
-            className="
-      rounded-2xl
-      border border-[#F4F2EE]/20
-      bg-[#F4F2EE]/10
-      px-5 py-3
-      text-[#F4F2EE]
-      transition-all duration-300
-      hover:-translate-y-1
-      hover:border-[#F4F2EE]/50
-      focus-visible:outline-none
-      focus-visible:ring-2
-      focus-visible:ring-cyan-500/60
-    "
-          >
-            <div className="flex items-center gap-2">
-              <Mail size={18} />
-              {t.contact.quickLinks.email}
-            </div>
-          </Link>
+          {/* E-mail: link oculto até existir um e-mail profissional real
+              (o anterior era um placeholder "seuemail@email.com" em produção).
+              Para reativar, adicionar um <Link href="mailto:..."> aqui usando
+              t.contact.quickLinks.email como rótulo. */}
 
           {/* GitHub */}
           <Link

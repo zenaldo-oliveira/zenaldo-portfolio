@@ -10,9 +10,16 @@ import {
 } from "@/lib/leads/scoring";
 import { normalizeWhatsapp } from "@/lib/leads/normalizeWhatsapp";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Criado sob demanda — com a rota desativada, o cliente nunca é instanciado.
+let openai: OpenAI | null = null;
+
+function getOpenAI() {
+  if (!openai) {
+    openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  }
+
+  return openai;
+}
 
 const MAX_MESSAGE_LENGTH = 500;
 const MAX_HISTORY_MESSAGES = 20;
@@ -193,6 +200,13 @@ const CHAT_RESPONSE_SCHEMA = {
 };
 
 export async function POST(req: Request) {
+  // Desativado: a interface do chat (components/AIAssistant.tsx) não está em
+  // uso e a rota pública consumiria créditos da OpenAI. Só responde se
+  // AI_CHAT_ENABLED=true for configurado explicitamente no servidor.
+  if (process.env.AI_CHAT_ENABLED !== "true") {
+    return new Response("Not found", { status: 404 });
+  }
+
   try {
     const ip = getClientIp(req);
 
@@ -279,7 +293,7 @@ export async function POST(req: Request) {
       .map((msg) => `${msg.role}: ${msg.content}`)
       .join("\n");
 
-    const response = await openai.responses.create({
+    const response = await getOpenAI().responses.create({
       model: "gpt-4.1-mini",
       max_output_tokens: 400,
       text: {

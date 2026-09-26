@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Send } from "lucide-react";
+import { MessageCircle, Send } from "lucide-react";
 import { useTranslations } from "@/lib/i18n/LanguageContext";
 
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
@@ -16,6 +16,7 @@ export function ContactForm() {
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null);
 
   const isSubmitting = status === "submitting";
 
@@ -27,6 +28,7 @@ export function ContactForm() {
 
     setStatus("submitting");
     setErrorMessage("");
+    setWhatsappUrl(null);
 
     try {
       const response = await fetch("/api/leads", {
@@ -68,15 +70,18 @@ ${message}
 
       const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 
-      window.open(url, "_blank");
+      // window.open depois de um await perde o gesto do usuário e é bloqueado
+      // no Safari iOS e nos navegadores internos do Instagram/Facebook. A
+      // tentativa automática fica só como conveniência (funciona em alguns
+      // desktops); o caminho garantido é o link exibido abaixo, que é um
+      // clique real do usuário.
+      setWhatsappUrl(url);
+      window.open(url, "_blank", "noopener,noreferrer");
 
       setName("");
       setWhatsapp("");
       setEmail("");
       setMessage("");
-
-      // Volta ao estado normal após a confirmação, liberando um novo envio.
-      setTimeout(() => setStatus("idle"), 4000);
     } catch {
       setStatus("error");
       setErrorMessage(t.contactForm.errorMessage);
@@ -194,10 +199,41 @@ ${message}
         </p>
       )}
 
-      {status === "success" && (
-        <p role="status" className="text-sm text-emerald-400">
-          {t.contactForm.successMessage}
-        </p>
+      {status === "success" && whatsappUrl && (
+        <div role="status" className="space-y-3">
+          <p className="text-sm text-emerald-400">
+            {t.contactForm.successMessage}
+          </p>
+
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              flex
+              w-full
+              items-center
+              justify-center
+              gap-2
+              rounded-xl
+              bg-[#25D366]
+              px-4
+              py-3
+              text-sm
+              font-semibold
+              text-black
+              transition-all
+              duration-300
+              hover:scale-[1.01]
+              focus-visible:outline-none
+              focus-visible:ring-2
+              focus-visible:ring-cyan-500/60
+            "
+          >
+            <MessageCircle size={16} />
+            {t.contactForm.openWhatsapp}
+          </a>
+        </div>
       )}
 
       <button

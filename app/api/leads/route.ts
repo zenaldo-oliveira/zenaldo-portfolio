@@ -1,4 +1,4 @@
-import { supabase } from "@/components/lib/supabase";
+import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getNotificationService } from "@/lib/notifications/getNotificationService";
 import {
   buildLeadNotificationMessage,
@@ -100,7 +100,7 @@ async function notifyLead(message: string, dedupeKey: string) {
 // Verifica se já existe um lead salvo para este WhatsApp normalizado — evita
 // linhas duplicadas no Supabase quando o mesmo visitante volta à conversa.
 async function findExistingLeadByWhatsapp(whatsapp: string) {
-  const { data, error } = await supabase
+  const { data, error } = await getSupabaseServerClient()
     .from("leads")
     .select("id")
     .eq("whatsapp", whatsapp)
@@ -133,13 +133,13 @@ async function handleLegacyContactLead(body: Record<string, unknown>) {
   const segmento = optionalString(body.segmento);
   const necessidade = optionalString(body.necessidade);
 
-  const { error } = await supabase.from("leads").insert([
+  const { error } = await getSupabaseServerClient().from("leads").insert([
     { nome, whatsapp, interesse },
   ]);
 
   if (error) {
     console.error("Erro ao salvar lead no Supabase:", error);
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json({ error: "Erro ao salvar lead" }, { status: 500 });
   }
 
   const message = buildLeadNotificationMessage({
@@ -204,13 +204,13 @@ async function handleAiQualifiedLead(body: Record<string, unknown>) {
   const existing = await findExistingLeadByWhatsapp(whatsapp);
 
   if (!existing) {
-    const { error } = await supabase.from("leads").insert([
+    const { error } = await getSupabaseServerClient().from("leads").insert([
       { nome: name, whatsapp, interesse: interest ?? "" },
     ]);
 
     if (error) {
       console.error("Erro ao salvar lead qualificado no Supabase:", error);
-      return Response.json({ error: error.message }, { status: 500 });
+      return Response.json({ error: "Erro ao salvar lead" }, { status: 500 });
     }
   }
 

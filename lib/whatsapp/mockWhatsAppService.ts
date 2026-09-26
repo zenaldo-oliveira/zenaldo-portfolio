@@ -14,6 +14,13 @@ const records: MockWhatsAppRecord[] = [];
 // não estiver configurado como "zapi".
 export class MockWhatsAppService implements WhatsAppService {
   async sendMessage(to: string, message: string): Promise<WhatsAppSendResult> {
+    // Em produção a mensagem contém dados pessoais do lead — não guarda em
+    // memória nem imprime o conteúdo nos logs do servidor.
+    if (process.env.NODE_ENV === "production") {
+      console.log("[MOCK WHATSAPP] Notificação simulada (conteúdo omitido em produção).");
+      return { success: true, provider: "mock" };
+    }
+
     const record: MockWhatsAppRecord = {
       to,
       message,

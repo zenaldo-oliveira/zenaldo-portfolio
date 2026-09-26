@@ -143,6 +143,7 @@ export type Dictionary = {
     submitIdle: string;
     submitSending: string;
     successMessage: string;
+    openWhatsapp: string;
     errorMessage: string;
   };
 };

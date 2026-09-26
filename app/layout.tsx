@@ -4,6 +4,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 // O Chat ZTech AI (components/AIAssistant.tsx, app/api/chat/route.ts) foi
@@ -29,7 +30,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://zenaldodev.com.br"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "ZTech Solutions | Desenvolvimento de Software para Empresas",
     template: "%s",
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://zenaldodev.com.br",
+    url: SITE_URL,
     siteName: "ZTech Solutions",
     title: "ZTech Solutions | Desenvolvimento de Software para Empresas",
     description:

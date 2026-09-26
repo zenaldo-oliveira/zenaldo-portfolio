@@ -10,6 +10,9 @@ import { revealContainer, revealItem } from "@/lib/motion/variants";
 // Nomes de projetos, tecnologias e links — não traduzidos (nomes próprios /
 // marcas reais). Casados por índice com t.projects.items.
 //
+// `demo`/`github` ficam undefined quando não existe URL pública real — o
+// botão correspondente simplesmente não é renderizado (nunca um link "#").
+//
 // `image` fica undefined até existir uma screenshot real de cada projeto —
 // nunca preenchido com um placeholder que pareça uma captura de tela real.
 // Quando a imagem existir, basta adicionar o caminho aqui; o card já está
@@ -17,16 +20,14 @@ import { revealContainer, revealItem } from "@/lib/motion/variants";
 const projectMeta: {
   title: string;
   technologies: string[];
-  demo: string;
-  github: string;
+  demo?: string;
+  github?: string;
   featured: boolean;
   image?: string;
 }[] = [
   {
     title: "🛗 ZLift Manager",
     technologies: [],
-    demo: "#",
-    github: "#",
     featured: true,
   },
   {
@@ -69,7 +70,6 @@ const projectMeta: {
   {
     title: "EasyCar Mobile",
     technologies: ["React Native", "JavaScript", "Node.js"],
-    demo: "#",
     github: "https://github.com/zenaldo-oliveira/Frontend-easycar-mobile",
     featured: false,
   },
@@ -244,40 +244,46 @@ export function ProjectsContent() {
                     </div>
                   )}
 
-                  <div className="mt-6 flex gap-3">
-                    <a
-                      href={meta.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="
-                    flex flex-1 items-center justify-center gap-1
-                    rounded-lg bg-cyan-500 px-3 py-2
-                    text-xs font-semibold text-white
-                    transition hover:bg-cyan-600
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
-                  "
-                    >
-                      <ExternalLink size={16} />
-                      {t.projects.demoLabel}
-                    </a>
+                  {(meta.demo || meta.github) && (
+                    <div className="mt-6 flex gap-3">
+                      {meta.demo && (
+                        <a
+                          href={meta.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="
+                        flex flex-1 items-center justify-center gap-1
+                        rounded-lg bg-cyan-500 px-3 py-2
+                        text-xs font-semibold text-white
+                        transition hover:bg-cyan-600
+                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
+                      "
+                        >
+                          <ExternalLink size={16} />
+                          {t.projects.demoLabel}
+                        </a>
+                      )}
 
-                    <a
-                      href={meta.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="
-                    flex flex-1 items-center justify-center gap-1
-                    rounded-lg border border-border
-                    bg-white/5 px-3 py-2
-                    text-xs text-text-primary
-                    transition hover:bg-white/10
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
-                  "
-                    >
-                      <Globe size={16} />
-                      {t.projects.githubLabel}
-                    </a>
-                  </div>
+                      {meta.github && (
+                        <a
+                          href={meta.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="
+                        flex flex-1 items-center justify-center gap-1
+                        rounded-lg border border-border
+                        bg-white/5 px-3 py-2
+                        text-xs text-text-primary
+                        transition hover:bg-white/10
+                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
+                      "
+                        >
+                          <Globe size={16} />
+                          {t.projects.githubLabel}
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
               </motion.div>
             );

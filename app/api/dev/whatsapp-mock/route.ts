@@ -1,11 +1,11 @@
 import { getRecentMockNotifications } from "@/lib/whatsapp/mockWhatsAppService";
 import { isWhatsAppMockMode } from "@/lib/whatsapp/getWhatsAppService";
 
-// Endpoint só para visualizar notificações simuladas durante o desenvolvimento.
-// Nunca expõe credenciais nem dados fora do que já foi "enviado" pelo Mock.
-// Deixa de responder automaticamente assim que WHATSAPP_PROVIDER sair de "mock".
+// Endpoint só para visualizar notificações simuladas durante o desenvolvimento
+// local. As notificações contêm nome e WhatsApp de leads (dados pessoais), então
+// nunca responde em produção — independente do provedor configurado.
 export async function GET() {
-  if (!isWhatsAppMockMode()) {
+  if (process.env.NODE_ENV === "production" || !isWhatsAppMockMode()) {
     return new Response("Not found", { status: 404 });
   }
 
