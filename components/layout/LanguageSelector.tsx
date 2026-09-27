@@ -8,7 +8,7 @@ import type { LanguageCode } from "@/lib/i18n/types";
 
 // Nomes de cada idioma sempre no próprio idioma (convenção padrão de
 // seletores de idioma) — não vêm do dicionário, não mudam com a seleção.
-const LANGUAGES: { code: LanguageCode; label: string; flag: string }[] = [
+export const LANGUAGES: { code: LanguageCode; label: string; flag: string }[] = [
   { code: "pt", label: "Português", flag: "🇧🇷" },
   { code: "en", label: "English", flag: "🇺🇸" },
   { code: "es", label: "Español", flag: "🇪🇸" },

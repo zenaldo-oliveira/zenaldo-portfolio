@@ -1,189 +1,99 @@
 "use client";
 
-import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { AnimatedHeadline } from "@/components/AnimatedHeadline";
+import { Clock, MessageCircle } from "lucide-react";
 import { ContactForm } from "@/components/contact/ContactForm";
-import { Sparkles, Phone, Code2 } from "lucide-react";
+import { WhatsAppCta } from "@/components/contact/WhatsAppCta";
+import { Container } from "@/components/ui/Container";
+import { Reveal } from "@/components/ui/Reveal";
 import { useTranslations } from "@/lib/i18n/LanguageContext";
+import { SOCIAL_LINKS } from "@/lib/site";
 
+const CHANNEL_LINK_CLASS =
+  "inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-3.5 py-2 text-sm text-text-secondary transition-colors hover:border-border-strong hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+
+// Página de conversão: WhatsApp como canal principal (mensagem oficial em
+// lib/contact/whatsapp), expectativa de resposta, outros canais e o
+// formulário — o ContactForm continua exatamente o mesmo (fluxo de leads).
 export function ContactContent() {
   const t = useTranslations();
-  const headlineSequence = t.contact.headlineSequence.flatMap((text) => [
-    text,
-    2000,
-  ]);
+  const c = t.contact;
 
   return (
-    <section className="relative min-h-[85vh] overflow-hidden bg-background">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#06b6d420,transparent_50%)]" />
-      <div className="absolute left-1/2 top-1/2 h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/10 blur-[180px]" />
-      <div
-        className="
-    absolute inset-0
-    opacity-[0.03]
-    bg-[linear-gradient(to_right,rgba(124, 122, 122, 0.15)_1px,transparent_1px),
-    linear-gradient(to_bottom,rgba(255,255,255,0.15)_1px,transparent_1px)]
-    bg-[size:60px_60px]
-  "
-      />
-      <div className="relative z-10 mx-auto max-w-7xl px-6 py-20">
-        {/* Badge */}
-        <div className="flex justify-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-4 py-2 text-sm text-accent">
-            <Sparkles size={16} />
-            {t.contact.badge}
-          </span>
-        </div>
-
-        {/* Hero */}
-        <div className="mt-8 text-center">
-          <h1 className="mx-auto max-w-4xl text-3xl font-black text-text-primary md:text-5xl lg:text-6xl">
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-300 bg-clip-text text-transparent">
-              <AnimatedHeadline sequence={headlineSequence} />
-            </span>
+    <section className="px-4 pb-24 pt-12 sm:px-6 lg:pt-20">
+      <Container>
+        <div className="max-w-3xl">
+          <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+            {c.eyebrow}
+          </p>
+          <h1 className="mt-5 text-balance text-4xl font-semibold leading-[1.1] tracking-tight text-text-primary sm:text-5xl">
+            {c.title}
           </h1>
-
-          <p className="mx-auto mt-4 max-w-2xl text-sm text-text-secondary md:text-base">
-            {t.contact.description}
+          <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-text-secondary sm:text-lg">
+            {t.home.finalCta.description}
           </p>
         </div>
 
-        {/* Links rápidos */}
-        <div className="mt-12 flex flex-wrap justify-center gap-4">
-          {/* WhatsApp */}
-          <Link
-            href="https://wa.me/5565992832422"
-            target="_blank"
-            className="
-      rounded-2xl
-      border border-[#25D366]/30
-      bg-[#25D366]/10
-      px-5 py-3
-      text-[#25D366]
-      transition-all duration-300
-      hover:-translate-y-1
-      hover:border-[#25D366]
-      hover:bg-[#25D366]/20
-      focus-visible:outline-none
-      focus-visible:ring-2
-      focus-visible:ring-cyan-500/60
-    "
-          >
-            <div className="flex items-center gap-2">
-              <Phone size={18} />
-              {t.contact.quickLinks.whatsapp}
-            </div>
-          </Link>
-
-          {/* E-mail: link oculto até existir um e-mail profissional real
-              (o anterior era um placeholder "seuemail@email.com" em produção).
-              Para reativar, adicionar um <Link href="mailto:..."> aqui usando
-              t.contact.quickLinks.email como rótulo. */}
-
-          {/* GitHub */}
-          <Link
-            href="https://github.com/zenaldo-oliveira"
-            target="_blank"
-            className="
-      rounded-2xl
-      border border-zinc-700
-      bg-zinc-900
-      px-5 py-3
-      text-white
-      transition-all duration-300
-      hover:-translate-y-1
-      hover:border-zinc-500
-      hover:bg-zinc-800
-      focus-visible:outline-none
-      focus-visible:ring-2
-      focus-visible:ring-cyan-500/60
-    "
-          >
-            <div className="flex items-center gap-2">
-              <FaGithub size={18} />
-              {t.contact.quickLinks.github}
-            </div>
-          </Link>
-
-          {/* LinkedIn */}
-          <Link
-            href="https://www.linkedin.com/in/zenaldo-pereira-oliveira/"
-            target="_blank"
-            className="
-      rounded-2xl
-      border border-[#0A66C2]/30
-      bg-[#0A66C2]/15
-      px-5 py-3
-      text-[#0A66C2]
-      transition-all duration-300
-      hover:-translate-y-1
-      hover:border-[#0A66C2]
-      hover:bg-[#0A66C2]/25
-      focus-visible:outline-none
-      focus-visible:ring-2
-      focus-visible:ring-cyan-500/60
-    "
-          >
-            <div className="flex items-center gap-2">
-              <FaLinkedin size={18} />
-              {t.contact.quickLinks.linkedin}
-            </div>
-          </Link>
-        </div>
-
-        {/* Grid Principal */}
-        <div className="mt-8 grid gap-5 lg:grid-cols-2">
-          {/* Sobre */}
-          <div className="rounded-3xl border border-cyan-500/10 bg-surface p-5 backdrop-blur-xl">
-            <div className="flex items-center gap-4">
-              <div className="rounded-2xl border border-cyan-500/20 bg-cyan-500/10 p-4">
-                <Code2 className="text-accent" size={28} />
+        <div className="mt-12 grid items-start gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          {/* Canais */}
+          <Reveal className="space-y-6">
+            <div className="rounded-2xl border border-border-accent bg-surface p-6 sm:p-8">
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#25D366]/15 text-[#25D366]">
+                  <MessageCircle size={18} strokeWidth={2} aria-hidden="true" />
+                </span>
+                <h2 className="text-lg font-semibold tracking-tight text-text-primary">{c.channelsTitle}</h2>
               </div>
 
-              <div>
-                <h2 className="mb-3 text-xl font-bold text-text-primary md:text-2xl">
-                  {t.contact.profileTitle}
-                </h2>
+              <WhatsAppCta label={c.whatsappCta} ariaLabel={t.cta.whatsappAriaLabel} className="mt-6 w-full sm:w-auto" />
 
-                <p className="text-text-secondary">{t.contact.profileStack}</p>
+              <p className="mt-5 flex items-center gap-2 text-sm text-text-secondary">
+                <Clock size={14} strokeWidth={1.75} aria-hidden="true" className="text-accent" />
+                <span className="font-mono text-[11px] uppercase tracking-wider text-text-muted">{c.responseLabel}</span>
+                {c.responseValue}
+              </p>
+
+              <div className="mt-6 border-t border-border pt-5">
+                <p className="font-mono text-[11px] uppercase tracking-wider text-text-muted">{c.otherChannels}</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer" className={CHANNEL_LINK_CLASS}>
+                    <FaLinkedin size={14} aria-hidden="true" />
+                    LinkedIn
+                  </a>
+                  <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" className={CHANNEL_LINK_CLASS}>
+                    <FaGithub size={14} aria-hidden="true" />
+                    GitHub
+                  </a>
+                </div>
               </div>
             </div>
 
-            <div className="mt-3 flex flex-wrap gap-2">
-              <span className="rounded-lg bg-cyan-500/10 px-2 py-1 text-xs text-accent">
-                {t.contact.tags.freelance}
-              </span>
-
-              <span className="rounded-lg bg-cyan-500/10 px-2 py-1 text-xs text-accent">
-                {t.contact.tags.response}
-              </span>
-
-              <span className="rounded-lg bg-cyan-500/10 px-2 py-1 text-xs text-accent">
-                {t.contact.tags.fullStack}
-              </span>
+            {/* O que acontece depois do contato: o processo real da ZTech. */}
+            <div className="rounded-2xl border border-border bg-surface/70 p-6 sm:p-8">
+              <p className="font-mono text-[11px] uppercase tracking-wider text-text-muted">{t.home.howWeWork.title}</p>
+              <ol className="mt-4 space-y-3.5">
+                {t.home.howWeWork.steps.map((step, index) => (
+                  <li key={step.title} className="flex gap-3">
+                    <span className="mt-0.5 font-mono text-xs text-accent">{String(index + 1).padStart(2, "0")}</span>
+                    <p className="text-sm text-text-secondary">
+                      <span className="font-medium text-text-primary">{step.title}</span> — {step.description}
+                    </p>
+                  </li>
+                ))}
+              </ol>
             </div>
+          </Reveal>
 
-            <div className="mt-8 rounded-2xl border border-cyan-500/10 bg-cyan-500/5 p-5">
-              <p className="text-text-secondary">{t.contact.note}</p>
+          {/* Formulário (inalterado) */}
+          <Reveal delay={0.1}>
+            <div className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+              <h2 className="mb-5 text-lg font-semibold tracking-tight text-text-primary">{c.formTitle}</h2>
+              <ContactForm />
             </div>
-          </div>
-
-          {/* Formulário */}
-          <div className="rounded-3xl border border-border bg-surface p-5 backdrop-blur-xl">
-            <h2 className="mb-4 text-2xl font-bold text-text-primary">
-              {t.contact.formTitle}
-            </h2>
-
-            <ContactForm />
-          </div>
+          </Reveal>
         </div>
-      </div>
-      <div className="mt-4 border-t border-border pt-4 text-center">
-        <p className="text-xs text-text-secondary">
-          © {new Date().getFullYear()} Zenaldo Oliveira • Full Stack Developer
-        </p>
-      </div>
+      </Container>
     </section>
   );
 }

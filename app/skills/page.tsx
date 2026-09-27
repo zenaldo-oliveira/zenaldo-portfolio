@@ -2,11 +2,11 @@ import { SkillsContent } from "@/components/skills/SkillsContent";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Habilidades | Zenaldo Oliveira — Desenvolvedor Full Stack",
+  title: "Capacidades técnicas | ZTech Solutions",
   description:
-    "Desenvolvimento Full Stack, Inteligência Artificial e automações para criar soluções modernas, escaláveis e focadas em resultados.",
+    "Capacidades técnicas da ZTech Solutions em web, mobile, backend, dados, inteligência artificial e automação — com os projetos em que cada tecnologia foi aplicada.",
   keywords: [
-    "habilidades desenvolvedor full stack",
+    "capacidades técnicas",
     "React",
     "Next.js",
     "Node.js",

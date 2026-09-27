@@ -1,20 +1,26 @@
 "use client";
 
-import Link from "next/link";
 import { MessageCircle } from "lucide-react";
+import { buildWhatsAppUrl } from "@/lib/contact/whatsapp";
+import { useTranslations } from "@/lib/i18n/LanguageContext";
 
+// Atalho fixo para o WhatsApp (número e mensagem vêm de lib/contact/whatsapp).
+// z-30: abaixo do overlay do drawer mobile (z-40) — com o menu aberto, o botão
+// não pode ficar clicável por cima do painel.
 export function FloatingWhatsapp() {
+  const t = useTranslations();
+
   return (
-    <Link
-      href="https://wa.me/5565992832422"
+    <a
+      href={buildWhatsAppUrl()}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="WhatsApp"
+      aria-label={t.cta.whatsappAriaLabel}
       className="
         fixed
-        bottom-6
+        bottom-[calc(1.5rem+env(safe-area-inset-bottom))]
         right-6
-        z-50
+        z-30
         flex
         h-14
         w-14
@@ -24,13 +30,18 @@ export function FloatingWhatsapp() {
         bg-[#25D366]
         text-white
         shadow-lg
-        transition-all
-        duration-300
+        transition-transform
+        duration-200
         hover:scale-105
-        hover:shadow-[0_0_20px_rgba(37,211,102,0.4)]
+        focus-visible:outline-none
+        focus-visible:ring-2
+        focus-visible:ring-ring
+        focus-visible:ring-offset-2
+        focus-visible:ring-offset-background
+        motion-reduce:transition-none
       "
     >
-      <MessageCircle size={26} strokeWidth={2.5} />
-    </Link>
+      <MessageCircle size={26} strokeWidth={2.5} aria-hidden="true" />
+    </a>
   );
 }

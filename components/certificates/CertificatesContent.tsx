@@ -1,196 +1,110 @@
 "use client";
 
-import { AnimatedHeadline } from "@/components/AnimatedHeadline";
-import { Award, GraduationCap, Sparkles } from "lucide-react";
+import { BookOpen, CalendarClock, Check, GraduationCap } from "lucide-react";
+import { FinalCtaSection } from "@/components/home/sections/FinalCtaSection";
+import { Container } from "@/components/ui/Container";
+import { Reveal } from "@/components/ui/Reveal";
+import { Section } from "@/components/ui/Section";
 import { useTranslations } from "@/lib/i18n/LanguageContext";
 
-// Anos — não fazem parte do conteúdo traduzível (números universais),
-// casados por índice com t.certificates.items.
-const years = ["2025", "2026", "-", "-", "-", "-"];
+// Anos — não traduzíveis (números universais), casados por índice com
+// t.certificates.items. "-" = certificação ainda não obtida (prevista).
+const YEARS = ["2025", "2026", "-", "-", "-", "-"];
+const COMPLETED_INDEX = 0; // graduação concluída
 
+// Formação e certificações do fundador, em tom institucional: linha do tempo
+// da formação obtida/em andamento; estudos atuais e certificações previstas
+// como informação secundária — nunca apresentadas como conquistas.
 export function CertificatesContent() {
   const t = useTranslations();
-  const headlineSequence = t.certificates.headlineSequence.flatMap(
-    (text) => [text, 2000],
-  );
+  const c = t.certificates;
+
+  const timeline = c.items.map((item, index) => ({ ...item, year: YEARS[index], index })).filter((item) => item.year !== "-");
+  const planned = c.items.filter((_, index) => YEARS[index] === "-");
 
   return (
-    <section className="relative min-h-screen overflow-x-hidden bg-background px-6 py-4">
-      <div className="absolute inset-0 bg-background" />
+    <>
+      <section className="px-4 pb-6 pt-12 sm:px-6 lg:pt-20">
+        <Container>
+          <div className="max-w-3xl">
+            <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+              {c.eyebrow}
+            </p>
+            <h1 className="mt-5 text-balance text-4xl font-semibold leading-[1.1] tracking-tight text-text-primary sm:text-5xl">
+              {c.title}
+            </h1>
+            <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-text-secondary sm:text-lg">{c.description}</p>
+          </div>
+        </Container>
+      </section>
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#06b6d420,transparent_50%)]" />
-
-      <div className="absolute left-1/2 top-1/2 h-[250px] w-[250px] md:h-[450px] md:w-[450px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/10 blur-[140px]" />
-
-      <div
-        className="
-          absolute inset-0
-          opacity-[0.03]
-          bg-[linear-gradient(to_right,rgba(255,255,255,0.15)_1px,transparent_1px),
-          linear-gradient(to_bottom,rgba(255,255,255,0.15)_1px,transparent_1px)]
-          bg-[size:60px_60px]
-        "
-      />
-
-      <div className="relative z-10 mx-auto max-w-7xl">
-        <div className="flex justify-center">
-          <span
-            className="
-              inline-flex items-center gap-2
-              rounded-full
-              border border-cyan-500/20
-              bg-cyan-500/10
-              px-4 py-2
-              text-sm
-              text-accent
-            "
-          >
-            <Sparkles size={16} />
-            {t.certificates.badge}
-          </span>
-        </div>
-
-        <div className="mt-8 text-center">
-          <h1 className="min-h-[60px] text-3xl font-black md:text-5xl">
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-300 bg-clip-text text-transparent">
-              <AnimatedHeadline sequence={headlineSequence} />
-            </span>
-          </h1>
-
-          <p className="mx-auto mt-4 max-w-2xl text-text-secondary">
-            {t.certificates.description}
-          </p>
-        </div>
-
-        <div
-          className="
-            mx-auto
-            mt-6
-            max-w-4xl
-            rounded-3xl
-            border
-            border-cyan-500/10
-            bg-surface
-            p-6
-            backdrop-blur-xl
-          "
-        >
-          <div className="flex items-center gap-4">
-            <GraduationCap size={36} className="text-accent" />
-
-            <div>
-              <h2 className="font-semibold text-text-primary">
-                {t.certificates.formationTitle}
+      <Section className="pt-10 lg:pt-14">
+        <Container className="grid items-start gap-6 lg:grid-cols-[1.2fr_1fr]">
+          {/* Formação obtida / em andamento */}
+          <Reveal>
+            <div className="rounded-3xl border border-border bg-surface/70 p-6 sm:p-10">
+              <h2 className="flex items-center gap-3 text-lg font-semibold tracking-tight text-text-primary">
+                <GraduationCap size={18} strokeWidth={1.75} aria-hidden="true" className="text-accent" />
+                {c.formationTitle}
               </h2>
 
-              <p className="text-sm text-text-secondary">
-                {t.certificates.formationDescription}
-              </p>
+              <ol className="relative mt-8 space-y-8 border-l border-border pl-8">
+                {timeline.map((item) => {
+                  const isDone = item.index === COMPLETED_INDEX;
+
+                  return (
+                    <li key={item.title} className="relative">
+                      <span
+                        className={`absolute left-[-2.6rem] top-0.5 flex h-5 w-5 items-center justify-center rounded-full border ${
+                          isDone ? "border-accent bg-accent text-white" : "border-border-accent bg-background text-accent"
+                        }`}
+                        aria-hidden="true"
+                      >
+                        {isDone ? <Check size={11} strokeWidth={3} /> : <span className="h-1.5 w-1.5 rounded-full bg-accent" />}
+                      </span>
+                      <p className="font-mono text-xs text-text-muted">{item.year}</p>
+                      <h3 className="mt-1 text-lg font-semibold tracking-tight text-text-primary">{item.title}</h3>
+                      <p className="mt-1 text-sm text-text-secondary">
+                        {item.institution} · <span className={isDone ? "text-text-primary" : "text-accent"}>{item.status}</span>
+                      </p>
+                    </li>
+                  );
+                })}
+              </ol>
             </div>
-          </div>
-        </div>
+          </Reveal>
 
-        <div className="mt-6">
-          <h2 className="mb-6 text-center text-2xl font-bold text-text-primary">
-            {t.certificates.coursesTitle}
-          </h2>
+          <Reveal delay={0.1} className="space-y-6">
+            {/* Estudos em andamento */}
+            <div className="rounded-3xl border border-border bg-surface/70 p-6 sm:p-8">
+              <h2 className="flex items-center gap-3 text-base font-semibold tracking-tight text-text-primary">
+                <BookOpen size={16} strokeWidth={1.75} aria-hidden="true" className="text-accent" />
+                {c.studyingTitle}
+              </h2>
+              <p className="mt-4 font-mono text-sm leading-relaxed text-text-secondary">{c.studyingItems.join(" · ")}</p>
+            </div>
 
-          <div
-            className="
-              grid
-              grid-cols-1
-              gap-4
-              sm:grid-cols-2
-              lg:grid-cols-3
-            "
-          >
-            {t.certificates.items.map((certificate, index) => (
-              <div
-                key={certificate.title}
-                className="
-                  group
-                  rounded-3xl
-                  border
-                  border-border
-                  bg-surface
-                  p-5
-                  backdrop-blur-xl
-                  transition-all
-                  duration-300
-                  hover:-translate-y-2
-                  hover:border-cyan-500/40
-                  hover:shadow-[0_0_30px_rgba(34,211,238,0.15)]
-                "
-              >
-                <Award
-                  size={28}
-                  className="
-                    mb-4
-                    text-accent
-                    transition-transform
-                    group-hover:scale-110
-                  "
-                />
+            {/* Certificações previstas (ainda não obtidas) */}
+            <div className="rounded-3xl border border-dashed border-border-strong p-6 sm:p-8">
+              <h2 className="flex items-center gap-3 text-base font-semibold tracking-tight text-text-primary">
+                <CalendarClock size={16} strokeWidth={1.75} aria-hidden="true" className="text-text-muted" />
+                {c.plannedTitle}
+              </h2>
+              <ul className="mt-4 space-y-2">
+                {planned.map((item) => (
+                  <li key={item.title} className="flex items-center justify-between gap-3 text-sm">
+                    <span className="text-text-secondary">{item.title}</span>
+                    <span className="font-mono text-[11px] uppercase tracking-wider text-text-muted">{item.status}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+        </Container>
+      </Section>
 
-                <h3 className="font-semibold text-text-primary">
-                  {certificate.title}
-                </h3>
-
-                <p className="mt-2 text-sm text-text-secondary">
-                  {certificate.institution}
-                </p>
-
-                <div className="mt-4 flex items-center justify-between">
-                  <span
-                    className="
-                      rounded-full
-                      border
-                      border-cyan-500/20
-                      bg-cyan-500/10
-                      px-3
-                      py-1
-                      text-xs
-                      text-cyan-300
-                    "
-                  >
-                    {certificate.status}
-                  </span>
-
-                  <span className="text-xs text-text-secondary">
-                    {years[index]}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-6 text-center">
-          <h2 className="mb-5 text-2xl font-bold text-text-primary">
-            {t.certificates.studyingTitle}
-          </h2>
-
-          <div className="flex flex-wrap justify-center gap-3">
-            {t.certificates.studyingItems.map((item) => (
-              <span
-                key={item}
-                className="
-                  rounded-2xl
-                  border
-                  border-cyan-500/20
-                  bg-cyan-500/10
-                  px-4
-                  py-2
-                  text-sm
-                  text-cyan-300
-                "
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
+      <FinalCtaSection />
+    </>
   );
 }

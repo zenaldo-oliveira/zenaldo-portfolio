@@ -2,13 +2,13 @@ import { ContactContent } from "@/components/contact/ContactContent";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contato | Zenaldo Oliveira — Desenvolvedor Full Stack",
+  title: "Contato | ZTech Solutions",
   description:
-    "Estou disponível para freelas, desenvolvimento de sistemas, landing pages, dashboards, integrações com APIs e projetos Full Stack. Entre em contato pelo WhatsApp, e-mail, GitHub ou LinkedIn.",
+    "Fale com a ZTech Solutions pelo WhatsApp ou envie uma mensagem: sistemas web, SaaS, aplicativos, automações e soluções com inteligência artificial para a sua empresa.",
   keywords: [
-    "contato desenvolvedor full stack",
-    "orçamento site profissional",
-    "contratar desenvolvedor React Next.js",
+    "contato ZTech Solutions",
+    "orçamento de software",
+    "desenvolvimento de sistemas para empresas",
   ],
   alternates: {
     canonical: "/contact",

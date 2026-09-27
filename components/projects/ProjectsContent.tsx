@@ -1,295 +1,184 @@
 "use client";
 
-import { AnimatedHeadline } from "@/components/AnimatedHeadline";
-import { ExternalLink, FolderKanban, Globe } from "lucide-react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { useState } from "react";
+import { ExternalLink, FolderKanban, Globe } from "lucide-react";
+import { WhatsAppCta } from "@/components/contact/WhatsAppCta";
+import { FinalCtaSection } from "@/components/home/sections/FinalCtaSection";
+import { FeaturedProduct } from "@/components/projects/FeaturedProduct";
+import { ProjectCarousel } from "@/components/projects/ProjectCarousel";
+import { Container } from "@/components/ui/Container";
+import { Reveal } from "@/components/ui/Reveal";
+import { Section, SectionHeader } from "@/components/ui/Section";
 import { useTranslations } from "@/lib/i18n/LanguageContext";
-import { revealContainer, revealItem } from "@/lib/motion/variants";
+import { PROJECTS } from "@/lib/projects/data";
 
-// Nomes de projetos, tecnologias e links — não traduzidos (nomes próprios /
-// marcas reais). Casados por índice com t.projects.items.
-//
-// `demo`/`github` ficam undefined quando não existe URL pública real — o
-// botão correspondente simplesmente não é renderizado (nunca um link "#").
-//
-// `image` fica undefined até existir uma screenshot real de cada projeto —
-// nunca preenchido com um placeholder que pareça uma captura de tela real.
-// Quando a imagem existir, basta adicionar o caminho aqui; o card já está
-// pronto para renderizá-la via next/image sem nenhuma outra mudança.
-const projectMeta: {
-  title: string;
-  technologies: string[];
-  demo?: string;
-  github?: string;
-  featured: boolean;
-  image?: string;
-}[] = [
-  {
-    title: "🛗 ZLift Manager",
-    technologies: [],
-    featured: true,
-  },
-  {
-    title: "🥗 Dieta IA",
-    technologies: [
-      "React Native",
-      "Expo",
-      "TypeScript",
-      "Fastify",
-      "Gemini AI",
-      "Railway",
-      "React Query",
-      "Zustand",
-    ],
-    demo: "https://expo.dev/accounts/zenaldo/projects/Dieta-mobile/builds/95262f1b-a2c4-4227-8709-fa5574c90d8d",
-    github: "https://github.com/zenaldo-oliveira/dietaapp-mobile",
-    featured: true,
-  },
-  {
-    title: "🐾 Pet Shop Premium",
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
-    demo: "https://petshop-zenaldo.netlify.app/",
-    github: "https://github.com/zenaldo-oliveira/petshop-blad",
-    featured: false,
-  },
-  {
-    title: "💈 Barber Shop Premium",
-    technologies: ["HTML", "SCSS", "JavaScript", "AOS"],
-    demo: "https://barber-premium-site.netlify.app/",
-    github: "https://github.com/zenaldo-oliveira/BARBER",
-    featured: false,
-  },
-  {
-    title: "🔊 Text To Voice AI",
-    technologies: ["HTML", "CSS", "JavaScript", "Web Speech API"],
-    demo: "https://conversortxt.netlify.app/",
-    github: "https://github.com/zenaldo-oliveira/Text-to-Voice",
-    featured: false,
-  },
-  {
-    title: "EasyCar Mobile",
-    technologies: ["React Native", "JavaScript", "Node.js"],
-    github: "https://github.com/zenaldo-oliveira/Frontend-easycar-mobile",
-    featured: false,
-  },
-];
+const ALL = "__all__";
 
+// Showcase de cases: destaque do produto próprio (ZLift), filtro por
+// categoria (categorias reais de t.projects.items) e carrossel com o card
+// completo de cada projeto — problema, solução, stack e links reais
+// (Demo/GitHub só quando existem). Mesmos dados e URLs de antes.
 export function ProjectsContent() {
   const t = useTranslations();
-  const prefersReducedMotion = useReducedMotion();
-  const headlineSequence = t.projects.headlineSequence.flatMap((text) => [
-    text,
-    2000,
-  ]);
+  const p = t.projects;
+  const [filter, setFilter] = useState(ALL);
+
+  const categories = [...new Set(p.items.map((item) => item.category))];
+
+  const items = PROJECTS.map((project, index) => ({ project, copy: p.items[index] }))
+    .filter(({ copy }) => filter === ALL || copy.category === filter)
+    .map(({ project, copy }) => ({
+      key: project.title,
+      title: project.title,
+      content: (
+        <article
+          className={`group flex h-full flex-col overflow-hidden rounded-2xl border bg-surface transition-colors duration-200 hover:border-border-strong ${
+            project.featured ? "border-border-accent" : "border-border"
+          }`}
+        >
+          {/* Prévia visual — screenshot real quando existir (project.image);
+              até lá, um painel neutro que não finge ser captura de tela. */}
+          <div className="relative aspect-video w-full overflow-hidden border-b border-border bg-surface-strong">
+            {project.image ? (
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                sizes="(min-width: 1280px) 420px, (min-width: 640px) 60vw, 88vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transition-none"
+              />
+            ) : (
+              <div className="flex h-full w-full flex-col items-center justify-center gap-2">
+                <FolderKanban size={28} strokeWidth={1.5} aria-hidden="true" className="text-text-muted transition-colors duration-200 group-hover:text-accent" />
+                <span className="font-mono text-xs text-text-muted">{project.title}</span>
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-1 flex-col p-5">
+            <div className="flex flex-wrap items-center gap-2">
+              <span
+                className={`w-fit rounded-full border px-2.5 py-0.5 text-xs font-medium ${
+                  project.featured ? "border-border-accent bg-accent/10 text-accent" : "border-border text-text-secondary"
+                }`}
+              >
+                {copy.status}
+              </span>
+              <span className="font-mono text-[11px] uppercase tracking-wider text-text-muted">{copy.category}</span>
+            </div>
+
+            <h3 className="mt-3 text-lg font-semibold tracking-tight text-text-primary">{project.title}</h3>
+
+            <div className="mt-3 space-y-2.5 text-sm">
+              <div>
+                <span className="block font-mono text-[11px] uppercase tracking-wider text-accent">{p.problemLabel}</span>
+                <p className="mt-1 line-clamp-2 text-text-secondary">{copy.problem}</p>
+              </div>
+              <div>
+                <span className="block font-mono text-[11px] uppercase tracking-wider text-accent">{p.solutionLabel}</span>
+                <p className="mt-1 line-clamp-3 text-text-secondary">{copy.solution}</p>
+              </div>
+            </div>
+
+            {project.technologies.length > 0 && (
+              <p className="mt-4 font-mono text-[11px] text-text-muted">{project.technologies.slice(0, 4).join(" · ")}</p>
+            )}
+
+            <div className="mt-auto flex gap-2 pt-5">
+              {project.demo && (
+                <a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-lg bg-cta px-3 text-xs font-medium text-white transition-colors hover:bg-cta-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                >
+                  <ExternalLink size={14} aria-hidden="true" />
+                  {p.demoLabel}
+                </a>
+              )}
+              {project.github && (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-lg border border-border bg-surface px-3 text-xs font-medium text-text-primary transition-colors hover:border-border-strong hover:bg-surface-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <Globe size={14} aria-hidden="true" />
+                  {p.githubLabel}
+                </a>
+              )}
+              {!project.demo && !project.github && (
+                <WhatsAppCta label={t.home.cases.similar} ariaLabel={t.cta.whatsappAriaLabel} size="sm" showArrow={false} className="flex-1" />
+              )}
+            </div>
+          </div>
+        </article>
+      ),
+    }));
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-background px-6 py-10">
-      {/* Background */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#77d4e41f,transparent_50%)]" />
+    <>
+      {/* Hero */}
+      <section className="px-4 pb-6 pt-12 sm:px-6 lg:pt-20">
+        <Container>
+          <div className="max-w-3xl">
+            <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+              {p.badge}
+            </p>
+            <h1 className="mt-5 text-balance text-4xl font-semibold leading-[1.1] tracking-tight text-text-primary sm:text-5xl">
+              {t.home.cases.title}
+            </h1>
+            <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-text-secondary sm:text-lg">{p.description}</p>
+          </div>
+        </Container>
+      </section>
 
-      <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/10 blur-[150px]" />
+      {/* Produto em destaque */}
+      <section className="px-4 py-10 sm:px-6">
+        <Container>
+          <FeaturedProduct
+            actions={<WhatsAppCta label={t.home.cases.similar} ariaLabel={t.cta.whatsappAriaLabel} size="sm" />}
+          />
+        </Container>
+      </section>
 
-      <div
-        className="
-          absolute inset-0
-          opacity-[0.03]
-          bg-[linear-gradient(to_right,rgba(255,255,255,0.15)_1px,transparent_1px),
-          linear-gradient(to_bottom,rgba(255,255,255,0.15)_1px,transparent_1px)]
-          bg-[size:60px_60px]
-        "
-      />
+      {/* Todos os cases: filtro + carrossel */}
+      <Section id="cases" className="pt-10 lg:pt-14">
+        <Container>
+          <SectionHeader eyebrow={t.home.cases.eyebrow} title={p.allTitle} className="mb-8" />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-[1700px] flex-col items-center">
-        {/* Badge */}
-        <span
-          className="
-          mb-6 flex items-center gap-2
-          rounded-full border border-cyan-500/20
-          bg-cyan-500/10 px-4 py-2
-          text-sm font-medium text-accent
-        "
-        >
-          <FolderKanban size={16} />
-          {t.projects.badge}
-        </span>
+          <div role="group" aria-label={p.filterLabel} className="mb-8 flex flex-wrap gap-2">
+            {[ALL, ...categories].map((category) => {
+              const isActive = filter === category;
 
-        {/* Título */}
-        <h1 className="mb-3 min-h-[80px] text-center text-3xl font-black md:min-h-[100px] md:text-5xl">
-          <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-300 bg-clip-text text-transparent">
-            <AnimatedHeadline sequence={headlineSequence} />
-          </span>
-        </h1>
+              return (
+                <button
+                  key={category}
+                  type="button"
+                  aria-pressed={isActive}
+                  onClick={() => setFilter(category)}
+                  className={`rounded-full border px-3.5 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                    isActive
+                      ? "border-border-accent bg-accent/10 text-text-primary"
+                      : "border-border bg-surface text-text-secondary hover:border-border-strong hover:text-text-primary"
+                  }`}
+                >
+                  {category === ALL ? p.filterAll : category}
+                </button>
+              );
+            })}
+          </div>
 
-        {/* Descrição */}
-        <p className="mb-4 max-w-2xl text-center text-sm text-text-secondary">
-          {t.projects.description}
-        </p>
+          <Reveal>
+            {/* key: reinicia o carrossel (e o slide ativo) ao trocar o filtro. */}
+            <ProjectCarousel key={filter} labels={p.carousel} items={items} />
+          </Reveal>
+        </Container>
+      </Section>
 
-        {/* Cards */}
-        <motion.div
-          initial={prefersReducedMotion ? false : "hidden"}
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          variants={revealContainer}
-          className="grid w-full auto-rows-fr gap-4 md:grid-cols-2 xl:grid-cols-3"
-        >
-          {t.projects.items.map((project, index) => {
-            const meta = projectMeta[index];
-
-            return (
-              <motion.div
-                key={meta.title}
-                variants={revealItem}
-                className={`
-        h-full
-        group overflow-hidden rounded-3xl
-        border
-        ${
-          meta.featured
-            ? "border-yellow-400 shadow-[0_0_40px_rgba(250,204,21,0.25)]"
-            : "border-border"
-        }
-        bg-surface
-        backdrop-blur-xl
-        transition-all duration-300
-        hover:-translate-y-2
-        hover:border-cyan-500/40
-      `}
-              >
-                {/* Prévia visual — usa a imagem real do projeto quando existir
-                    (meta.image); até lá, mostra um painel estilizado em vez de
-                    um placeholder que finja ser uma screenshot. */}
-                <div className="relative aspect-video w-full overflow-hidden border-b border-border">
-                  {meta.image ? (
-                    <Image
-                      src={meta.image}
-                      alt={meta.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div
-                      className="
-                        flex h-full w-full items-center justify-center
-                        bg-gradient-to-br from-cyan-500/10 via-surface to-blue-500/10
-                      "
-                    >
-                      <FolderKanban
-                        size={40}
-                        className="text-accent/40 transition-transform duration-500 group-hover:scale-110"
-                      />
-                    </div>
-                  )}
-                </div>
-
-                {/* Conteúdo */}
-                <div className="flex h-full flex-col p-4">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span
-                      className={`w-fit rounded-full px-3 py-1 text-xs font-medium ${
-                        meta.featured
-                          ? "bg-yellow-500/20 text-yellow-300"
-                          : "bg-green-500/10 text-green-400"
-                      }`}
-                    >
-                      {project.status}
-                    </span>
-
-                    <span className="w-fit rounded-full bg-white/5 px-3 py-1 text-xs font-medium text-text-secondary">
-                      {project.category}
-                    </span>
-                  </div>
-
-                  <h2 className="mt-3 text-xl font-bold text-text-primary">
-                    {meta.title}
-                  </h2>
-
-                  <div className="mt-3 space-y-3 text-sm">
-                    <div>
-                      <span className="block text-xs font-semibold uppercase tracking-wide text-accent">
-                        {t.projects.problemLabel}
-                      </span>
-                      <p className="mt-1 text-text-secondary line-clamp-2">
-                        {project.problem}
-                      </p>
-                    </div>
-
-                    <div>
-                      <span className="block text-xs font-semibold uppercase tracking-wide text-accent">
-                        {t.projects.solutionLabel}
-                      </span>
-                      <p className="mt-1 text-text-secondary line-clamp-2">
-                        {project.solution}
-                      </p>
-                    </div>
-                  </div>
-
-                  {meta.technologies.length > 0 && (
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {meta.technologies.slice(0, 3).map((tech) => (
-                        <span
-                          key={tech}
-                          className="
-                        rounded-lg
-                        bg-cyan-500/10
-                        px-3 py-1
-                        text-xs
-                        text-cyan-300
-                      "
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {(meta.demo || meta.github) && (
-                    <div className="mt-6 flex gap-3">
-                      {meta.demo && (
-                        <a
-                          href={meta.demo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="
-                        flex flex-1 items-center justify-center gap-1
-                        rounded-lg bg-cyan-500 px-3 py-2
-                        text-xs font-semibold text-white
-                        transition hover:bg-cyan-600
-                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
-                      "
-                        >
-                          <ExternalLink size={16} />
-                          {t.projects.demoLabel}
-                        </a>
-                      )}
-
-                      {meta.github && (
-                        <a
-                          href={meta.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="
-                        flex flex-1 items-center justify-center gap-1
-                        rounded-lg border border-border
-                        bg-white/5 px-3 py-2
-                        text-xs text-text-primary
-                        transition hover:bg-white/10
-                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
-                      "
-                        >
-                          <Globe size={16} />
-                          {t.projects.githubLabel}
-                        </a>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-      </div>
-    </section>
+      <FinalCtaSection />
+    </>
   );
 }

@@ -8,6 +8,12 @@ import type { Dictionary, LanguageCode } from "@/lib/i18n/types";
 const LANGUAGE_STORAGE_KEY = "language";
 const DEFAULT_LANGUAGE: LanguageCode = "pt";
 
+const HTML_LANG: Record<LanguageCode, string> = {
+  pt: "pt-BR",
+  en: "en",
+  es: "es",
+};
+
 type LanguageContextValue = {
   language: LanguageCode;
   setLanguage: (language: LanguageCode) => void;
@@ -30,6 +36,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       setLanguageState(stored);
     }
   }, []);
+
+  // Mantém o <html lang> em sincronia com o idioma exibido (leitores de tela
+  // e hifenização dependem dele). O valor inicial "pt-BR" vem do layout.
+  useEffect(() => {
+    document.documentElement.lang = HTML_LANG[language];
+  }, [language]);
 
   function setLanguage(next: LanguageCode) {
     setLanguageState(next);

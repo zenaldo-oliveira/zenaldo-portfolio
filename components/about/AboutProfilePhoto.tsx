@@ -1,60 +1,29 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 
-export function AboutProfilePhoto() {
-  const prefersReducedMotion = useReducedMotion();
+type AboutProfilePhotoProps = {
+  name: string;
+  role: string;
+};
 
+// Retrato do fundador (foto real, sem edição da imagem). Recorte 4:5 centrado
+// no rosto, borda fina e legenda sobre um degradê escuro na base — apresenta
+// o fundador, sem cara de foto de currículo. Estático: sem animação contínua.
+export function AboutProfilePhoto({ name, role }: AboutProfilePhotoProps) {
   return (
-    <motion.div
-      animate={prefersReducedMotion ? undefined : { y: [0, -15, 0] }}
-      transition={
-        prefersReducedMotion
-          ? undefined
-          : { duration: 4, repeat: Infinity, ease: "easeInOut" }
-      }
-      whileHover={
-        prefersReducedMotion
-          ? undefined
-          : { scale: 1.08, rotateY: 12, rotateX: 8 }
-      }
-      // Interação discreta baseada em entrada na viewport — cobre o mobile,
-      // que não tem hover. Dispara uma vez, independente da flutuação
-      // contínua acima (propriedades diferentes, não conflitam).
-      whileInView={
-        prefersReducedMotion
-          ? undefined
-          : { scale: [1, 1.04, 1], transition: { duration: 1.1, ease: "easeOut" } }
-      }
-      viewport={{ once: true, margin: "-40px" }}
-      style={{
-        transformStyle: "preserve-3d",
-      }}
-      className="
-                absolute
-                -inset-y-6
-                inset-x-0
-                transition-all
-                duration-500
-                hover:drop-shadow-[0_0_40px_rgba(34,211,238,0.7)]
-              "
-    >
+    <figure className="relative mx-auto aspect-4/5 w-full max-w-sm overflow-hidden rounded-2xl border border-border-strong bg-surface-strong shadow-[0_30px_80px_-40px_rgba(2,6,23,0.8)]">
       <Image
         src="/projects/profile.jpeg"
-        alt="Zenaldo Oliveira"
+        alt={name}
         fill
-        style={{
-          objectPosition: "center 15%",
-        }}
-        className="
-                  object-cover
-                  rounded-3xl
-                  border-2
-                  border-cyan-500/30
-                  shadow-[0_0_25px_rgba(34,211,238,0.4)]
-                "
+        sizes="(min-width: 1024px) 384px, 90vw"
+        className="object-cover object-[center_22%]"
       />
-    </motion.div>
+      {/* Degradê fixo (independe do tema) para a legenda ficar legível. */}
+      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-black/75 via-black/30 to-transparent" />
+      <figcaption className="absolute inset-x-0 bottom-0 p-5">
+        <p className="text-base font-semibold tracking-tight text-white">{name}</p>
+        <p className="mt-0.5 text-sm text-white/80">{role}</p>
+      </figcaption>
+    </figure>
   );
 }

@@ -10,10 +10,41 @@ export type Dictionary = {
     certificates: string;
     contact: string;
   };
-  sidebar: {
+  brand: {
     tagline: string;
-    availableForProjects: string;
     description: string;
+  };
+  sidebar: {
+    navLabel: string;
+    moreTitle: string;
+    collapse: string;
+    expand: string;
+  };
+  topbar: {
+    skipToContent: string;
+    openMenu: string;
+    closeMenu: string;
+    breadcrumbLabel: string;
+  };
+  preferences: {
+    trigger: string;
+    language: string;
+    theme: string;
+    themeLight: string;
+    themeDark: string;
+    display: string;
+  };
+  footer: {
+    navTitle: string;
+    moreTitle: string;
+    contactTitle: string;
+    socialTitle: string;
+    whatsapp: string;
+    rights: string;
+  };
+  cta: {
+    talk: string;
+    whatsappAriaLabel: string;
   };
   globalControls: {
     themeToLight: string;
@@ -23,77 +54,150 @@ export type Dictionary = {
   };
   home: {
     hero: {
-      badge: string;
-      titleLine: string;
-      headlineSequence: string[];
+      eyebrow: string;
+      title: string;
       description: string;
       ctaPrimary: string;
       ctaSecondary: string;
+      mockup: {
+        caption: string;
+        modules: string[];
+        ordersTitle: string;
+        newOrder: string;
+        checklistTitle: string;
+        checklistItems: string[];
+        reportTitle: string;
+      };
+    };
+    capabilities: {
+      label: string;
+      items: string[];
     };
     problems: {
+      eyebrow: string;
       title: string;
       items: string[];
+      beforeLabel: string;
+      afterLabel: string;
       quote: string;
       cta: string;
     };
     solutions: {
+      eyebrow: string;
       title: string;
       description: string;
-      items: string[];
+      examplesLabel: string;
+      flow: string[];
+      items: { title: string; description: string }[];
       viewAll: string;
     };
+    product: {
+      eyebrow: string;
+      title: string;
+      tagline: string;
+      flowLabel: string;
+      flow: string[];
+      ctaPrimary: string;
+      ctaSecondary: string;
+      caption: string;
+    };
     cases: {
+      eyebrow: string;
       title: string;
       description: string;
-      items: { category: string; description: string; status: string }[];
+      explore: string;
+      similar: string;
       viewAll: string;
     };
     howWeWork: {
+      eyebrow: string;
       title: string;
-      steps: string[];
+      steps: { title: string; description: string }[];
+    };
+    technologies: {
+      eyebrow: string;
+      title: string;
+      description: string;
+      groups: { web: string; mobile: string; backend: string; data: string; ai: string };
     };
     ai: {
+      eyebrow: string;
       title: string;
       description: string;
       useCases: string[];
-    };
-    technologies: {
-      title: string;
+      flow: { input: string; ai: string; action: string };
+      proofLabel: string;
+      proofText: string;
     };
     finalCta: {
       title: string;
+      subtitle: string;
       description: string;
       cta: string;
+      secondary: string;
     };
   };
   about: {
-    badge: string;
+    eyebrow: string;
     title: string;
     description: string;
-    founderTitle: string;
-    founderBody: string;
-    formationTitle: string;
-    formationItems: string[];
-    interestsTitle: string;
-    interests: string[];
+    cta: string;
+    secondaryCta: string;
+    capabilitiesTitle: string;
+    whatWeDoEyebrow: string;
+    proof: {
+      eyebrow: string;
+      title: string;
+      othersLabel: string;
+      cta: string;
+    };
+    founder: {
+      eyebrow: string;
+      title: string;
+      role: string;
+      body: string[];
+      formationTitle: string;
+      formationItems: string[];
+    };
+    tech: {
+      eyebrow: string;
+      title: string;
+      description: string;
+      items: { name: string; area: string }[];
+    };
+    finalCta: {
+      title: string;
+      subtitle: string;
+    };
   };
   services: {
-    badge: string;
-    headlineSequence: string[];
+    eyebrow: string;
+    title: string;
     description: string;
+    ctaPrimary: string;
+    ctaSecondary: string;
+    indexLabel: string;
+    labels: { problem: string; application: string; stack: string };
     items: { title: string; description: string }[];
-    ctaTitle: string;
-    ctaContact: string;
-    ctaProjects: string;
+    itemCta: string;
   };
   projects: {
     badge: string;
-    headlineSequence: string[];
+    filterLabel: string;
+    filterAll: string;
+    allTitle: string;
     description: string;
     problemLabel: string;
     solutionLabel: string;
     demoLabel: string;
     githubLabel: string;
+    carousel: {
+      region: string;
+      previous: string;
+      next: string;
+      goTo: string;
+      of: string;
+    };
     items: {
       category: string;
       problem: string;
@@ -102,37 +206,42 @@ export type Dictionary = {
     }[];
   };
   skills: {
-    badge: string;
-    headlineSequence: string[];
+    eyebrow: string;
+    title: string;
     description: string;
-    categories: { title: string }[];
-    stats: { value: string; label: string }[];
+    groups: {
+      web: string;
+      mobile: string;
+      backend: string;
+      data: string;
+      ai: string;
+      automation: string;
+    };
+    appliedIn: string;
+    toolsTitle: string;
   };
   certificates: {
-    badge: string;
-    headlineSequence: string[];
+    eyebrow: string;
+    title: string;
     description: string;
     formationTitle: string;
-    formationDescription: string;
-    coursesTitle: string;
-    items: { title: string; institution: string; status: string }[];
+    items: {
+      title: string;
+      institution: string;
+      status: string;
+    }[];
+    plannedTitle: string;
     studyingTitle: string;
     studyingItems: string[];
   };
   contact: {
-    badge: string;
-    headlineSequence: string[];
-    description: string;
-    quickLinks: {
-      whatsapp: string;
-      email: string;
-      github: string;
-      linkedin: string;
-    };
-    profileTitle: string;
-    profileStack: string;
-    tags: { freelance: string; response: string; fullStack: string };
-    note: string;
+    eyebrow: string;
+    title: string;
+    channelsTitle: string;
+    whatsappCta: string;
+    responseLabel: string;
+    responseValue: string;
+    otherChannels: string;
     formTitle: string;
   };
   contactForm: {

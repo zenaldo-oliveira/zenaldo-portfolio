@@ -1,6 +1,6 @@
 import { FloatingWhatsapp } from "@/components/floating-whatsapp";
-import { GlobalControls } from "@/components/layout/GlobalControls";
-import { Sidebar } from "@/components/layout/Sidebar";
+import { AppShell } from "@/components/layout/AppShell";
+import { PageBackground } from "@/components/layout/PageBackground";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
@@ -13,11 +13,13 @@ import "./globals.css";
 // ContactForm e a notificação continuam funcionando normalmente sem ele.
 // Reative importando e renderizando <AIAssistant /> novamente se necessário.
 
-// Executa antes do primeiro paint para evitar flash: aplica o data-theme
-// salvo no <html> assim que possível. Sem isto, o tema só seria aplicado
-// depois da hidratação do ThemeToggle, causando um flash visual do estado
-// padrão. Sem dependências novas — script estático, sem dado do usuário.
-const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark");}catch(e){}})();`;
+// Executa antes do primeiro paint para evitar flash: aplica no <html> o tema
+// salvo (data-theme) e o estado recolhido da Sidebar (data-sidebar). Sem
+// isto, ambos só seriam aplicados depois da hidratação, causando flash do
+// tema padrão e deslocamento do layout. Chaves e atributos compartilhados com
+// lib/preferences; "true" é o valor legado da Sidebar antiga. Script
+// estático, sem dado do usuário.
+const PREFERENCES_INIT_SCRIPT = `(function(){try{var d=document.documentElement;var t=localStorage.getItem("theme");d.setAttribute("data-theme",t==="light"?"light":"dark");var s=localStorage.getItem("sidebar-collapsed");if(s==="collapsed"||s==="true")d.setAttribute("data-sidebar","collapsed");}catch(e){}})();`;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -69,20 +71,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // suppressHydrationWarning: o script abaixo altera atributos do <html>
+    // (data-theme, data-sidebar) antes da hidratação, de propósito. Vale só
+    // para os atributos deste elemento, não para os filhos.
     <html
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: PREFERENCES_INIT_SCRIPT }} />
       </head>
       <body className="bg-background text-foreground">
+        <PageBackground />
+
         <LanguageProvider>
-          <Sidebar />
-
-          <GlobalControls />
-
-          <main className="min-h-screen md:ml-[280px]">{children}</main>
+          <AppShell>{children}</AppShell>
 
           <FloatingWhatsapp />
         </LanguageProvider>

@@ -1,235 +1,97 @@
 "use client";
 
-import { AnimatedHeadline } from "@/components/AnimatedHeadline";
-import {
-  Code2,
-  Database,
-  Brain,
-  GitBranch,
-  Sparkles,
-  ArrowUpRight,
-} from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { Brain, Database, MonitorSmartphone, Server, Smartphone, Workflow } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { FinalCtaSection } from "@/components/home/sections/FinalCtaSection";
+import { Container } from "@/components/ui/Container";
+import { Reveal } from "@/components/ui/Reveal";
+import { Section } from "@/components/ui/Section";
 import { useTranslations } from "@/lib/i18n/LanguageContext";
-import { revealContainer, revealItem } from "@/lib/motion/variants";
 
-// Ícone, gradiente e nomes de tecnologias — não traduzidos, casados por
-// índice com t.skills.categories.
-const categoryMeta = [
-  {
-    icon: Code2,
-    color: "from-cyan-500 to-blue-500",
-    items: ["React", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "HTML5", "CSS3"],
-  },
-  {
-    icon: Database,
-    color: "from-emerald-500 to-green-500",
-    items: ["Node.js", "Express", "Prisma ORM", "PostgreSQL", "MySQL", "REST API"],
-  },
-  {
-    icon: Brain,
-    color: "from-purple-500 to-pink-500",
-    items: [
-      "OpenAI",
-      "Agentes IA",
-      "WhatsApp Automation",
-      "Chatbots",
-      "Prompt Engineering",
-      "Integração APIs",
-      "Automação de Vendas",
-    ],
-  },
-  {
-    icon: GitBranch,
-    color: "from-orange-500 to-red-500",
-    items: ["Git", "GitHub", "Postman", "Figma", "VS Code", "ESLint"],
-  },
+type GroupKey = "web" | "mobile" | "backend" | "data" | "ai" | "automation";
+
+// Tecnologias reais (as que esta página já listava + a stack dos projetos em
+// lib/projects/data.ts), agrupadas por capacidade. `applied` = projetos reais
+// que usam aquele grupo — vazio quando não há case público para citar.
+const GROUPS: { key: GroupKey; Icon: LucideIcon; items: string[]; applied: string[] }[] = [
+  { key: "web", Icon: MonitorSmartphone, items: ["React", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "HTML5", "CSS3"], applied: ["Pet Shop Premium", "Barber Shop Premium", "Text To Voice AI"] },
+  { key: "mobile", Icon: Smartphone, items: ["React Native", "Expo", "React Query", "Zustand"], applied: ["Dieta IA", "EasyCar Mobile"] },
+  { key: "backend", Icon: Server, items: ["Node.js", "Express", "Fastify", "REST API"], applied: ["Dieta IA", "EasyCar Mobile"] },
+  { key: "data", Icon: Database, items: ["PostgreSQL", "MySQL", "Prisma ORM", "Supabase"], applied: [] },
+  { key: "ai", Icon: Brain, items: ["OpenAI", "Gemini AI", "Agentes IA", "Chatbots", "Prompt Engineering", "Web Speech API"], applied: ["Dieta IA", "Text To Voice AI"] },
+  { key: "automation", Icon: Workflow, items: ["WhatsApp Automation", "Integração APIs", "Automação de Vendas"], applied: [] },
 ];
 
-const statColors = ["text-accent", "text-purple-400", "text-emerald-400"];
+const TOOLS = ["Git", "GitHub", "Postman", "Figma", "VS Code", "ESLint"];
 
+// Capacidades técnicas da ZTech: tecnologia como prova de capacidade de
+// entrega (onde já foi aplicada), não como currículo.
 export function SkillsContent() {
   const t = useTranslations();
-  const prefersReducedMotion = useReducedMotion();
-  const headlineSequence = t.skills.headlineSequence.flatMap((text) => [
-    text,
-    2000,
-  ]);
+  const s = t.skills;
 
   return (
-    <section
-      id="skills"
-      className="
-    relative
-    flex
-    min-h-screen
-    items-center
-    justify-center
-    overflow-hidden
-    bg-gradient-to-b
-    from-background
-    via-[#0f172a]
-    to-background
-    px-6
-    py-8
-    text-text-primary
-  "
-    >
-      {/* Blur Background */}
-      <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-cyan-500/20 blur-[120px]" />
-      <div className="absolute right-0 bottom-0 h-72 w-72 rounded-full bg-purple-500/20 blur-[120px]" />
+    <>
+      <section className="px-4 pb-6 pt-12 sm:px-6 lg:pt-20">
+        <Container>
+          <div className="max-w-3xl">
+            <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+              {s.eyebrow}
+            </p>
+            <h1 className="mt-5 text-balance text-4xl font-semibold leading-[1.1] tracking-tight text-text-primary sm:text-5xl">
+              {s.title}
+            </h1>
+            <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-text-secondary sm:text-lg">{s.description}</p>
+          </div>
+        </Container>
+      </section>
 
-      <div className="mx-auto max-w-7xl">
-        {/* Header */}
-        <div className="mb-16 text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-4 py-2 text-sm text-accent">
-            <Sparkles size={16} />
-            {t.skills.badge}
-          </span>
-
-          <h1 className="mt-6 min-h-[80px] text-4xl font-bold md:text-6xl">
-            <AnimatedHeadline
-              sequence={headlineSequence}
-              className="
-              bg-gradient-to-r
-              from-cyan-400
-              via-blue-400
-              to-purple-400
-              bg-clip-text
-              text-transparent
-              "
-            />
-          </h1>
-
-          <p className="mx-auto mt-5 max-w-2xl text-text-secondary">
-            {t.skills.description}
-          </p>
-        </div>
-
-        {/* Cards */}
-        <motion.div
-          initial={prefersReducedMotion ? false : "hidden"}
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          variants={revealContainer}
-          className="
-          grid
-          gap-6
-          md:grid-cols-2
-          lg:grid-cols-2
-          xl:grid-cols-4
-          items-stretch
-        "
-        >
-          {t.skills.categories.map((category, index) => {
-            const meta = categoryMeta[index];
-            const Icon = meta.icon;
-
-            return (
-              <motion.div
-                key={category.title}
-                variants={revealItem}
-                className="
-              group
-              relative
-              h-full
-              overflow-hidden
-              rounded-3xl
-              border
-              border-border
-              bg-surface
-              backdrop-blur-xl
-              transition-all
-              duration-500
-              hover:-translate-y-3
-              hover:border-cyan-500/40
-              hover:shadow-[0_0_40px_rgba(34,211,238,0.15)]
-            "
-              >
-                {/* Glow */}
+      <Section className="pt-10 lg:pt-14">
+        <Container>
+          <Reveal>
+            <div className="overflow-hidden rounded-3xl border border-border bg-surface/70">
+              {GROUPS.map(({ key, Icon, items, applied }) => (
                 <div
-                  className={`
-                    absolute inset-0 opacity-0 transition-opacity duration-500
-                    bg-gradient-to-br ${meta.color}
-                    blur-3xl
-                    group-hover:opacity-10
-                  `}
-                />
+                  key={key}
+                  className="grid gap-4 border-b border-border p-6 last:border-b-0 sm:p-8 lg:grid-cols-[14rem_1fr_16rem] lg:items-center lg:gap-8"
+                >
+                  <h2 className="flex items-center gap-3 text-lg font-semibold tracking-tight text-text-primary">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border bg-background/60 text-accent">
+                      <Icon size={16} strokeWidth={1.75} aria-hidden="true" />
+                    </span>
+                    {s.groups[key]}
+                  </h2>
 
-                <div className="relative p-8">
-                  {/* Icon */}
-                  <div
-                    className={`
-                      mb-6 flex h-14 w-14 items-center justify-center
-                      rounded-2xl bg-gradient-to-br ${meta.color}
-                    `}
-                  >
-                    <Icon className="h-7 w-7 text-white" />
-                  </div>
+                  <p className="font-mono text-sm leading-relaxed text-text-secondary">{items.join(" · ")}</p>
 
-                  {/* Title */}
-                  <div className="mb-6 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold text-text-primary">
-                      {category.title}
-                    </h2>
-
-                    <ArrowUpRight
-                      size={18}
-                      className="
-                        text-text-secondary
-                        transition-all
-                        group-hover:text-accent
-                        group-hover:translate-x-1
-                        group-hover:-translate-y-1
-                      "
-                    />
-                  </div>
-
-                  {/* Skills */}
-                  <div className="flex flex-wrap gap-2">
-                    {meta.items.map((item) => (
-                      <span
-                        key={item}
-                        className="
-                          rounded-full
-                          border
-                          border-border
-                          bg-white/5
-                          px-3
-                          py-1.5
-                          text-xs
-                          text-text-secondary
-                          transition-all
-                          duration-300
-                          hover:border-cyan-500/30
-                          hover:text-cyan-300
-                        "
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
+                  {applied.length > 0 ? (
+                    <div>
+                      <p className="font-mono text-[11px] uppercase tracking-wider text-text-muted">{s.appliedIn}</p>
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {applied.map((name) => (
+                          <span key={name} className="rounded-md border border-border-accent bg-accent/10 px-2 py-0.5 text-xs text-text-primary">
+                            {name}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <span className="hidden lg:block" aria-hidden="true" />
+                  )}
                 </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-
-        {/* Footer Stats */}
-        <div className="mt-20 grid gap-6 md:grid-cols-3">
-          {t.skills.stats.map((stat, index) => (
-            <div
-              key={stat.label}
-              className="rounded-3xl border border-border bg-surface p-6 text-center"
-            >
-              <h3 className={`text-4xl font-bold ${statColors[index]}`}>
-                {stat.value}
-              </h3>
-              <p className="mt-2 text-text-secondary">{stat.label}</p>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
+          </Reveal>
+
+          <p className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-text-secondary">
+            <span className="font-mono text-[11px] uppercase tracking-wider text-text-muted">{s.toolsTitle}</span>
+            <span className="font-mono">{TOOLS.join(" · ")}</span>
+          </p>
+        </Container>
+      </Section>
+
+      <FinalCtaSection />
+    </>
   );
 }

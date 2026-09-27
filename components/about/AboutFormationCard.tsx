@@ -1,35 +1,21 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
 import { useTranslations } from "@/lib/i18n/LanguageContext";
 
+// Formação do fundador — informação secundária no /about: bloco discreto,
+// sem card de destaque, abaixo da apresentação.
 export function AboutFormationCard() {
-  const prefersReducedMotion = useReducedMotion();
   const t = useTranslations();
+  const { formationTitle, formationItems } = t.about.founder;
 
   return (
-    <motion.div
-      initial={prefersReducedMotion ? false : { opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: prefersReducedMotion ? 0 : 0.5 }}
-      viewport={{ once: true }}
-      className="
-              rounded-3xl
-              border
-              border-cyan-500/10
-              bg-surface
-              p-5
-            "
-    >
-      <h2 className="text-xl font-semibold text-text-primary">
-        {t.about.formationTitle}
-      </h2>
-
-      <ul className="mt-4 space-y-2 text-text-secondary">
-        {t.about.formationItems.map((item) => (
+    <div className="border-t border-border pt-5">
+      <p className="font-mono text-[11px] uppercase tracking-wider text-text-muted">{formationTitle}</p>
+      <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-text-secondary">
+        {formationItems.map((item) => (
           <li key={item}>{item}</li>
         ))}
       </ul>
-    </motion.div>
+    </div>
   );
 }

@@ -1,157 +1,165 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import type { ReactNode } from "react";
+import { WhatsAppCta } from "@/components/contact/WhatsAppCta";
+import { FinalCtaSection } from "@/components/home/sections/FinalCtaSection";
 import {
-  Brain,
-  Building2,
-  Code2,
-  Layers3,
-  Plug,
-  Workflow,
-  ArrowRight,
-  Sparkles,
-} from "lucide-react";
-import { AnimatedHeadline } from "@/components/AnimatedHeadline";
+  AppPreview,
+  FlowPreview,
+  IntegrationsPreview,
+  SaasPreview,
+  SystemPreview,
+  WebPreview,
+} from "@/components/home/SolutionVisuals";
+import { Button } from "@/components/ui/Button";
+import { Container } from "@/components/ui/Container";
+import { Reveal } from "@/components/ui/Reveal";
+import { Section } from "@/components/ui/Section";
 import { useTranslations } from "@/lib/i18n/LanguageContext";
 
-const icons = [Building2, Layers3, Brain, Workflow, Code2, Plug];
+type Solution = {
+  id: string;
+  title: string;
+  description: string;
+  visual: ReactNode;
+  // Índices em t.home.problems.items — só problemas reais que a solução ataca.
+  problems: number[];
+  // Projetos reais que aplicam a solução (nomes próprios, não traduzidos).
+  applications: string[];
+  stack: string[];
+};
 
+// Catálogo comercial: cada solução com o que resolve, onde já foi aplicada
+// e a stack. Campos sem informação real ficam de fora — nada é inventado.
 export function ServicesContent() {
   const t = useTranslations();
-  const headlineSequence = t.services.headlineSequence.flatMap((text) => [
-    text,
-    2000,
-  ]);
+  const s = t.services;
+  const [enterprise, saas, ai, automation, web, integrations] = s.items;
+  const apps = t.home.solutions.items[1]; // "Aplicativos" (mesmo texto da Home)
+
+  const solutions: Solution[] = [
+    { id: "sistemas", ...enterprise, visual: <SystemPreview />, problems: [0, 2, 5], applications: ["ZLift Manager"], stack: ["Next.js", "TypeScript", "Prisma", "PostgreSQL"] },
+    { id: "saas", ...saas, visual: <SaasPreview />, problems: [], applications: ["ZLift Manager"], stack: ["Next.js", "Node.js", "PostgreSQL", "Supabase"] },
+    { id: "aplicativos", ...apps, visual: <AppPreview />, problems: [], applications: ["Dieta IA", "EasyCar Mobile"], stack: ["React Native", "Expo", "Fastify", "Node.js"] },
+    { id: "ia", ...ai, visual: <FlowPreview highlight={1} />, problems: [7, 3], applications: ["Dieta IA", "Text To Voice AI"], stack: ["Gemini AI", "OpenAI", "Web Speech API"] },
+    { id: "automacao", ...automation, visual: <FlowPreview highlight={2} />, problems: [1, 3], applications: [], stack: ["WhatsApp", "Node.js", "APIs"] },
+    { id: "web", ...web, visual: <WebPreview />, problems: [], applications: ["Pet Shop Premium", "Barber Shop Premium"], stack: ["Next.js", "React", "TypeScript", "Tailwind CSS"] },
+    { id: "integracoes", ...integrations, visual: <IntegrationsPreview />, problems: [4], applications: [], stack: ["APIs", "Node.js", "PostgreSQL", "Supabase"] },
+  ];
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-background px-6 py-6">
-      <div className="absolute inset-0 bg-background" />
+    <>
+      {/* Hero */}
+      <section className="px-4 pb-10 pt-12 sm:px-6 lg:pt-20">
+        <Container>
+          <div className="max-w-3xl">
+            <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+              {s.eyebrow}
+            </p>
+            <h1 className="mt-5 text-balance text-4xl font-semibold leading-[1.1] tracking-tight text-text-primary sm:text-5xl">
+              {s.title}
+            </h1>
+            <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-text-secondary sm:text-lg">{s.description}</p>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <WhatsAppCta label={s.ctaPrimary} ariaLabel={t.cta.whatsappAriaLabel} />
+              <Button href="/projects" variant="secondary">
+                {s.ctaSecondary}
+              </Button>
+            </div>
+          </div>
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#06b6d420,transparent_50%)]" />
+          {/* Índice das soluções */}
+          <nav aria-label={s.indexLabel} className="mt-14 border-t border-border pt-6">
+            <p className="font-mono text-[11px] uppercase tracking-wider text-text-muted">{s.indexLabel}</p>
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {solutions.map((solution, index) => (
+                <li key={solution.id}>
+                  <a
+                    href={`#${solution.id}`}
+                    className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1.5 text-sm text-text-secondary transition-colors hover:border-border-strong hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    <span className="font-mono text-[10px] text-text-muted">{String(index + 1).padStart(2, "0")}</span>
+                    {solution.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </Container>
+      </section>
 
-      <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/10 blur-[150px]" />
-
-      <div
-        className="
-          absolute inset-0
-          opacity-[0.03]
-          bg-[linear-gradient(to_right,rgba(255,255,255,0.15)_1px,transparent_1px),
-          linear-gradient(to_bottom,rgba(255,255,255,0.15)_1px,transparent_1px)]
-          bg-[size:60px_60px]
-        "
-      />
-
-      <div
-        className="
-          relative z-10
-          mx-auto
-          flex
-          min-h-[90vh]
-          w-full
-          max-w-7xl
-          flex-col
-          items-center
-          justify-center
-        "
-      >
-        <span
-          className="
-            mb-6 flex items-center gap-2
-            rounded-full
-            border border-cyan-500/20
-            bg-cyan-500/10
-            px-4 py-2
-            text-sm font-medium
-            text-accent
-          "
-        >
-          <Sparkles size={16} />
-          {t.services.badge}
-        </span>
-
-        <h1 className="mb-4 min-h-[70px] text-center text-4xl font-black md:min-h-[80px] md:text-5xl">
-          <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-300 bg-clip-text text-transparent">
-            <AnimatedHeadline sequence={headlineSequence} />
-          </span>
-        </h1>
-
-        <p className="mb-8 max-w-2xl text-center text-sm text-text-secondary md:text-base">
-          {t.services.description}
-        </p>
-
-        <div className="grid w-full max-w-6xl gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {t.services.items.map((service, index) => {
-            const Icon = icons[index];
+      {/* Catálogo */}
+      <Section className="pt-6 lg:pt-10">
+        <Container className="space-y-6">
+          {solutions.map((solution, index) => {
+            const problems = solution.problems.map((i) => t.home.problems.items[i]);
+            const isReversed = index % 2 === 1;
 
             return (
-              <div
-                key={service.title}
-                className="group rounded-3xl border border-border bg-surface p-4 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-cyan-500/40"
-              >
-                <Icon
-                  size={32}
-                  className="mb-4 text-accent transition-transform duration-300 group-hover:scale-110"
-                />
+              <Reveal key={solution.id}>
+                <article id={solution.id} className="grid overflow-hidden rounded-3xl border border-border bg-surface/70 lg:grid-cols-2">
+                  <div className={`flex flex-col p-6 sm:p-10 ${isReversed ? "lg:order-last" : ""}`}>
+                    <p className="font-mono text-xs text-text-muted">{String(index + 1).padStart(2, "0")}</p>
+                    <h2 className="mt-3 text-2xl font-semibold tracking-tight text-text-primary sm:text-3xl">{solution.title}</h2>
+                    <p className="mt-3 text-pretty text-base leading-relaxed text-text-secondary">{solution.description}</p>
 
-                <h2 className="mb-3 text-xl font-semibold text-text-primary">
-                  {service.title}
-                </h2>
+                    <dl className="mt-8 space-y-4 border-t border-border pt-6 text-sm">
+                      {problems.length > 0 && (
+                        <div className="grid gap-1.5 sm:grid-cols-[8.5rem_1fr]">
+                          <dt className="font-mono text-[11px] uppercase tracking-wider text-text-muted">{s.labels.problem}</dt>
+                          <dd className="text-text-secondary">{problems.join(" · ")}</dd>
+                        </div>
+                      )}
+                      {solution.applications.length > 0 && (
+                        <div className="grid gap-1.5 sm:grid-cols-[8.5rem_1fr]">
+                          <dt className="font-mono text-[11px] uppercase tracking-wider text-text-muted">{s.labels.application}</dt>
+                          <dd className="flex flex-wrap gap-1.5">
+                            {solution.applications.map((name) => (
+                              <span key={name} className="rounded-md border border-border-accent bg-accent/10 px-2 py-0.5 text-xs text-text-primary">
+                                {name}
+                              </span>
+                            ))}
+                          </dd>
+                        </div>
+                      )}
+                      <div className="grid gap-1.5 sm:grid-cols-[8.5rem_1fr]">
+                        <dt className="font-mono text-[11px] uppercase tracking-wider text-text-muted">{s.labels.stack}</dt>
+                        <dd className="font-mono text-xs text-text-secondary">{solution.stack.join(" · ")}</dd>
+                      </div>
+                    </dl>
 
-                <p className="text-sm text-text-secondary">
-                  {service.description}
-                </p>
-              </div>
+                    <div className="mt-8">
+                      <WhatsAppCta label={s.itemCta} ariaLabel={t.cta.whatsappAriaLabel} size="sm" />
+                    </div>
+                  </div>
+
+                  <div
+                    className={`flex items-center justify-center border-t border-border bg-background/40 p-8 sm:p-12 lg:border-t-0 ${
+                      isReversed ? "lg:border-r" : "lg:border-l"
+                    }`}
+                  >
+                    {/* zoom: amplia o preview (desenhado em escala de card) sem refazer o layout interno. */}
+                    <div className="w-full max-w-md lg:[zoom:1.2]">{solution.visual}</div>
+                  </div>
+                </article>
+              </Reveal>
             );
           })}
-        </div>
 
-        <div className="mt-10 text-center">
-          <h2 className="text-2xl font-bold text-text-primary">
-            {t.services.ctaTitle}
-          </h2>
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 rounded-md pt-4 text-sm font-medium text-accent transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            {t.home.cases.viewAll}
+            <ArrowRight size={16} aria-hidden="true" />
+          </Link>
+        </Container>
+      </Section>
 
-          <div className="mt-6 flex flex-col justify-center gap-4 sm:flex-row">
-            <Link
-              href="/contact"
-              className="
-        flex items-center justify-center gap-2
-        rounded-xl
-        bg-cyan-500
-        px-6 py-3
-        font-semibold
-        text-black
-        transition-all
-        duration-300
-        hover:scale-105
-        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
-      "
-            >
-              {t.services.ctaContact}
-              <ArrowRight size={16} />
-            </Link>
-
-            <Link
-              href="/projects"
-              className="
-        rounded-xl
-        border
-        border-border
-        bg-surface
-        px-6 py-3
-        font-semibold
-        text-text-primary
-        transition-all
-        duration-300
-        hover:bg-white/10
-        hover:border-cyan-500/30
-        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60
-      "
-            >
-              {t.services.ctaProjects}
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
+      <FinalCtaSection />
+    </>
   );
 }

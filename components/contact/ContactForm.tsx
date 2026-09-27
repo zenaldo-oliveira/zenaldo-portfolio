@@ -109,9 +109,9 @@ ${message}
               text-text-primary
               outline-none
               transition-all
-              focus:border-cyan-500
+              focus:border-accent
               focus-visible:ring-2
-              focus-visible:ring-cyan-500/60
+              focus-visible:ring-ring
               disabled:opacity-60
             "
       />
@@ -135,9 +135,9 @@ ${message}
               text-text-primary
               outline-none
               transition-all
-              focus:border-cyan-500
+              focus:border-accent
               focus-visible:ring-2
-              focus-visible:ring-cyan-500/60
+              focus-visible:ring-ring
               disabled:opacity-60
             "
       />
@@ -161,7 +161,7 @@ ${message}
                 text-text-primary
                 outline-none
                 transition-all
-                focus:border-cyan-500
+                focus:border-accent
                 disabled:opacity-60
               "
       />
@@ -186,9 +186,9 @@ ${message}
               text-text-primary
               outline-none
               transition-all
-              focus:border-cyan-500
+              focus:border-accent
               focus-visible:ring-2
-              focus-visible:ring-cyan-500/60
+              focus-visible:ring-ring
               disabled:opacity-60
             "
       />
@@ -227,7 +227,7 @@ ${message}
               hover:scale-[1.01]
               focus-visible:outline-none
               focus-visible:ring-2
-              focus-visible:ring-cyan-500/60
+              focus-visible:ring-ring
             "
           >
             <MessageCircle size={16} />
@@ -246,9 +246,8 @@ ${message}
             justify-center
             gap-2
             rounded-xl
-            bg-gradient-to-r
-            from-cyan-500
-            to-blue-600
+            bg-cta
+            hover:bg-cta-hover
             px-4
             py-3
             text-sm
@@ -259,7 +258,7 @@ ${message}
             hover:scale-[1.01]
             focus-visible:outline-none
             focus-visible:ring-2
-            focus-visible:ring-cyan-500/60
+            focus-visible:ring-ring
             disabled:cursor-not-allowed
             disabled:opacity-60
             disabled:hover:scale-100
