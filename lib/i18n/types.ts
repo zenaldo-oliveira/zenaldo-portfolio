@@ -262,5 +262,9 @@ export type Dictionary = {
     successMessage: string;
     openWhatsapp: string;
     errorMessage: string;
+    // Falha ao registrar: alternativa explícita pelo WhatsApp, com os dados
+    // já preenchidos (o lead NÃO foi salvo).
+    errorWhatsappHint: string;
+    sendViaWhatsapp: string;
   };
 };

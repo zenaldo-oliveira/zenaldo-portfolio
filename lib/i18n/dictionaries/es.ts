@@ -478,5 +478,8 @@ export const es: Dictionary = {
     openWhatsapp: "Abrir conversación en WhatsApp",
     errorMessage:
       "No fue posible registrar tu contacto ahora. Inténtalo de nuevo en unos instantes.",
+    errorWhatsappHint:
+      "Tus datos siguen en el formulario. Si prefieres, envía el mismo mensaje directamente por WhatsApp:",
+    sendViaWhatsapp: "Enviar por WhatsApp",
   },
 };

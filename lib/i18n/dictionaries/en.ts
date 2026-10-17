@@ -474,5 +474,8 @@ export const en: Dictionary = {
     openWhatsapp: "Open WhatsApp chat",
     errorMessage:
       "We couldn't register your contact right now. Please try again shortly.",
+    errorWhatsappHint:
+      "Your details are still in the form. If you prefer, send the same message directly on WhatsApp:",
+    sendViaWhatsapp: "Send via WhatsApp",
   },
 };

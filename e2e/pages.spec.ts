@@ -5,7 +5,7 @@ import { BASE, WA_OFFICIAL, createCheck, finish, newContext, scrollThrough } fro
 // Todas as rotas: SEO (H1 estático, metadata), overflow, texto invisível,
 // WhatsApp oficial, índice de /services, filtros de /projects, formulário de
 // /contact (API de leads SIMULADA — nenhum lead real é criado), reduced
-// motion e tema claro. (122 verificações)
+// motion e tema claro. (124 verificações)
 
 // H1 esperado de cada rota (idioma padrão: PT).
 const ROUTES: Record<string, string> = {
@@ -172,6 +172,14 @@ test("/contact: formulário (API de leads simulada) — sucesso e erro", async (
     } else {
       const err = await page.evaluate(() => document.querySelector("form")?.innerText ?? "");
       check("/contact: formulário (erro) mostra mensagem de erro", err.includes("Não foi possível registrar"), err.slice(0, 80));
+      const fallback = await page.evaluate(() => {
+        const link = document.querySelector<HTMLAnchorElement>('form [role="alert"] a[href^="https://wa.me/5565992832422"]');
+        const text = link ? decodeURIComponent(new URL(link.href).searchParams.get("text") ?? "") : "";
+        return { label: link?.textContent?.trim() ?? null, target: link?.target, carriesData: text.includes("Teste Validação") && text.includes("teste@example.com") && text.includes("Mensagem de teste.") };
+      });
+      check("/contact: formulário (erro) oferece WhatsApp com os dados preenchidos, sem dizer que salvou", fallback.label === "Enviar pelo WhatsApp" && fallback.target === "_blank" && fallback.carriesData && !err.includes("registrado"), fallback);
+      const kept = await page.evaluate(() => (document.querySelector<HTMLInputElement>('input[placeholder="Seu nome"]')?.value ?? ""));
+      check("/contact: formulário (erro) preserva os campos preenchidos", kept === "Teste Validação", kept);
     }
     await context.close();
   }
