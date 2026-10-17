@@ -50,7 +50,9 @@ export function ServicesContent() {
   ];
 
   return (
-    <>
+    // services-page: ritmo próprio entre seções desta página (globals.css),
+    // sem alterar os tokens globais nem as demais rotas.
+    <div className="services-page">
       {/* Hero */}
       <Section variant="hero">
         <Container>
@@ -93,7 +95,7 @@ export function ServicesContent() {
 
       {/* Catálogo */}
       <Section>
-        <Container className="space-y-6">
+        <Container className="space-y-5 lg:space-y-8">
           {solutions.map((solution, index) => {
             const problems = solution.problems.map((i) => t.home.problems.items[i]);
             const isReversed = index % 2 === 1;
@@ -101,12 +103,12 @@ export function ServicesContent() {
             return (
               <Reveal key={solution.id}>
                 <article id={solution.id} className="grid overflow-hidden rounded-3xl border border-border bg-surface/70 lg:grid-cols-2">
-                  <div className={`flex flex-col p-6 sm:p-10 ${isReversed ? "lg:order-last" : ""}`}>
+                  <div className={`flex flex-col p-6 sm:p-8 ${isReversed ? "lg:order-last" : ""}`}>
                     <p className="font-mono text-xs text-text-muted">{String(index + 1).padStart(2, "0")}</p>
                     <h2 className="mt-3 text-2xl font-semibold tracking-tight text-text-primary sm:text-3xl">{solution.title}</h2>
-                    <p className="mt-3 text-pretty text-base leading-relaxed text-text-secondary">{solution.description}</p>
+                    <p className="mt-3 text-pretty text-base leading-relaxed text-text-secondary lg:mt-4">{solution.description}</p>
 
-                    <dl className="mt-8 space-y-4 border-t border-border pt-6 text-sm">
+                    <dl className="mt-7 space-y-4 border-t border-border pt-6 text-sm lg:mt-10">
                       {problems.length > 0 && (
                         <div className="grid gap-1.5 sm:grid-cols-[8.5rem_1fr]">
                           <dt className="font-mono text-[11px] uppercase tracking-wider text-text-muted">{s.labels.problem}</dt>
@@ -131,7 +133,8 @@ export function ServicesContent() {
                       </div>
                     </dl>
 
-                    <div className="mt-8">
+                    {/* mt-auto: o CTA assenta na base do card quando a coluna visual é mais alta. */}
+                    <div className="mt-auto pt-8">
                       <WhatsAppCta label={s.itemCta} ariaLabel={t.cta.whatsappAriaLabel} size="sm" />
                     </div>
                   </div>
@@ -160,6 +163,6 @@ export function ServicesContent() {
       </Section>
 
       <FinalCtaSection />
-    </>
+    </div>
   );
 }

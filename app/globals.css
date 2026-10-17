@@ -217,6 +217,13 @@ body {
   .section--hero {
     --section-gap: var(--space-hero-top);
   }
+
+  /* /services (ServicesContent): catálogo de cards grandes com ilustração —
+     pede mais respiro entre seções que o ritmo global (64 → 96px, mobile →
+     desktop). Escopo da página; os tokens globais não mudam. */
+  .services-page .section:not(.section--hero) {
+    --section-gap: clamp(4rem, 3.257rem + 3.048vw, 6rem);
+  }
 }
 
 @keyframes whatsappFloat {
