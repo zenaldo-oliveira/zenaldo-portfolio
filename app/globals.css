@@ -53,6 +53,9 @@
   --bg-grid: rgba(148, 163, 184, 0.045);
   --bg-media-opacity: 0.3;
   --bg-media-overlay: rgba(11, 18, 32, 0.78);
+  /* Luz que acompanha o mouse (InteractiveBackground). */
+  --pointer-glow: rgba(59, 130, 246, 0.24);
+  --pointer-grid: rgba(96, 165, 250, 0.22);
 }
 
 html[data-sidebar="collapsed"] {
@@ -87,6 +90,8 @@ html[data-sidebar="collapsed"] {
   --bg-grid: rgba(15, 23, 42, 0.045);
   --bg-media-opacity: 0.18;
   --bg-media-overlay: rgba(248, 250, 252, 0.82);
+  --pointer-glow: rgba(37, 99, 235, 0.11);
+  --pointer-grid: rgba(37, 99, 235, 0.16);
 }
 
 /* Telas pequenas: cenário ainda mais discreto (menos brilho, menos mídia). */
@@ -224,6 +229,98 @@ body {
   .services-page .section:not(.section--hero) {
     --section-gap: clamp(4rem, 3.257rem + 3.048vw, 6rem);
   }
+}
+
+/* InteractiveBackground (components/layout/InteractiveBackground.tsx): luz
+   radial que segue o mouse e, em /services, uma grade revelada ao redor do
+   cursor. A posição chega pelo `transform` de cada camada (escrito via ref,
+   só enquanto o mouse se move): nada é repintado, a GPU só recompõe. Sem
+   mouse (touch) ou com movimento reduzido, data-active nunca é ligado e as
+   camadas ficam invisíveis. */
+.interactive-bg {
+  --glow-size: 34rem;
+  --glow-strength: 0.5;
+  --grid-window: 36rem;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.interactive-bg[data-variant="glow"] {
+  --glow-size: 44rem;
+  --glow-strength: 1;
+}
+
+.interactive-bg[data-variant="grid"] {
+  --glow-size: 36rem;
+  --glow-strength: 0.6;
+}
+
+.interactive-bg[data-intensity="minimal"] {
+  --glow-size: 28rem;
+  --glow-strength: 0.28;
+}
+
+.interactive-bg[data-variant="none"] {
+  display: none;
+}
+
+/* Posição inicial (0,0) deslocada pela metade do tamanho: o transform
+   translate3d(x, y) do JS coloca o centro exatamente no cursor. */
+.interactive-bg__glow,
+.interactive-bg__grid-window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  will-change: transform;
+}
+
+.interactive-bg__glow {
+  width: var(--glow-size);
+  height: var(--glow-size);
+  margin: calc(var(--glow-size) / -2) 0 0 calc(var(--glow-size) / -2);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--pointer-glow), transparent);
+}
+
+/* Recorte circular com máscara estática (não muda com o movimento). */
+.interactive-bg__grid-window {
+  display: none;
+  width: var(--grid-window);
+  height: var(--grid-window);
+  margin: calc(var(--grid-window) / -2) 0 0 calc(var(--grid-window) / -2);
+  overflow: hidden;
+  -webkit-mask-image: radial-gradient(closest-side, #000, transparent 85%);
+  mask-image: radial-gradient(closest-side, #000, transparent 85%);
+}
+
+/* Grade do tamanho da tela, contra-deslocada pelo JS: as linhas ficam fixas
+   e coincidem com a grade do PageBackground (mesmo passo de 64px). */
+.interactive-bg__grid {
+  position: absolute;
+  top: calc(var(--grid-window) / 2);
+  left: calc(var(--grid-window) / 2);
+  width: 100vw;
+  height: 100vh;
+  background-image:
+    linear-gradient(to right, var(--pointer-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--pointer-grid) 1px, transparent 1px);
+  background-size: 64px 64px;
+  will-change: transform;
+}
+
+.interactive-bg[data-variant="grid"] .interactive-bg__grid-window {
+  display: block;
+}
+
+.interactive-bg[data-active="true"] .interactive-bg__glow {
+  opacity: var(--glow-strength);
+}
+
+.interactive-bg[data-active="true"] .interactive-bg__grid-window {
+  opacity: 1;
 }
 
 /* Palco das mídias dos cards de projeto (components/projects/ProjectMedia):

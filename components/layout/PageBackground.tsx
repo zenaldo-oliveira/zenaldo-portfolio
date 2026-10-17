@@ -1,4 +1,5 @@
 import { BackgroundVideo } from "@/components/layout/BackgroundVideo";
+import { InteractiveBackground } from "@/components/layout/InteractiveBackground";
 import type { BackgroundVideoSource } from "@/components/layout/BackgroundVideo";
 
 // Vídeo de fundo global. Nenhum vídeo existe hoje em public/ — até o asset
@@ -15,7 +16,8 @@ type PageBackgroundProps = {
 
 // Fundo compartilhado por todas as páginas (renderizado uma vez em
 // app/layout.tsx): base azul-grafite com brilhos estáticos, vídeo opcional
-// com baixa opacidade + overlay, e um grid de 1px que desaparece nas bordas.
+// com baixa opacidade + overlay, um grid de 1px que desaparece nas bordas e,
+// por cima, a luz que acompanha o mouse (InteractiveBackground, por rota).
 // Fixo, atrás do conteúdo, sem eventos de ponteiro e oculto de leitores de
 // tela. É cenário: nunca deve competir com o conteúdo.
 export function PageBackground({ video = BACKGROUND_VIDEO }: PageBackgroundProps) {
@@ -27,6 +29,7 @@ export function PageBackground({ video = BACKGROUND_VIDEO }: PageBackgroundProps
       <div className="page-background__base" />
       {video && <BackgroundVideo {...video} />}
       <div className="page-background__grid" />
+      <InteractiveBackground />
     </div>
   );
 }
