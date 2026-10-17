@@ -40,8 +40,9 @@ type HeaderProps = {
   menuButtonRef: RefObject<HTMLButtonElement | null>;
 };
 
-// Top Bar: complementa a Sidebar sem duplicar a navegação. Transparente no
-// topo da página; vidro discreto (translúcido + blur + borda) só após rolar.
+// Top Bar: complementa a Sidebar sem duplicar a navegação. Borda inferior
+// sempre visível — continua a linha do topo da Sidebar. Transparente no
+// topo da página; vidro discreto (translúcido + blur) só após rolar.
 // Desktop (lg+): breadcrumb com o contexto da página + CTA. Mobile: botão do
 // drawer + logo + CTA (a partir de sm; abaixo disso o botão flutuante do
 // WhatsApp cobre a conversão). Idioma e tema ficam no menu ⋮ da Sidebar.
@@ -53,10 +54,8 @@ export function Header({ isDrawerOpen, onToggleDrawer, menuButtonRef }: HeaderPr
 
   return (
     <header
-      className={`sticky top-0 z-20 h-(--topbar-height) border-b transition-[background-color,border-color] duration-200 motion-reduce:transition-none ${
-        isScrolled
-          ? "border-border bg-(--topbar-bg) backdrop-blur-md"
-          : "border-transparent bg-transparent"
+      className={`sticky top-0 z-20 h-(--topbar-height) border-b border-border transition-[background-color] duration-200 motion-reduce:transition-none ${
+        isScrolled ? "bg-(--topbar-bg) backdrop-blur-md" : "bg-transparent"
       }`}
     >
       <div className="flex h-full items-center gap-2 px-4 sm:px-6">

@@ -248,7 +248,7 @@ test("menu ⋮ (desktop): teclado, Esc, clique fora, Tab, idioma e tema", async 
   await page.click('[role="menuitemradio"]:has-text("Escuro")');
   await settle(page, 250);
   const dark = await page.evaluate(() => ({ attr: document.documentElement.dataset.theme, bg: getComputedStyle(document.body).backgroundColor }));
-  check("tema Escuro restaurado", dark.attr === "dark" && dark.bg === "rgb(11, 18, 32)", dark);
+  check("tema Escuro restaurado", dark.attr === "dark" && dark.bg === "rgb(8, 12, 20)", dark); // --background do tema escuro (#080c14)
   check("menu ⋮ sem erros de console", errors.length === 0, errors.slice(0, 2).join(" | "));
 
   await context.close();

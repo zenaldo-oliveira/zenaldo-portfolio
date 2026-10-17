@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
 import {
   Award,
@@ -60,10 +60,12 @@ type SidebarProps = {
 };
 
 // Navegação principal do site.
-// - lg+: barra fixa à esquerda (15rem), recolhível para 4rem. O estado
-//   recolhido fica no atributo data-sidebar do <html> (lib/preferences),
-//   aplicado antes do primeiro paint — os estilos "recolhida" são só CSS
-//   (variante sidebar-collapsed), sem flash nem deslocamento de layout.
+// - lg+: barra fixa à esquerda (15rem), recolhível para 4rem pelo botão no
+//   topo. O estado recolhido fica no atributo data-sidebar do <html>
+//   (lib/preferences), aplicado antes do primeiro paint — os estilos
+//   "recolhida" são só CSS (variante sidebar-collapsed), sem flash nem
+//   deslocamento de layout. Recolhida, cada ícone ganha um tooltip
+//   (.sidebar-tooltip em globals.css) no hover e no foco por teclado.
 // - < lg: drawer aberto pelo botão da Top Bar; comportamento de foco/Esc/
 //   overlay/scroll lock em MobileMenu.
 export function Sidebar({ isDrawerOpen, onCloseDrawer }: SidebarProps) {
@@ -75,6 +77,29 @@ export function Sidebar({ isDrawerOpen, onCloseDrawer }: SidebarProps) {
 
   const isHiddenDrawer = !isDesktop && !isDrawerOpen;
   const collapseLabel = isCollapsed ? t.sidebar.expand : t.sidebar.collapse;
+
+  // WCAG 1.4.13: Esc dispensa o tooltip visível sem mover o ponteiro nem o
+  // foco; ele volta no próximo foco ou quando o ponteiro sai da barra.
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const dismiss = (event: KeyboardEvent) => {
+      if (event.key === "Escape") panel.dataset.tooltips = "off";
+    };
+    const restore = () => {
+      delete panel.dataset.tooltips;
+    };
+
+    document.addEventListener("keydown", dismiss);
+    panel.addEventListener("focusin", restore);
+    panel.addEventListener("pointerleave", restore);
+    return () => {
+      document.removeEventListener("keydown", dismiss);
+      panel.removeEventListener("focusin", restore);
+      panel.removeEventListener("pointerleave", restore);
+    };
+  }, []);
 
   function renderLink(item: NavItem) {
     return (
@@ -110,12 +135,33 @@ export function Sidebar({ isDrawerOpen, onCloseDrawer }: SidebarProps) {
             : "invisible -translate-x-full transition-[transform,visibility,width]"
         }`}
       >
-        <div className="flex h-(--topbar-height) shrink-0 items-center justify-between gap-2 border-b border-border px-4 lg:sidebar-collapsed:justify-center lg:sidebar-collapsed:px-0">
+        <div className="group/brand relative flex h-(--topbar-height) shrink-0 items-center justify-between gap-2 border-b border-border px-4 lg:pr-2 lg:sidebar-collapsed:justify-center lg:sidebar-collapsed:px-0">
           <Logo
             priority
             onClick={() => onCloseDrawer(false)}
             nameClassName="lg:sidebar-collapsed:sr-only"
           />
+
+          {/* Recolher/expandir no topo (desktop). Recolhida, o botão aparece
+              sobre o símbolo da ZTech no hover ou no foco por teclado. Sem
+              aria-label: o nome vem do texto oculto (padrão das suítes E2E). */}
+          <div className="sidebar-tip sidebar-tip--always hidden lg:block lg:sidebar-collapsed:absolute lg:sidebar-collapsed:inset-0 lg:sidebar-collapsed:flex lg:sidebar-collapsed:items-center lg:sidebar-collapsed:justify-center">
+            <button
+              type="button"
+              aria-controls={SIDEBAR_ID}
+              aria-expanded={!isCollapsed}
+              onClick={() => setCollapsed(!isCollapsed)}
+              className="flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition-[color,background-color,opacity] duration-150 hover:bg-surface-muted hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none lg:sidebar-collapsed:bg-surface-strong lg:sidebar-collapsed:text-text-primary lg:sidebar-collapsed:opacity-0 lg:sidebar-collapsed:group-hover/brand:opacity-100 lg:sidebar-collapsed:focus-visible:opacity-100"
+            >
+              {isCollapsed ? (
+                <PanelLeftOpen size={16} strokeWidth={1.75} aria-hidden="true" />
+              ) : (
+                <PanelLeftClose size={16} strokeWidth={1.75} aria-hidden="true" />
+              )}
+              <span className="sr-only">{collapseLabel}</span>
+            </button>
+            <SidebarTooltip label={collapseLabel} />
+          </div>
 
           <button
             type="button"
@@ -129,7 +175,9 @@ export function Sidebar({ isDrawerOpen, onCloseDrawer }: SidebarProps) {
 
         <nav
           aria-label={t.sidebar.navLabel}
-          className="flex-1 overflow-y-auto overflow-x-hidden px-2 py-3"
+          // Recolhida: sem rolagem, para os tooltips poderem sair da barra
+          // (os 7 itens cabem em qualquer altura de desktop).
+          className="flex-1 overflow-y-auto overflow-x-hidden px-2 py-3 lg:sidebar-collapsed:overflow-x-visible lg:sidebar-collapsed:overflow-y-visible"
         >
           <ul className="space-y-0.5">{MAIN_NAV.map(renderLink)}</ul>
 
@@ -145,26 +193,8 @@ export function Sidebar({ isDrawerOpen, onCloseDrawer }: SidebarProps) {
           </div>
         </nav>
 
-        <div className="shrink-0 space-y-0.5 border-t border-border p-2">
+        <div className="shrink-0 border-t border-border p-2">
           <GlobalControls />
-
-          <button
-            type="button"
-            aria-controls={SIDEBAR_ID}
-            aria-expanded={!isCollapsed}
-            onClick={() => setCollapsed(!isCollapsed)}
-            title={collapseLabel}
-            className="hidden h-9 w-full items-center gap-3 rounded-md px-3 text-sm text-text-secondary transition-colors duration-150 hover:bg-surface-muted hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:flex lg:sidebar-collapsed:justify-center lg:sidebar-collapsed:px-0"
-          >
-            {isCollapsed ? (
-              <PanelLeftOpen size={16} strokeWidth={1.75} aria-hidden="true" className="shrink-0" />
-            ) : (
-              <PanelLeftClose size={16} strokeWidth={1.75} aria-hidden="true" className="shrink-0" />
-            )}
-            <span className="truncate lg:sidebar-collapsed:sr-only">
-              {collapseLabel}
-            </span>
-          </button>
         </div>
       </div>
     </>
@@ -179,14 +209,24 @@ type SidebarLinkProps = {
   onNavigate: () => void;
 };
 
+// Rótulo visual da Sidebar recolhida. Decorativo para leitores de tela (o
+// nome acessível já vem do texto oculto do link/botão); fica colado ao item
+// para o ponteiro poder passar sobre ele sem que suma (WCAG 1.4.13).
+function SidebarTooltip({ label }: { label: string }) {
+  return (
+    <span aria-hidden="true" className="sidebar-tooltip">
+      <span className="sidebar-tooltip__label">{label}</span>
+    </span>
+  );
+}
+
 function SidebarLink({ href, label, Icon, isActive, onNavigate }: SidebarLinkProps) {
   return (
-    <li>
+    <li className="sidebar-tip relative">
       <Link
         href={href}
         aria-current={isActive ? "page" : undefined}
         onClick={onNavigate}
-        title={label}
         className={`relative flex h-11 items-center gap-3 rounded-md px-3 text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:h-9 lg:sidebar-collapsed:justify-center lg:sidebar-collapsed:px-0 ${
           isActive
             ? "bg-surface-muted font-medium text-text-primary"
@@ -211,6 +251,7 @@ function SidebarLink({ href, label, Icon, isActive, onNavigate }: SidebarLinkPro
         />
         <span className="truncate lg:sidebar-collapsed:sr-only">{label}</span>
       </Link>
+      <SidebarTooltip label={label} />
     </li>
   );
 }
