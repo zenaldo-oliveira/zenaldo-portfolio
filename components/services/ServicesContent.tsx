@@ -52,7 +52,7 @@ export function ServicesContent() {
   return (
     <>
       {/* Hero */}
-      <section className="px-4 pb-10 pt-12 sm:px-6 lg:pt-20">
+      <Section variant="hero">
         <Container>
           <div className="max-w-3xl">
             <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
@@ -89,10 +89,10 @@ export function ServicesContent() {
             </ul>
           </nav>
         </Container>
-      </section>
+      </Section>
 
       {/* Catálogo */}
-      <Section className="pt-6 lg:pt-10">
+      <Section>
         <Container className="space-y-6">
           {solutions.map((solution, index) => {
             const problems = solution.problems.map((i) => t.home.problems.items[i]);

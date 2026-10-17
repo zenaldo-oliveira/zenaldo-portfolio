@@ -6,6 +6,7 @@ import { ContactForm } from "@/components/contact/ContactForm";
 import { WhatsAppCta } from "@/components/contact/WhatsAppCta";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
+import { Section } from "@/components/ui/Section";
 import { useTranslations } from "@/lib/i18n/LanguageContext";
 import { SOCIAL_LINKS } from "@/lib/site";
 
@@ -20,7 +21,7 @@ export function ContactContent() {
   const c = t.contact;
 
   return (
-    <section className="px-4 pb-24 pt-12 sm:px-6 lg:pt-20">
+    <Section variant="hero">
       <Container>
         <div className="max-w-3xl">
           <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
@@ -94,6 +95,6 @@ export function ContactContent() {
           </Reveal>
         </div>
       </Container>
-    </section>
+    </Section>
   );
 }

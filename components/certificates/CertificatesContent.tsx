@@ -24,7 +24,7 @@ export function CertificatesContent() {
 
   return (
     <>
-      <section className="px-4 pb-6 pt-12 sm:px-6 lg:pt-20">
+      <Section variant="hero">
         <Container>
           <div className="max-w-3xl">
             <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
@@ -37,9 +37,9 @@ export function CertificatesContent() {
             <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-text-secondary sm:text-lg">{c.description}</p>
           </div>
         </Container>
-      </section>
+      </Section>
 
-      <Section className="pt-10 lg:pt-14">
+      <Section>
         <Container className="grid items-start gap-6 lg:grid-cols-[1.2fr_1fr]">
           {/* Formação obtida / em andamento */}
           <Reveal>

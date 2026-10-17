@@ -1,19 +1,30 @@
 import type { ReactNode } from "react";
 
+// Espaço visível ANTES da seção (tokens --space-section-* em globals.css):
+//   compact  24 → 40px · default 40 → 64px · spacious 56 → 96px (mobile → desktop)
+//   hero     abertura de página: distância própria da Top Bar.
+// O espaço pertence à seção seguinte (só padding-top), então paddings
+// adjacentes nunca se somam — ver .section em globals.css.
+export type SectionVariant = "compact" | "default" | "spacious" | "hero";
+
 type SectionProps = {
   id?: string;
+  variant?: SectionVariant;
+  ariaLabel?: string;
   children: ReactNode;
   className?: string;
 };
 
-// Seção padrão de página: espaçamento vertical e lateral consistente. O id
-// serve de âncora (a Top Bar fixa é compensada por scroll-padding-top no
-// CSS). Fundo transparente: o cenário vem do PageBackground global.
-export function Section({ id, children, className = "" }: SectionProps) {
+// Seção padrão de página: ritmo vertical por variante e respiro lateral
+// consistente. O id serve de âncora (a Top Bar fixa é compensada por
+// scroll-padding-top no CSS). Fundo transparente: o cenário vem do
+// PageBackground global.
+export function Section({ id, variant = "default", ariaLabel, children, className = "" }: SectionProps) {
   return (
     <section
       id={id}
-      className={`relative px-4 py-20 sm:px-6 lg:py-28 ${className}`}
+      aria-label={ariaLabel}
+      className={`section section--${variant} relative px-4 sm:px-6 ${className}`}
     >
       {children}
     </section>
@@ -26,7 +37,9 @@ type SectionHeaderProps = {
   title: string;
   description?: string;
   align?: "left" | "center";
-  // Padrão "mb-12"; passar className substitui o espaçamento inferior.
+  // Padrão: --space-header-gap (24 → 40px) até o conteúdo. Passar className
+  // substitui esse espaçamento (ex.: "mb-0" quando o header divide a linha
+  // com um link).
   className?: string;
 };
 
@@ -35,7 +48,7 @@ export function SectionHeader({
   title,
   description,
   align = "left",
-  className = "mb-12",
+  className = "mb-(--space-header-gap)",
 }: SectionHeaderProps) {
   const alignment = align === "center" ? "mx-auto text-center" : "";
 

@@ -120,7 +120,7 @@ export function ProjectsContent() {
   return (
     <>
       {/* Hero */}
-      <section className="px-4 pb-6 pt-12 sm:px-6 lg:pt-20">
+      <Section variant="hero">
         <Container>
           <div className="max-w-3xl">
             <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
@@ -133,21 +133,21 @@ export function ProjectsContent() {
             <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-text-secondary sm:text-lg">{p.description}</p>
           </div>
         </Container>
-      </section>
+      </Section>
 
       {/* Produto em destaque */}
-      <section className="px-4 py-10 sm:px-6">
+      <Section>
         <Container>
           <FeaturedProduct
             actions={<WhatsAppCta label={t.home.cases.similar} ariaLabel={t.cta.whatsappAriaLabel} size="sm" />}
           />
         </Container>
-      </section>
+      </Section>
 
       {/* Todos os cases: filtro + carrossel */}
-      <Section id="cases" className="pt-10 lg:pt-14">
+      <Section id="cases">
         <Container>
-          <SectionHeader eyebrow={t.home.cases.eyebrow} title={p.allTitle} className="mb-8" />
+          <SectionHeader eyebrow={t.home.cases.eyebrow} title={p.allTitle} />
 
           <div role="group" aria-label={p.filterLabel} className="mb-8 flex flex-wrap gap-2">
             {[ALL, ...categories].map((category) => {

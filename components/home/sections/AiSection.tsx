@@ -20,7 +20,7 @@ export function AiSection() {
   ];
 
   return (
-    <Section id="ia">
+    <Section id="ia" variant="compact">
       <Container className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <Reveal>
           <p className="font-mono text-xs uppercase tracking-[0.14em] text-accent">{ai.eyebrow}</p>

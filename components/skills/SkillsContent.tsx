@@ -32,7 +32,7 @@ export function SkillsContent() {
 
   return (
     <>
-      <section className="px-4 pb-6 pt-12 sm:px-6 lg:pt-20">
+      <Section variant="hero">
         <Container>
           <div className="max-w-3xl">
             <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
@@ -45,9 +45,9 @@ export function SkillsContent() {
             <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-text-secondary sm:text-lg">{s.description}</p>
           </div>
         </Container>
-      </section>
+      </Section>
 
-      <Section className="pt-10 lg:pt-14">
+      <Section>
         <Container>
           <Reveal>
             <div className="overflow-hidden rounded-3xl border border-border bg-surface/70">

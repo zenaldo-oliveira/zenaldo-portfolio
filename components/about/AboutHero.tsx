@@ -7,6 +7,7 @@ import { WhatsAppCta } from "@/components/contact/WhatsAppCta";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
+import { Section } from "@/components/ui/Section";
 import { useTranslations } from "@/lib/i18n/LanguageContext";
 
 // Mesma ordem de t.home.capabilities.items (Sistemas Web, SaaS, Aplicativos,
@@ -20,7 +21,7 @@ export function AboutHero() {
   const a = t.about;
 
   return (
-    <section id="sobre" className="relative px-4 pb-16 pt-12 sm:px-6 lg:pb-24 lg:pt-20">
+    <Section id="sobre" variant="hero">
       <Container className="grid items-center gap-12 xl:grid-cols-[1.25fr_1fr] xl:gap-16">
         <div className="max-w-2xl">
           <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
@@ -70,6 +71,6 @@ export function AboutHero() {
           </div>
         </Reveal>
       </Container>
-    </section>
+    </Section>
   );
 }

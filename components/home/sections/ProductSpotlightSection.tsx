@@ -50,7 +50,7 @@ export function ProductSpotlightSection() {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <Section id="produto">
+    <Section id="produto" variant="spacious">
       <Container>
         <div className="overflow-hidden rounded-3xl border border-border bg-surface/70">
           <div className="grid lg:grid-cols-[1fr_1.1fr]">

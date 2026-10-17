@@ -5,6 +5,7 @@ import { WhatsAppCta } from "@/components/contact/WhatsAppCta";
 import { ZLiftMockup } from "@/components/home/ZLiftMockup";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
 import { useTranslations } from "@/lib/i18n/LanguageContext";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -28,7 +29,7 @@ export function HeroSection() {
   const hero = t.home.hero;
 
   return (
-    <section id="inicio" className="relative overflow-x-clip px-4 pb-20 pt-12 sm:px-6 lg:pb-24 lg:pt-20">
+    <Section id="inicio" variant="hero" className="overflow-x-clip">
       <Container className="grid items-center gap-16 xl:grid-cols-[1.05fr_1fr] xl:gap-12">
         <div className="max-w-xl">
           <motion.p
@@ -63,6 +64,6 @@ export function HeroSection() {
 
         <ZLiftMockup />
       </Container>
-    </section>
+    </Section>
   );
 }

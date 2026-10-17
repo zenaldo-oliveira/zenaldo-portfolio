@@ -18,7 +18,7 @@ export function CapabilitiesStrip() {
     <section
       id="capacidades"
       aria-label={label}
-      className="border-y border-border bg-(--sidebar-bg) px-4 py-6 sm:px-6"
+      className="mt-(--space-section-default) border-y border-border bg-(--sidebar-bg) px-4 py-6 sm:px-6"
     >
       <Container className="flex flex-col gap-5 xl:flex-row xl:items-center xl:gap-10">
         <p className="shrink-0 font-mono text-xs uppercase tracking-[0.14em] text-text-muted">

@@ -21,8 +21,8 @@ export function FinalCtaSection({ title, subtitle }: FinalCtaSectionProps) {
   const cta = t.home.finalCta;
 
   return (
-    // pt menor: a seção anterior já termina com espaçamento próprio.
-    <Section id="contato" className="pt-4 lg:pt-8">
+    // spacious: o fechamento de conversão ganha mais respiro que o ritmo base.
+    <Section id="contato" variant="spacious">
       <Container>
         <Reveal>
           <div className="relative overflow-hidden rounded-3xl border border-border-strong bg-surface px-6 py-14 text-center sm:px-12 sm:py-20">
