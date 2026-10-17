@@ -226,6 +226,28 @@ body {
   }
 }
 
+/* Palco das mídias dos cards de projeto (components/projects/ProjectMedia):
+   brilho sutil do accent no topo sobre a superfície, com a mesma grade do
+   fundo da página — derivado dos tokens, funciona nos dois temas. */
+.project-media {
+  background:
+    radial-gradient(110% 80% at 50% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--surface-strong), var(--surface));
+}
+
+.project-media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--bg-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--bg-grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 30%, #000 20%, transparent 80%);
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 30%, #000 20%, transparent 80%);
+  pointer-events: none;
+}
+
 @keyframes whatsappFloat {
   0%,
   100% {

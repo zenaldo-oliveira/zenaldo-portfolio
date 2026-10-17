@@ -13,7 +13,7 @@ import { PROJECTS } from "@/lib/projects/data";
 const ZLIFT_INDEX = 0; // posição do ZLift em PROJECTS / t.projects.items
 
 // Prova visual no /about: o ZLift em destaque (screenshot real quando existir
-// em PROJECTS[0].image; até lá, o mockup conceitual) e os demais projetos
+// em PROJECTS[0].media; até lá, o mockup conceitual) e os demais projetos
 // reais em lista compacta. Textos vêm de t.projects.items — nada inventado.
 export function AboutProof() {
   const t = useTranslations();

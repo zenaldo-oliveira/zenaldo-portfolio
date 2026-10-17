@@ -46,6 +46,7 @@ export const pt: Dictionary = {
   cta: {
     talk: "Falar com a ZTech",
     whatsappAriaLabel: "Falar com a ZTech pelo WhatsApp (abre em nova aba)",
+    whatsappHint: "pelo WhatsApp (abre em nova aba)",
   },
   globalControls: {
     themeToLight: "Ativar tema claro",
@@ -325,6 +326,10 @@ export const pt: Dictionary = {
     solutionLabel: "Solução",
     demoLabel: "Demo",
     githubLabel: "GitHub",
+    media: {
+      screenshotAlt: "Página inicial publicada do {title}",
+      phoneAlts: ["Tela inicial do aplicativo {title}", "Dieta gerada pelo aplicativo {title}"],
+    },
     carousel: {
       region: "Projetos",
       previous: "Projeto anterior",

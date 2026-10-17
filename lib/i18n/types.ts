@@ -45,6 +45,9 @@ export type Dictionary = {
   cta: {
     talk: string;
     whatsappAriaLabel: string;
+    // Complemento do nome acessível de CTAs de WhatsApp com rótulo próprio
+    // (WCAG 2.5.3: o nome acessível começa pelo texto visível).
+    whatsappHint: string;
   };
   globalControls: {
     themeToLight: string;
@@ -191,6 +194,11 @@ export type Dictionary = {
     solutionLabel: string;
     demoLabel: string;
     githubLabel: string;
+    // Textos alternativos das capturas reais ({title} = nome do projeto).
+    media: {
+      screenshotAlt: string;
+      phoneAlts: [string, string];
+    };
     carousel: {
       region: string;
       previous: string;
