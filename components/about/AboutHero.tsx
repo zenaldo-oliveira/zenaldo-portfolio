@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Brain, Globe, Layers, Plug, Smartphone, Workflow } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { WhatsAppCta } from "@/components/contact/WhatsAppCta";
+import { AnimatedH1 } from "@/components/ui/AnimatedH1";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
@@ -23,15 +24,16 @@ export function AboutHero() {
   return (
     <Section id="sobre" variant="hero">
       <Container className="grid items-center gap-12 xl:grid-cols-[1.25fr_1fr] xl:gap-16">
-        <div className="max-w-2xl">
-          <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+        <div className="relative max-w-2xl">
+          <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
+            <span
+              className="h-1.5 w-1.5 rounded-full bg-accent"
+              aria-hidden="true"
+            />
             {a.eyebrow}
           </p>
 
-          <h1 className="mt-5 text-balance text-4xl font-semibold leading-[1.1] tracking-tight text-text-primary sm:text-5xl xl:text-[3.1rem]">
-            {a.title}
-          </h1>
+          <AnimatedH1 className="mt-5 text-balance text-4xl font-semibold leading-[1.1] tracking-tight text-text-primary sm:text-5xl xl:text-[3.1rem]" text={a.title} />
 
           <p className="mt-6 text-pretty text-base leading-relaxed text-text-secondary sm:text-lg">
             {a.description}
@@ -48,21 +50,41 @@ export function AboutHero() {
         <Reveal delay={0.1}>
           <div className="rounded-2xl border border-border bg-surface/70 p-6 sm:p-8">
             <div className="flex items-center gap-3 border-b border-border pb-5">
-              <Image src="/brand/ztech-mark.png" alt="" width={36} height={36} className="h-9 w-9 rounded-md" />
+              <Image
+                src="/brand/ztech-mark.png"
+                alt=""
+                width={36}
+                height={36}
+                className="h-9 w-9 rounded-md"
+              />
               <div>
-                <p className="text-sm font-semibold text-text-primary">ZTech Solutions</p>
-                <p className="font-mono text-[11px] uppercase tracking-wider text-text-muted">{t.brand.tagline}</p>
+                <p className="text-sm font-semibold text-text-primary">
+                  ZTech Solutions
+                </p>
+                <p className="font-mono text-[11px] uppercase tracking-wider text-text-muted">
+                  {t.brand.tagline}
+                </p>
               </div>
             </div>
 
-            <p className="mt-5 font-mono text-xs uppercase tracking-[0.14em] text-text-muted">{a.capabilitiesTitle}</p>
+            <p className="mt-5 font-mono text-xs uppercase tracking-[0.14em] text-text-muted">
+              {a.capabilitiesTitle}
+            </p>
             <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3.5">
               {t.home.capabilities.items.map((item, index) => {
                 const Icon = ICONS[index];
 
                 return (
-                  <li key={item} className="flex items-center gap-2.5 text-sm text-text-primary">
-                    <Icon size={16} strokeWidth={1.75} aria-hidden="true" className="shrink-0 text-accent" />
+                  <li
+                    key={item}
+                    className="flex items-center gap-2.5 text-sm text-text-primary"
+                  >
+                    <Icon
+                      size={16}
+                      strokeWidth={1.75}
+                      aria-hidden="true"
+                      className="shrink-0 text-accent"
+                    />
                     {item}
                   </li>
                 );

@@ -7,6 +7,7 @@ type WhatsAppCtaProps = {
   // Mensagem pré-preenchida; sem ela, usa a mensagem padrão do site.
   message?: string;
   ariaLabel?: string;
+  variant?: "primary" | "secondary";
   size?: "sm" | "md";
   showArrow?: boolean;
   className?: string;
@@ -18,6 +19,7 @@ export function WhatsAppCta({
   label,
   message,
   ariaLabel,
+  variant = "primary",
   size = "md",
   showArrow = true,
   className,
@@ -27,6 +29,7 @@ export function WhatsAppCta({
     <Button
       href={buildWhatsAppUrl(message)}
       external
+      variant={variant}
       size={size}
       className={className}
       ariaLabel={ariaLabel}

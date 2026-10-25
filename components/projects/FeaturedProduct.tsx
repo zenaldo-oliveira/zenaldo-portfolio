@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { ZLiftMockup } from "@/components/home/ZLiftMockup";
+import { ZLiftMockup } from "@/components/projects/ZLiftMockup";
 import { Reveal } from "@/components/ui/Reveal";
 import { useTranslations } from "@/lib/i18n/LanguageContext";
 import { PROJECTS } from "@/lib/projects/data";

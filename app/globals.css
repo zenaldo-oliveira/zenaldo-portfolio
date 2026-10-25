@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
 /* Estado recolhido da Sidebar no desktop — aplicado no <html> pelo script
    anti-flash de app/layout.tsx (sem deslocamento de layout na carga). */
@@ -30,6 +32,8 @@
   --cta: #2563eb;
   --cta-hover: #1d4ed8;
   --ring: #60a5fa;
+  /* Brilho do StarBorder (botões principais de contratação). */
+  --star-border-color: #93c5fd;
 
   --sidebar-width: 15rem;
   --topbar-height: 3.5rem;
@@ -40,7 +44,7 @@
   --space-section-compact: clamp(1.5rem, 1.129rem + 1.524vw, 2.5rem); /* 24 → 40px */
   --space-section-default: clamp(2.5rem, 1.943rem + 2.286vw, 4rem); /* 40 → 64px */
   --space-section-spacious: clamp(3.5rem, 2.571rem + 3.81vw, 6rem); /* 56 → 96px */
-  --space-hero-top: clamp(3rem, 2.257rem + 3.048vw, 5rem); /* 48 → 80px abaixo da Top Bar */
+  --space-hero-top: 1.25rem; /* 20px: Top Bar → primeiro conteúdo de cada página */
   --space-header-gap: clamp(1.5rem, 1.129rem + 1.524vw, 2.5rem); /* 24 → 40px: SectionHeader → conteúdo */
   /* Sidebar (desktop) e Top Bar rolada: levemente translúcidas sobre o
      PageBackground — mais leves que uma superfície sólida. */
@@ -57,6 +61,41 @@
   /* Luz que acompanha o mouse (InteractiveBackground). */
   --pointer-glow: rgba(59, 130, 246, 0.22);
   --pointer-grid: rgba(96, 165, 250, 0.22);
+
+  /* Tokens do shadcn/ui (componentes de registro), alinhados à paleta da
+     ZTech pela função de cada um. Apontam para os tokens acima, então
+     acompanham [data-theme="light"] sem duplicar valores. Nenhum
+     componente atual os usa; existem para componentes futuros nascerem
+     com a paleta certa. */
+  --card: var(--surface);
+  --card-foreground: var(--text-primary);
+  --popover: var(--surface-strong);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--cta);
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface-strong);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--surface-strong);
+  --muted-foreground: var(--text-muted);
+  /* --accent é o azul de destaque da ZTech (texto e ícones); sobre ele, o
+     texto usa o fundo da página (contraste ≥ 4.5:1 nos dois temas). */
+  --accent-foreground: var(--background);
+  --destructive: #f87171;
+  --input: var(--border-strong);
+  --chart-1: #60a5fa;
+  --chart-2: #3b82f6;
+  --chart-3: #2563eb;
+  --chart-4: #93c5fd;
+  --chart-5: #1d4ed8;
+  --radius: 0.625rem;
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--text-primary);
+  --sidebar-primary: var(--cta);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--surface-strong);
+  --sidebar-accent-foreground: var(--text-primary);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
 }
 
 html[data-sidebar="collapsed"] {
@@ -81,6 +120,9 @@ html[data-sidebar="collapsed"] {
   --cta: #2563eb;
   --cta-hover: #1d4ed8;
   --ring: #2563eb;
+  --star-border-color: #3b82f6;
+  /* shadcn/ui: só o que não deriva dos tokens acima. */
+  --destructive: #dc2626;
 
   --sidebar-bg: rgba(248, 250, 252, 0.72);
   --topbar-bg: rgba(248, 250, 252, 0.8);
@@ -127,6 +169,40 @@ html[data-sidebar="collapsed"] {
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-geist-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-input: var(--input);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 /* Âncoras (#solucoes, #cases...) não ficam escondidas atrás da Top Bar
@@ -393,38 +469,93 @@ body {
   pointer-events: none;
 }
 
-@keyframes whatsappFloat {
-  0%,
+/* StarBorder (components/ui/StarBorder): dois brilhos radiais correm em
+   sentidos opostos nas bordas superior e inferior (2px) do botão. */
+.star-border {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 2px 0;
+}
+
+.star-border__glow {
+  position: absolute;
+  z-index: 0;
+  width: 300%;
+  height: 50%;
+  border-radius: 50%;
+  opacity: 1;
+  pointer-events: none;
+  background: radial-gradient(circle, var(--star-border-color), transparent 16%);
+  animation-duration: var(--star-border-speed, 6s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.star-border__glow--bottom {
+  right: -250%;
+  bottom: -11px;
+  animation-name: starBorderBottom;
+}
+
+.star-border__glow--top {
+  top: -10px;
+  left: -250%;
+  animation-name: starBorderTop;
+}
+
+.star-border__inner {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes starBorderBottom {
+  0% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
+
   100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-6px);
+    transform: translate(-100%, 0%);
+    opacity: 0;
   }
 }
 
-.whatsapp-float {
-  animation: whatsappFloat 3s ease-in-out infinite;
-}
+@keyframes starBorderTop {
+  0% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
 
-@keyframes aiGlow {
-  0%,
   100% {
-    box-shadow:
-      0 0 15px rgba(6, 182, 212, 0.25),
-      0 0 30px rgba(6, 182, 212, 0.15);
-  }
-
-  50% {
-    box-shadow:
-      0 0 25px rgba(6, 182, 212, 0.45),
-      0 0 50px rgba(6, 182, 212, 0.25);
+    transform: translate(100%, 0%);
+    opacity: 0;
   }
 }
 
-.ai-glow {
-  animation: aiGlow 2.5s ease-in-out infinite;
+@media (prefers-reduced-motion: reduce) {
+  .star-border__glow {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Entradas ao rolar (components/ui/Reveal e ProcessSection, marcadas com
+   data-reveal): só deslocamento/escala, nunca ocultação. Com movimento
+   reduzido e na impressão, ficam na posição final desde o HTML — o
+   framer só conhece a preferência depois da hidratação. */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    transform: none !important;
+  }
+}
+
+@media print {
+  [data-reveal] {
+    transform: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -435,5 +566,18 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
   }
 }

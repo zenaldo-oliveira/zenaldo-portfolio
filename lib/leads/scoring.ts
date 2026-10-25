@@ -11,10 +11,9 @@ export type LeadSignals = {
   intent?: string | null;
 };
 
-// Pontuação simples, determinística e auditável — cada sinal identificado na
-// conversa soma pontos fixos. Nunca calculada pela IA: sempre a partir de
-// campos já validados/normalizados no backend (ver sanitizeExtractedField em
-// app/api/chat/route.ts e os validadores em app/api/leads/route.ts).
+// Pontuação simples, determinística e auditável — cada sinal informado soma
+// pontos fixos, sempre a partir de campos já validados/normalizados no
+// backend (validadores em app/api/leads/route.ts).
 const SIGNAL_POINTS: Record<keyof LeadSignals, number> = {
   name: 10,
   whatsapp: 20,

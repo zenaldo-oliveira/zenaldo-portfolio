@@ -115,6 +115,13 @@ function CompactActions() {
   );
 }
 
+// Links reais do projeto: mesma largura (meia linha) com um ou dois botões,
+// para os cards ficarem iguais entre si; se o conteúdo não couber (celular),
+// o botão cresce até o necessário e a linha quebra, sem transbordar. O nome
+// acessível começa pelo rótulo visível e inclui o projeto (vários "Demo" na
+// página — WCAG 2.4.4 e 2.5.3).
+const LINK_CLASS = "min-w-fit grow-0 basis-[calc(50%-0.25rem)] whitespace-nowrap";
+
 function DetailedActions({ project }: { project: Project }) {
   const t = useTranslations();
 
@@ -123,13 +130,27 @@ function DetailedActions({ project }: { project: Project }) {
   return (
     <>
       {project.demo && (
-        <Button href={project.demo} external size="sm" className="flex-1 whitespace-nowrap">
+        <Button
+          href={project.demo}
+          external
+          variant="primary"
+          size="sm"
+          ariaLabel={`${t.projects.demoLabel}: ${project.title}`}
+          className={LINK_CLASS}
+        >
           <ExternalLink size={14} aria-hidden="true" />
           {t.projects.demoLabel}
         </Button>
       )}
       {project.github && (
-        <Button href={project.github} external variant="secondary" size="sm" className="flex-1 whitespace-nowrap">
+        <Button
+          href={project.github}
+          external
+          variant="secondary"
+          size="sm"
+          ariaLabel={`${t.projects.githubLabel}: ${project.title}`}
+          className={LINK_CLASS}
+        >
           <FaGithub size={14} aria-hidden="true" />
           {t.projects.githubLabel}
         </Button>

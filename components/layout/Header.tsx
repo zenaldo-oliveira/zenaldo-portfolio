@@ -11,12 +11,9 @@ import { SIDEBAR_ID } from "@/components/layout/Sidebar";
 import { useTranslations } from "@/lib/i18n/LanguageContext";
 import {
   isNavItemActive,
-  MAIN_NAV,
-  SECONDARY_NAV,
+  ALL_NAV,
   SITE_NAME,
 } from "@/lib/site";
-
-const ALL_NAV = [...MAIN_NAV, ...SECONDARY_NAV];
 
 const SCROLL_THRESHOLD = 8;
 

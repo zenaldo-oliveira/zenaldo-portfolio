@@ -11,7 +11,7 @@ type LogoProps = {
   priority?: boolean;
 };
 
-// Símbolo "Z" recortado do logo oficial (public/projects/logo-ztech.png) +
+// Símbolo "Z" (public/brand/ztech-mark.png, recortado do logo oficial) +
 // nome da empresa em texto — o logo completo tem textos ilegíveis em
 // tamanhos pequenos.
 export function Logo({

@@ -1,13 +1,15 @@
+import { commercialPt } from "@/lib/i18n/dictionaries/commercial/pt";
 import type { Dictionary } from "@/lib/i18n/types";
 
 export const pt: Dictionary = {
   nav: {
     home: "Início",
-    about: "Sobre",
-    services: "Soluções",
-    projects: "Cases",
-    skills: "Habilidades",
-    certificates: "Certificados",
+    about: "Sobre a ZTech",
+    services: "Sites e sistemas",
+    plans: "Planos e valores",
+    build: "Montar projeto",
+    howItWorks: "Como funciona",
+    projects: "Projetos reais",
     contact: "Contato",
   },
   brand: {
@@ -17,7 +19,8 @@ export const pt: Dictionary = {
   },
   sidebar: {
     navLabel: "Navegação principal",
-    moreTitle: "Mais",
+    footerNavLabel: "Institucional",
+    quoteCta: "Pedir orçamento",
     collapse: "Recolher barra lateral",
     expand: "Expandir barra lateral",
   },
@@ -49,19 +52,22 @@ export const pt: Dictionary = {
     whatsappHint: "pelo WhatsApp (abre em nova aba)",
   },
   globalControls: {
-    themeToLight: "Ativar tema claro",
-    themeToDark: "Ativar tema escuro",
     languageSelector: "Selecionar idioma",
     languageMenuLabel: "Idiomas disponíveis",
   },
   home: {
     hero: {
-      eyebrow: "ZTech Solutions",
-      title: "Software que transforma processos em produtos digitais.",
+      eyebrow: "Tecnologia para pequenas e médias empresas",
+
+      title:
+        "Sites para apresentar sua empresa. Sistemas para facilitar sua operação.",
+
       description:
-        "Desenvolvemos sistemas web, aplicativos, plataformas SaaS, soluções com inteligência artificial e automações sob medida para empresas que querem ganhar produtividade, controle e escala.",
-      ctaPrimary: "Falar com a ZTech",
-      ctaSecondary: "Explorar projetos",
+        "Desenvolvemos sites, sistemas e automações para o seu negócio. Antes de contratar, você recebe uma proposta com escopo, prazo e valores definidos.",
+
+      ctaPrimary: "Solicitar proposta",
+      ctaSecondary: "Ver projetos reais",
+
       mockup: {
         caption: "Interface conceitual · ZLift Manager",
         modules: [
@@ -79,8 +85,9 @@ export const pt: Dictionary = {
         reportTitle: "Relatório",
       },
     },
+
+    // Mantenha as outras propriedades de home aqui.
     capabilities: {
-      label: "O que construímos",
       items: [
         "Sistemas Web",
         "SaaS",
@@ -90,60 +97,11 @@ export const pt: Dictionary = {
         "Integrações",
       ],
     },
-    problems: {
-      eyebrow: "O problema",
-      title: "Sua empresa ainda depende de processos manuais?",
-      items: [
-        "Planilhas espalhadas",
-        "Processos manuais",
-        "Informações descentralizadas",
-        "Excesso de tarefas repetitivas",
-        "Sistemas que não conversam entre si",
-        "Dificuldade para acompanhar operações",
-        "Falta de indicadores",
-        "Atendimento manual",
-      ],
-      beforeLabel: "Hoje",
-      afterLabel: "Com software sob medida",
-      quote: "A tecnologia deve simplificar a operação, não complicá-la.",
-      cta: "Quero melhorar meu processo",
-    },
     solutions: {
-      eyebrow: "Soluções",
-      title: "Construímos soluções digitais para diferentes desafios.",
-      description:
-        "Sistemas empresariais, SaaS, inteligência artificial, automação, sistemas web e integrações.",
-      examplesLabel: "Case real",
       flow: ["Entrada", "IA", "Automação", "Resultado"],
-      items: [
-        {
-          title: "Sistemas personalizados",
-          description:
-            "Sistemas sob medida para gestão, operação, clientes e processos — no lugar de planilhas soltas e controle manual.",
-        },
-        {
-          title: "Aplicativos",
-          description:
-            "Aplicativos mobile com React Native e Expo, conectados a um backend próprio.",
-        },
-        {
-          title: "SaaS",
-          description:
-            "Transformamos uma solução em produto: plataforma escalável, pronta para atender vários clientes.",
-        },
-        {
-          title: "IA e automação",
-          description:
-            "IA aplicada a atendimento, qualificação de leads e suporte, e processos repetitivos automatizados entre sistemas, WhatsApp e ferramentas do dia a dia.",
-        },
-      ],
-      viewAll: "Ver todos os serviços",
     },
     product: {
-      eyebrow: "Produto próprio",
-      title: "Um produto próprio em operação",
       tagline: "Plataforma para gestão de operações de manutenção.",
-      flowLabel: "Fluxo operacional centralizado",
       flow: [
         "Clientes",
         "Elevadores",
@@ -156,61 +114,18 @@ export const pt: Dictionary = {
         "Assinatura",
         "Relatório",
       ],
-      ctaPrimary: "Conhecer o projeto",
-      ctaSecondary: "Falar com a ZTech",
-      caption: "Representação conceitual dos módulos da plataforma.",
     },
     cases: {
-      eyebrow: "Cases",
+      eyebrow: "Projetos reais",
       title: "Projetos que construímos",
       description:
         "Exemplos reais do que já desenvolvemos — o problema, a solução e a tecnologia por trás de cada um.",
       explore: "Explorar",
       similar: "Quero algo parecido",
-      viewAll: "Ver todos os cases",
     },
     howWeWork: {
       eyebrow: "Como trabalhamos",
       title: "Do problema ao software",
-      steps: [
-        { title: "Entender", description: "Entendemos o problema e mapeamos o processo." },
-        { title: "Projetar", description: "Definimos a solução." },
-        { title: "Desenvolver", description: "Desenvolvemos, testamos e colocamos em produção." },
-        { title: "Evoluir", description: "Evoluímos a solução." },
-      ],
-    },
-    technologies: {
-      eyebrow: "Tecnologia",
-      title: "Construído com tecnologia moderna",
-      description: "A stack usada nos projetos da ZTech, organizada por capacidade.",
-      groups: {
-        web: "Web",
-        mobile: "Mobile",
-        backend: "Backend",
-        data: "Dados",
-        ai: "IA / Automação",
-      },
-    },
-    ai: {
-      eyebrow: "IA e automação",
-      title: "Inteligência artificial aplicada ao negócio.",
-      description:
-        "Utilizamos IA para atendimento, qualificação de leads, automação, análise, suporte e produtividade — reduzindo o trabalho manual repetitivo da operação.",
-      useCases: [
-        "Atendimento",
-        "Qualificação de leads",
-        "Automação",
-        "Análise",
-        "Suporte",
-        "Produtividade",
-      ],
-      flow: {
-        input: "Mensagem ou dado",
-        ai: "Inteligência artificial",
-        action: "Ação no sistema ou WhatsApp",
-      },
-      proofLabel: "Case real",
-      proofText: "Dieta IA: aplicativo que gera dietas personalizadas com Gemini AI.",
     },
     finalCta: {
       title: "Tem um processo que pode ser melhor?",
@@ -229,7 +144,6 @@ export const pt: Dictionary = {
     cta: "Falar com a ZTech",
     secondaryCta: "Explorar cases",
     capabilitiesTitle: "O que desenvolvemos",
-    whatWeDoEyebrow: "O que fazemos",
     proof: {
       eyebrow: "Prova",
       title: "O que já construímos",
@@ -255,65 +169,21 @@ export const pt: Dictionary = {
       eyebrow: "Capacidade técnica",
       title: "As tecnologias com que construímos.",
       description:
-        "Desenvolvimento de sistemas empresariais, SaaS, automações e soluções com inteligência artificial, usando React, Next.js, TypeScript, Prisma e PostgreSQL.",
-      items: [
-        { name: "React", area: "Interfaces" },
-        { name: "Next.js", area: "Aplicações web" },
-        { name: "TypeScript", area: "Linguagem" },
-        { name: "Node.js", area: "Backend" },
-        { name: "Prisma", area: "ORM" },
-        { name: "PostgreSQL", area: "Banco de dados" },
-        { name: "IA", area: "Gemini AI · OpenAI" },
-        { name: "Automação", area: "WhatsApp · integrações" },
-      ],
+        "As tecnologias que usamos nas entregas, com os projetos reais em que cada uma já foi aplicada.",
+      groups: {
+        web: "Web",
+        mobile: "Mobile",
+        backend: "Backend",
+        data: "Dados",
+        ai: "Inteligência artificial",
+        automation: "Automação",
+      },
+      appliedIn: "Aplicado em",
     },
     finalCta: {
       title: "Tem um processo que pode ser melhor?",
       subtitle: "Conte para a ZTech o que sua empresa precisa.",
     },
-  },
-  services: {
-    eyebrow: "Soluções",
-    title: "Construímos soluções digitais para diferentes desafios.",
-    description:
-      "Desenvolvimento de sistemas empresariais, SaaS, automações e soluções com inteligência artificial, usando React, Next.js, TypeScript, Prisma e PostgreSQL.",
-    ctaPrimary: "Falar com a ZTech",
-    ctaSecondary: "Ver projetos",
-    indexLabel: "Nesta página",
-    labels: { problem: "Resolve", application: "Aplicação real", stack: "Stack" },
-    items: [
-      {
-        title: "Sistemas Empresariais",
-        description:
-          "Sistemas sob medida para gestão, operação, clientes e processos — no lugar de planilhas soltas e controle manual.",
-      },
-      {
-        title: "SaaS",
-        description:
-          "Transformamos uma solução em produto: plataforma escalável, pronta para atender vários clientes.",
-      },
-      {
-        title: "Inteligência Artificial",
-        description:
-          "IA aplicada a atendimento, qualificação de leads e suporte, reduzindo trabalho manual repetitivo.",
-      },
-      {
-        title: "Automação",
-        description:
-          "Processos repetitivos automatizados entre sistemas, WhatsApp e ferramentas do dia a dia da empresa.",
-      },
-      {
-        title: "Sistemas Web",
-        description:
-          "Aplicações modernas e responsivas, desenvolvidas de acordo com a necessidade real do negócio.",
-      },
-      {
-        title: "Integrações",
-        description:
-          "Conectamos APIs, bancos de dados e serviços para eliminar retrabalho entre sistemas que não conversam entre si.",
-      },
-    ],
-    itemCta: "Falar sobre esta solução",
   },
   projects: {
     badge: "Cases e Projetos",
@@ -328,7 +198,10 @@ export const pt: Dictionary = {
     githubLabel: "GitHub",
     media: {
       screenshotAlt: "Página inicial publicada do {title}",
-      phoneAlts: ["Tela inicial do aplicativo {title}", "Dieta gerada pelo aplicativo {title}"],
+      phoneAlts: [
+        "Tela inicial do aplicativo {title}",
+        "Dieta gerada pelo aplicativo {title}",
+      ],
     },
     carousel: {
       region: "Projetos",
@@ -386,66 +259,19 @@ export const pt: Dictionary = {
           "Aplicativo mobile integrado a um backend próprio para centralizar a gestão automotiva.",
         status: "Em Desenvolvimento",
       },
-    ],
-  },
-  skills: {
-    eyebrow: "Tecnologia",
-    title: "Capacidades técnicas",
-    description:
-      "Desenvolvimento Full Stack, Inteligência Artificial e automações para criar soluções modernas, escaláveis e focadas em resultados.",
-    groups: {
-      web: "Web",
-      mobile: "Mobile",
-      backend: "Backend",
-      data: "Dados",
-      ai: "Inteligência artificial",
-      automation: "Automação",
-    },
-    appliedIn: "Aplicado em",
-    toolsTitle: "Ferramentas de trabalho",
-  },
-  certificates: {
-    eyebrow: "Formação",
-    title: "Formação e certificações",
-    description:
-      "Formação acadêmica, especialização e estudos em andamento de quem está por trás da ZTech Solutions.",
-    formationTitle: "Formação acadêmica",
-    items: [
+
       {
-        title: "Análise e Desenvolvimento de Sistemas",
-        institution: "Graduação",
-        status: "Concluído",
+        category: "Site",
+        problem: "Apresentação digital de uma cafeteria.",
+        solution: "Confira a captura do projeto Cafeteria.",
+        status: "Projeto",
       },
       {
-        title: "Formação Full Stack",
-        institution: "Especialização",
-        status: "Em andamento",
+        category: "Site",
+        problem: "Apresentação digital de um negócio de turismo.",
+        solution: "Confira a captura do projeto Turismo.",
+        status: "Projeto",
       },
-      { title: "React", institution: "Certificação", status: "Em breve" },
-      { title: "Next.js", institution: "Certificação", status: "Em breve" },
-      {
-        title: "TypeScript",
-        institution: "Certificação",
-        status: "Em breve",
-      },
-      {
-        title: "IA & Automação",
-        institution: "Certificação",
-        status: "Em breve",
-      },
-    ],
-    plannedTitle: "Certificações previstas",
-    studyingTitle: "Atualmente estudando",
-    studyingItems: [
-      "React Native",
-      "Next.js",
-      "Prisma",
-      "PostgreSQL",
-      "IA",
-      "Agentes IA",
-      "WhatsApp Automation",
-      "OSINT",
-      "Docker",
     ],
   },
   contact: {
@@ -474,4 +300,5 @@ export const pt: Dictionary = {
       "Seus dados continuam no formulário. Se preferir, envie a mesma mensagem direto pelo WhatsApp:",
     sendViaWhatsapp: "Enviar pelo WhatsApp",
   },
+  commercial: commercialPt,
 };

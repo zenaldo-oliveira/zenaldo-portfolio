@@ -11,11 +11,13 @@ const LAYER = ".interactive-bg";
 const EXPECTED: Record<string, { variant: string; intensity: string }> = {
   "/": { variant: "glow", intensity: "normal" },
   "/services": { variant: "grid", intensity: "normal" },
+  // Rotas comerciais sem configuração própria: padrão discreto.
+  "/plans": { variant: "subtle", intensity: "normal" },
+  "/build": { variant: "subtle", intensity: "normal" },
+  "/how-it-works": { variant: "subtle", intensity: "normal" },
   "/projects": { variant: "subtle", intensity: "normal" },
   "/about": { variant: "subtle", intensity: "normal" },
   "/contact": { variant: "subtle", intensity: "minimal" },
-  "/skills": { variant: "subtle", intensity: "normal" },
-  "/certificates": { variant: "subtle", intensity: "normal" },
 };
 
 const layerState = (page: Page) =>
@@ -89,10 +91,25 @@ test("background: mouse — segue com suavização, para quando o cursor para", 
   s = await layerState(page);
   check("primeiro movimento: luz acende sob o cursor", s.active === "true" && s.x === 400 && s.y === 300 && s.glowOpacity === "1", s);
 
+  // Amostra a posição da luz a cada quadro durante o movimento (independe da
+  // carga da máquina): com suavização, há posições intermediárias.
+  await page.evaluate(() => {
+    const glow = document.querySelector<HTMLElement>(".interactive-bg__glow")!;
+    const samples: number[] = [];
+    (window as Window & { __glowSamples?: number[] }).__glowSamples = samples;
+    const started = performance.now();
+    const read = () => {
+      const x = Number((glow.style.transform.match(/-?[\d.]+(?=px)/) ?? ["NaN"])[0]);
+      samples.push(x);
+      if (performance.now() - started < 1500) requestAnimationFrame(read);
+    };
+    requestAnimationFrame(read);
+  });
   await page.mouse.move(1100, 650);
-  const early = await layerState(page);
-  check("suavização: a luz ainda está a caminho logo após o movimento", early.x >= 400 && early.x < 1100, early.x);
-  await page.waitForTimeout(800);
+  await page.waitForTimeout(1600);
+  const samples = await page.evaluate(() => (window as Window & { __glowSamples?: number[] }).__glowSamples ?? []);
+  const between = samples.filter((x) => x > 401 && x < 1099);
+  check("suavização: a luz passa por posições intermediárias até o cursor", between.length > 0, { intermediarias: between.length, amostras: samples.length });
   s = await layerState(page);
   check("suavização: alcança o cursor e se acomoda", Math.abs(s.x - 1100) < 1 && Math.abs(s.y - 650) < 1, s);
 
@@ -124,10 +141,10 @@ test("background: /services grade, /contact mínimo e conteúdo clicável", asyn
   check("/services: grade revelada ao redor do cursor", s.gridDisplay === "block" && s.gridOpacity === "1" && s.glowOpacity === "0.6", s);
 
   // O primeiro link do índice continua recebendo o clique no ponto exato.
-  const target = page.locator('nav a[href="#sistemas"]');
+  const target = page.locator('nav a[href="#sites"]');
   const box = (await target.boundingBox())!;
   const hit = await page.evaluate(
-    ({ x, y }) => !!document.elementFromPoint(x, y)?.closest('a[href="#sistemas"]'),
+    ({ x, y }) => !!document.elementFromPoint(x, y)?.closest('a[href="#sites"]'),
     { x: box.x + box.width / 2, y: box.y + box.height / 2 },
   );
   check("/services: link sobre a luz recebe o ponteiro", hit);

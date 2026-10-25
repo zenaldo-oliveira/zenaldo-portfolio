@@ -1,3 +1,5 @@
+import type { CommercialCopy } from "@/lib/i18n/commercial-types";
+
 export type LanguageCode = "pt" | "en" | "es";
 
 export type Dictionary = {
@@ -5,9 +7,10 @@ export type Dictionary = {
     home: string;
     about: string;
     services: string;
+    plans: string;
+    build: string;
+    howItWorks: string;
     projects: string;
-    skills: string;
-    certificates: string;
     contact: string;
   };
   brand: {
@@ -16,7 +19,9 @@ export type Dictionary = {
   };
   sidebar: {
     navLabel: string;
-    moreTitle: string;
+    // Base da Sidebar: rótulo da navegação institucional e ação de orçamento.
+    footerNavLabel: string;
+    quoteCta: string;
     collapse: string;
     expand: string;
   };
@@ -50,8 +55,6 @@ export type Dictionary = {
     whatsappHint: string;
   };
   globalControls: {
-    themeToLight: string;
-    themeToDark: string;
     languageSelector: string;
     languageMenuLabel: string;
   };
@@ -73,36 +76,14 @@ export type Dictionary = {
       };
     };
     capabilities: {
-      label: string;
       items: string[];
-    };
-    problems: {
-      eyebrow: string;
-      title: string;
-      items: string[];
-      beforeLabel: string;
-      afterLabel: string;
-      quote: string;
-      cta: string;
     };
     solutions: {
-      eyebrow: string;
-      title: string;
-      description: string;
-      examplesLabel: string;
       flow: string[];
-      items: { title: string; description: string }[];
-      viewAll: string;
     };
     product: {
-      eyebrow: string;
-      title: string;
       tagline: string;
-      flowLabel: string;
       flow: string[];
-      ctaPrimary: string;
-      ctaSecondary: string;
-      caption: string;
     };
     cases: {
       eyebrow: string;
@@ -110,27 +91,11 @@ export type Dictionary = {
       description: string;
       explore: string;
       similar: string;
-      viewAll: string;
     };
+    // Etapas: t.commercial.howItWorks.steps (fonte única).
     howWeWork: {
       eyebrow: string;
       title: string;
-      steps: { title: string; description: string }[];
-    };
-    technologies: {
-      eyebrow: string;
-      title: string;
-      description: string;
-      groups: { web: string; mobile: string; backend: string; data: string; ai: string };
-    };
-    ai: {
-      eyebrow: string;
-      title: string;
-      description: string;
-      useCases: string[];
-      flow: { input: string; ai: string; action: string };
-      proofLabel: string;
-      proofText: string;
     };
     finalCta: {
       title: string;
@@ -147,7 +112,6 @@ export type Dictionary = {
     cta: string;
     secondaryCta: string;
     capabilitiesTitle: string;
-    whatWeDoEyebrow: string;
     proof: {
       eyebrow: string;
       title: string;
@@ -166,23 +130,15 @@ export type Dictionary = {
       eyebrow: string;
       title: string;
       description: string;
-      items: { name: string; area: string }[];
+      // Áreas de /about#tecnologias (as tecnologias e os projetos ficam em
+      // components/about/AboutTech.tsx).
+      groups: Record<"web" | "mobile" | "backend" | "data" | "ai" | "automation", string>;
+      appliedIn: string;
     };
     finalCta: {
       title: string;
       subtitle: string;
     };
-  };
-  services: {
-    eyebrow: string;
-    title: string;
-    description: string;
-    ctaPrimary: string;
-    ctaSecondary: string;
-    indexLabel: string;
-    labels: { problem: string; application: string; stack: string };
-    items: { title: string; description: string }[];
-    itemCta: string;
   };
   projects: {
     badge: string;
@@ -213,35 +169,6 @@ export type Dictionary = {
       status: string;
     }[];
   };
-  skills: {
-    eyebrow: string;
-    title: string;
-    description: string;
-    groups: {
-      web: string;
-      mobile: string;
-      backend: string;
-      data: string;
-      ai: string;
-      automation: string;
-    };
-    appliedIn: string;
-    toolsTitle: string;
-  };
-  certificates: {
-    eyebrow: string;
-    title: string;
-    description: string;
-    formationTitle: string;
-    items: {
-      title: string;
-      institution: string;
-      status: string;
-    }[];
-    plannedTitle: string;
-    studyingTitle: string;
-    studyingItems: string[];
-  };
   contact: {
     eyebrow: string;
     title: string;
@@ -267,4 +194,5 @@ export type Dictionary = {
     errorWhatsappHint: string;
     sendViaWhatsapp: string;
   };
+  commercial: CommercialCopy;
 };

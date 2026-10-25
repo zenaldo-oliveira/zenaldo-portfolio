@@ -1,12 +1,14 @@
 import { test } from "@playwright/test";
 import type { Browser } from "@playwright/test";
-import { BASE, WA_OFFICIAL, createCheck, finish, newPage, scrollThrough } from "./support/helpers";
+import { BASE, WA_OFFICIAL, createCheck, finish, headingText, newPage, scrollThrough } from "./support/helpers";
 
 // /about institucional: ordem das seções, H1, foto do fundador, prova visual,
 // links reais, CTA final, foto estática, idiomas, tema claro e reduced motion.
 // (52 verificações)
 
-const ORDER = ["sobre", "solucoes", "processo", "construimos", "fundador", "tecnologias", "contato"];
+// Ordem aprovada: apresentação → fundador → projetos reais → como funciona →
+// capacidade técnica → contratar.
+const ORDER = ["sobre", "fundador", "construimos", "processo", "tecnologias", "contato"];
 const PROJECTS = ["ZLift Manager", "Dieta IA", "Pet Shop Premium", "Barber Shop Premium", "Text To Voice AI", "EasyCar Mobile"];
 
 async function openAbout(
@@ -31,7 +33,7 @@ for (const width of [1440, 1280, 1024, 768, 390, 360]) {
     const order = await page.evaluate(() => [...document.querySelectorAll("main section[id]")].map((s) => s.id));
     check(`${width}px ordem das seções`, JSON.stringify(order) === JSON.stringify(ORDER), order);
 
-    const hero = await page.evaluate(() => ({ h1: document.querySelector("h1")?.textContent ?? "", count: document.querySelectorAll("h1").length }));
+    const hero = { h1: await headingText(page), count: await page.locator("h1").count() };
     check(`${width}px H1 institucional (único)`, hero.count === 1 && hero.h1.startsWith("Tecnologia para transformar problemas reais"), hero);
 
     const photo = await page.evaluate(() => {
@@ -100,7 +102,7 @@ test("/about: conteúdo, prova visual, links e CTA final", async ({ browser }) =
     wa.length,
   );
   const internal = await page.evaluate(() => [...new Set([...document.querySelectorAll("main a[href^='/']")].map((a) => a.getAttribute("href")))]);
-  check("links internos só para rotas reais", internal.every((h) => ["/projects", "/services", "/contact"].includes(h ?? "")), internal);
+  check("links internos só para rotas reais", internal.every((h) => ["/projects", "/services", "/contact", "/how-it-works"].includes(h ?? "")), internal);
   const external = await page.evaluate(() =>
     [...document.querySelectorAll<HTMLAnchorElement>("main a[href^='http']")].filter((a) => !a.href.startsWith("https://wa.me")).map((a) => a.href),
   );
@@ -131,10 +133,7 @@ test("/about: idiomas EN/ES, tema claro e reduced motion", async ({ browser }) =
   for (const [lang, h1, founder] of langs) {
     const { context, page, errors } = await openAbout(browser, 1440, { lang });
     await page.waitForTimeout(400);
-    const txt = await page.evaluate(() => ({
-      h1: document.querySelector("h1")?.textContent ?? "",
-      founder: document.querySelector("#fundador h2")?.textContent ?? "",
-    }));
+    const txt = { h1: await headingText(page), founder: (await page.locator("#fundador h2").textContent()) ?? "" };
     check(`${lang.toUpperCase()}: /about traduzido`, txt.h1.startsWith(h1) && txt.founder === founder, txt);
     check(`${lang.toUpperCase()}: sem erros`, errors.length === 0, errors.slice(0, 2));
     await context.close();

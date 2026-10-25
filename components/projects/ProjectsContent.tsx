@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { WhatsAppCta } from "@/components/contact/WhatsAppCta";
-import { FinalCtaSection } from "@/components/home/sections/FinalCtaSection";
+import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { FeaturedProduct } from "@/components/projects/FeaturedProduct";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { ProjectCarousel } from "@/components/projects/ProjectCarousel";
+import { AnimatedH1 } from "@/components/ui/AnimatedH1";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { Section, SectionHeader } from "@/components/ui/Section";
@@ -39,13 +40,11 @@ export function ProjectsContent() {
       <Section variant="hero">
         <Container>
           <div className="max-w-3xl">
-            <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
+            <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-accent">
               <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
               {p.badge}
             </p>
-            <h1 className="mt-5 text-balance text-4xl font-semibold leading-[1.1] tracking-tight text-text-primary sm:text-5xl">
-              {t.home.cases.title}
-            </h1>
+            <AnimatedH1 className="mt-5 text-balance text-4xl font-semibold leading-[1.1] tracking-tight text-text-primary sm:text-5xl" text={t.home.cases.title} />
             <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-text-secondary sm:text-lg">{p.description}</p>
           </div>
         </Container>

@@ -1,30 +1,27 @@
-import { AiSection } from "@/components/home/sections/AiSection";
-import { CapabilitiesStrip } from "@/components/home/sections/CapabilitiesStrip";
-import { CasesSection } from "@/components/home/sections/CasesSection";
-import { FinalCtaSection } from "@/components/home/sections/FinalCtaSection";
-import { HeroSection } from "@/components/home/sections/HeroSection";
-import { ProblemsSection } from "@/components/home/sections/ProblemsSection";
-import { ProcessSection } from "@/components/home/sections/ProcessSection";
-import { ProductSpotlightSection } from "@/components/home/sections/ProductSpotlightSection";
-import { SolutionsSection } from "@/components/home/sections/SolutionsSection";
-import { TechnologiesSection } from "@/components/home/sections/TechnologiesSection";
+"use client";
 
-// Orquestrador da Home: só define a ordem das seções. Âncoras: #inicio,
-// #capacidades, #problemas, #solucoes, #produto, #cases, #processo,
-// #tecnologias, #ia, #contato.
+import { EntriesSection } from "@/components/home/sections/EntriesSection";
+import { HeroSection } from "@/components/home/sections/HeroSection";
+import { PathsSection } from "@/components/home/sections/PathsSection";
+import { PreviewsSection } from "@/components/home/sections/PreviewsSection";
+import { ProcessSection } from "@/components/sections/ProcessSection";
+import { ReceivesSection } from "@/components/home/sections/ReceivesSection";
+import { useTranslations } from "@/lib/i18n/LanguageContext";
+
+// Home comercial: oferta e demonstração → três entradas → prévias reais →
+// o que o cliente recebe → etapas de contratação → dois caminhos finais.
+// Âncoras: #inicio, #entradas, #exemplos, #entrega, #processo, #contato.
 export function HomeContent() {
+  const h = useTranslations().commercial.home;
+
   return (
     <>
       <HeroSection />
-      <CapabilitiesStrip />
-      <ProblemsSection />
-      <SolutionsSection />
-      <ProductSpotlightSection />
-      <CasesSection />
-      <ProcessSection />
-      <TechnologiesSection />
-      <AiSection />
-      <FinalCtaSection />
+      <EntriesSection />
+      <PreviewsSection />
+      <ReceivesSection />
+      <ProcessSection steps={h.process.steps} eyebrow={h.process.eyebrow} title={h.process.title} />
+      <PathsSection />
     </>
   );
 }

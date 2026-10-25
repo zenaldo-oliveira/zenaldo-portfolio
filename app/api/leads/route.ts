@@ -19,9 +19,8 @@ const MAX_FIELD_LENGTH = 200;
 // prefixado com NEXT_PUBLIC_, nunca enviado ao client.
 const NOTIFICATION_RECIPIENT = process.env.LEAD_NOTIFICATION_WHATSAPP ?? "";
 
-// Rate limit próprio desta rota (mesmo padrão em memória do /api/chat, mas
-// separado — /api/leads é pública e é chamada bem menos vezes por sessão que
-// o chat, então o limite é mais apertado).
+// Rate limit em memória, por instância: /api/leads é pública e um visitante
+// a chama poucas vezes por sessão, então o limite é apertado.
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_REQUESTS = 5;
 const requestTimestamps = new Map<string, number[]>();

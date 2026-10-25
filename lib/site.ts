@@ -13,20 +13,27 @@ export const SOCIAL_LINKS = {
 
 // Rotas reais do site. `key` indexa t.nav (rótulos traduzidos). A Sidebar,
 // a Top Bar (breadcrumb) e o Footer leem daqui — nunca duplicar a lista.
+
+// Menu principal da Sidebar (vitrine comercial).
 export const MAIN_NAV = [
   { href: "/", key: "home" },
   { href: "/services", key: "services" },
+  { href: "/plans", key: "plans" },
+  { href: "/how-it-works", key: "howItWorks" },
   { href: "/projects", key: "projects" },
-  { href: "/about", key: "about" },
-  { href: "/contact", key: "contact" },
 ] as const;
 
-export const SECONDARY_NAV = [
-  { href: "/skills", key: "skills" },
-  { href: "/certificates", key: "certificates" },
-] as const;
+// Base da Sidebar: institucional e a ação de orçamento (fluxo de proposta).
+export const ABOUT_NAV = { href: "/about", key: "about" } as const;
+export const QUOTE_NAV = { href: "/build", key: "build" } as const;
 
-export type NavItem = (typeof MAIN_NAV)[number] | (typeof SECONDARY_NAV)[number];
+// Rodapé ("Mais"): demais páginas reais, fora do menu lateral.
+export const SECONDARY_NAV = [ABOUT_NAV, { href: "/contact", key: "contact" }] as const;
+
+// Breadcrumb: toda página com rótulo próprio.
+export const ALL_NAV = [...MAIN_NAV, ...SECONDARY_NAV, QUOTE_NAV] as const;
+
+export type NavItem = (typeof ALL_NAV)[number];
 
 export function isNavItemActive(href: string, pathname: string): boolean {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);

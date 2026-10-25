@@ -19,8 +19,6 @@ const ROUTE_BACKGROUNDS: Record<string, RouteBackground> = {
   "/about": { variant: "subtle" },
   // Mínimo: o foco da página é o formulário.
   "/contact": { variant: "subtle", intensity: "minimal" },
-  "/skills": { variant: "subtle" },
-  "/certificates": { variant: "subtle" },
 };
 
 const DEFAULT_BACKGROUND: RouteBackground = { variant: "subtle" };

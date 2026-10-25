@@ -2,16 +2,17 @@ import { ServicesContent } from "@/components/services/ServicesContent";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Serviços | ZTech Solutions — Desenvolvimento de Software",
+  title: "Soluções | ZTech Solutions — Sites, sistemas e automações",
   description:
-    "Sistemas empresariais, SaaS, inteligência artificial, automação, sistemas web e integrações — desenvolvidos com React, Next.js, TypeScript, Prisma e PostgreSQL.",
+    "Landing pages, catálogos digitais, CRM, automações, assistentes com IA, sistemas sob medida e ERP/SaaS: para quem serve, o que inclui e como contratar.",
   keywords: [
-    "sistemas empresariais",
-    "desenvolvimento de SaaS",
-    "inteligência artificial para empresas",
+    "criação de sites para empresas",
+    "catálogo digital",
+    "CRM para pequenas empresas",
     "automação de processos",
-    "integração de sistemas",
-    "desenvolvimento de software",
+    "assistente com inteligência artificial",
+    "sistema sob medida",
+    "ERP e SaaS",
   ],
   alternates: {
     canonical: "/services",

@@ -1,10 +1,14 @@
 import { test } from "@playwright/test";
 import type { Page } from "@playwright/test";
-import { BASE, createCheck, finish, newContext } from "./support/helpers";
+import { BASE, PROJECT_TITLES, createCheck, finish, newContext } from "./support/helpers";
 
 // Carrossel de /projects (Embla): slide central, vizinhos, setas, loop,
 // indicadores, teclado, arraste, links reais preservados e reduced motion.
-// (80 verificações)
+
+// Projetos reais cadastrados (PROJECT_TITLES, na ordem de
+// lib/projects/data.ts); o rótulo de cada slide é "N de TOTAL: título".
+const TOTAL = PROJECT_TITLES.length;
+const slideLabel = (n: number) => `${n} de ${TOTAL}: ${PROJECT_TITLES[n - 1]}`;
 
 // Links reais de lib/projects/data.ts — devem continuar todos lá, sem extras.
 // (Os CTAs de WhatsApp dos cards são verificados em pages.spec.ts.)
@@ -21,6 +25,21 @@ const EXPECTED_LINKS = [
 ];
 
 const CAROUSEL = '[aria-roledescription="carousel"]';
+
+test("carrossel /projects: todos os projetos reais, na ordem, uma única vez", async ({ browser }) => {
+  const check = createCheck();
+  const context = await newContext(browser, { viewport: { width: 1440, height: 900 } });
+  const page = await context.newPage();
+  await page.goto(BASE + "/projects", { waitUntil: "networkidle" });
+  const labels = await page.evaluate(() =>
+    [...document.querySelectorAll('[aria-roledescription="carousel"] [aria-roledescription="slide"]')].map((s) => s.getAttribute("aria-label") ?? ""),
+  );
+  const expected = PROJECT_TITLES.map((_, i) => slideLabel(i + 1));
+  check(`${TOTAL} slides com os projetos cadastrados, na ordem`, JSON.stringify(labels) === JSON.stringify(expected), labels);
+  check("cada projeto aparece uma única vez", new Set(PROJECT_TITLES).size === TOTAL && new Set(labels).size === labels.length, labels);
+  await context.close();
+  finish(check);
+});
 
 const info = (page: Page) =>
   page.evaluate(() => {
@@ -68,7 +87,7 @@ for (const width of [1440, 1280, 1024, 768, 390, 360]) {
     check(`${width}px sem overflow horizontal`, overflow <= 0, `excesso=${overflow}`);
 
     let s = await info(page);
-    check(`${width}px 1º projeto centralizado e ativo`, s.center[0]?.startsWith("1 de 6") && s.activeDot?.includes("1:"), s);
+    check(`${width}px 1º projeto centralizado e ativo`, s.center[0] === slideLabel(1) && s.activeDot?.includes("1:"), s);
     const ratio = s.centerW / s.vw;
     const expectPeek = width >= 768;
     check(
@@ -82,32 +101,32 @@ for (const width of [1440, 1280, 1024, 768, 390, 360]) {
     await page.click(`${CAROUSEL} button[aria-label="Próximo projeto"]`);
     await page.waitForTimeout(700);
     s = await info(page);
-    check(`${width}px "Próximo" → projeto 2`, s.center[0]?.startsWith("2 de 6") && s.live?.includes("2 de 6"), s);
+    check(`${width}px "Próximo" → projeto 2`, s.center[0] === slideLabel(2) && s.live?.includes(`2 de ${TOTAL}`) && s.live?.includes(PROJECT_TITLES[1]), s);
     await page.click(`${CAROUSEL} button[aria-label="Projeto anterior"]`);
     await page.waitForTimeout(700);
     s = await info(page);
-    check(`${width}px "Anterior" → projeto 1`, s.center[0]?.startsWith("1 de 6"), s.center);
+    check(`${width}px "Anterior" → projeto 1`, s.center[0] === slideLabel(1), s.center);
     await page.click(`${CAROUSEL} button[aria-label="Projeto anterior"]`);
     await page.waitForTimeout(700);
     s = await info(page);
-    check(`${width}px loop: anterior do 1º → projeto 6`, s.center[0]?.startsWith("6 de 6"), s.center);
+    check(`${width}px loop: anterior do 1º → último projeto (${TOTAL})`, s.center[0] === slideLabel(TOTAL), s.center);
 
     // Indicador
     await page.click(`${CAROUSEL} button[aria-label^="Ir para o projeto 4"]`);
     await page.waitForTimeout(700);
     s = await info(page);
-    check(`${width}px indicador → projeto 4`, s.center[0]?.startsWith("4 de 6") && s.activeDot?.includes("4:"), s);
+    check(`${width}px indicador → projeto 4`, s.center[0] === slideLabel(4) && s.activeDot?.includes("4:"), s);
 
     // Teclado: foco no botão "Próximo" + setas
     await page.focus(`${CAROUSEL} button[aria-label="Próximo projeto"]`);
     await page.keyboard.press("ArrowRight");
     await page.waitForTimeout(700);
     s = await info(page);
-    check(`${width}px teclado → avança (5)`, s.center[0]?.startsWith("5 de 6"), s.center);
+    check(`${width}px teclado → avança (5)`, s.center[0] === slideLabel(5), s.center);
     await page.keyboard.press("ArrowLeft");
     await page.waitForTimeout(700);
     s = await info(page);
-    check(`${width}px teclado ← volta (4)`, s.center[0]?.startsWith("4 de 6"), s.center);
+    check(`${width}px teclado ← volta (4)`, s.center[0] === slideLabel(4), s.center);
 
     // Arraste (eventos de ponteiro)
     const vp = await page.evaluate(() => {
@@ -120,7 +139,7 @@ for (const width of [1440, 1280, 1024, 768, 390, 360]) {
     await page.mouse.up();
     await page.waitForTimeout(900);
     s = await info(page);
-    check(`${width}px arraste para a esquerda → projeto 5`, s.center[0]?.startsWith("5 de 6"), s.center);
+    check(`${width}px arraste para a esquerda → projeto 5`, s.center[0] === slideLabel(5), s.center);
 
     // Links preservados
     const links = await page.evaluate(() =>
@@ -153,7 +172,7 @@ test("carrossel /projects: prefers-reduced-motion troca instantânea", async ({ 
   await page.click(`${CAROUSEL} button[aria-label="Próximo projeto"]`);
   await page.waitForTimeout(80);
   const s = await info(page);
-  check("reduced motion: troca instantânea (projeto 2 em <80ms)", s.center[0]?.startsWith("2 de 6"), s.center);
+  check("reduced motion: troca instantânea (projeto 2 em <80ms)", s.center[0] === slideLabel(2), s.center);
   await context.close();
   finish(check);
 });

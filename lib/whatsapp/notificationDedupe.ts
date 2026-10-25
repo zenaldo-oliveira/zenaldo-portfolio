@@ -1,6 +1,6 @@
 const DEFAULT_WINDOW_MS = 5 * 60_000;
 
-// Best-effort, em memória (mesmo padrão do rate limit do /api/chat): evita
+// Best-effort, em memória (mesmo padrão do rate limit de /api/leads): evita
 // notificar duas vezes o mesmo lead dentro da janela de proteção. Por
 // instância do servidor, não é um lock distribuído.
 const recentNotifications = new Map<string, number>();

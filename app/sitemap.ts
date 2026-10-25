@@ -5,9 +5,10 @@ const PUBLIC_ROUTES = [
   "",
   "/about",
   "/services",
+  "/plans",
+  "/build",
+  "/how-it-works",
   "/projects",
-  "/skills",
-  "/certificates",
   "/contact",
 ];
 

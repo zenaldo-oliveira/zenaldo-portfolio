@@ -1,6 +1,6 @@
 import { test } from "@playwright/test";
 import type { Page } from "@playwright/test";
-import { BASE, ROUTES, WA_OFFICIAL, WIDTHS, createCheck, finish, newPage, settle } from "./support/helpers";
+import { BASE, ROUTES, WA_EXISTING_SITE, WA_OFFICIAL, WIDTHS, createCheck, finish, newPage, settle } from "./support/helpers";
 
 // Navegação global: Sidebar (desktop e drawer mobile), Top Bar, menu ⋮
 // (idioma/tema), recolhimento persistido, links de WhatsApp, âncoras, rodapé,
@@ -44,7 +44,7 @@ const isVisible = (page: Page, selector: string) =>
 
 const navLabels = (page: Page) =>
   page.evaluate(() =>
-    [...document.querySelectorAll("#sidebar nav a span.truncate")].map((s) => s.textContent).slice(0, 5).join(" "),
+    [...document.querySelectorAll("#sidebar nav a span.truncate")].map((s) => s.textContent).join(" "), // menu principal + "Sobre a ZTech" (base)
   );
 
 for (const width of WIDTHS) {
@@ -87,14 +87,14 @@ for (const width of WIDTHS) {
   });
 }
 
-test("Sidebar desktop: navegação, item ativo, breadcrumb e grupo Mais", async ({ browser }) => {
+test("Sidebar desktop: menu comercial, item ativo, breadcrumb e Pedir orçamento", async ({ browser }) => {
   const check = createCheck();
   const { context, page, errors } = await newPage(browser, 1440);
   await page.goto(BASE + "/", { waitUntil: "networkidle" });
 
   const items: [string, string][] = [
-    ["/services", "Soluções"], ["/projects", "Cases"], ["/about", "Sobre"], ["/contact", "Contato"],
-    ["/skills", "Habilidades"], ["/certificates", "Certificados"], ["/", "Início"],
+    ["/services", "Sites e sistemas"], ["/plans", "Planos e valores"], ["/how-it-works", "Como funciona"],
+    ["/projects", "Projetos reais"], ["/about", "Sobre a ZTech"], ["/", "Início"],
   ];
   for (const [href, label] of items) {
     await page.click(`#sidebar nav a[href="${href}"]`);
@@ -108,8 +108,24 @@ test("Sidebar desktop: navegação, item ativo, breadcrumb e grupo Mais", async 
     check(`sidebar → ${href}: único ativo + breadcrumb "${label}"`, info.cur.length === 1 && info.cur[0] === href && info.crumb === label, info);
   }
 
-  const more = await page.evaluate(() => [...document.querySelectorAll("#sidebar nav p")].map((p) => p.textContent));
-  check('grupo "Mais" presente na sidebar', more.includes("Mais"), more);
+  const sidebar = await page.evaluate(() => ({
+    // Menu principal: o <nav> "Navegação principal" (o da base é "Institucional").
+    main: [...document.querySelectorAll('#sidebar nav[aria-label="Navegação principal"] > ul a')].map((a) => a.getAttribute("href")),
+    headings: [...document.querySelectorAll("#sidebar nav p")].map((p) => p.textContent),
+    hrefs: [...document.querySelectorAll("#sidebar a")].map((a) => a.getAttribute("href")),
+    highlighted: [...document.querySelectorAll("#sidebar a")].filter((a) => getComputedStyle(a).backgroundColor === getComputedStyle(document.documentElement).getPropertyValue("--cta").trim() || a.classList.contains("bg-cta")).map((a) => [a.textContent?.trim(), a.getAttribute("href")]),
+  }));
+  check("menu principal com os 5 itens aprovados, na ordem", JSON.stringify(sidebar.main) === JSON.stringify(["/", "/services", "/plans", "/how-it-works", "/projects"]), sidebar.main);
+  check('sem Habilidades, Certificados nem grupo "Mais" na sidebar', !sidebar.hrefs.includes("/skills") && !sidebar.hrefs.includes("/certificates") && !sidebar.headings.includes("Mais"), sidebar);
+  check('único destaque: "Pedir orçamento" → configurador', JSON.stringify(sidebar.highlighted) === JSON.stringify([["Pedir orçamento", "/build"]]), sidebar.highlighted);
+  await page.click('#sidebar a[href="/build"]');
+  await page.waitForURL(BASE + "/build");
+  await settle(page, 200);
+  const quote = await page.evaluate(() => ({
+    current: document.querySelector('#sidebar a[href="/build"]')?.getAttribute("aria-current"),
+    crumb: document.querySelector('header nav li[aria-current="page"]')?.textContent,
+  }));
+  check('"Pedir orçamento" abre o configurador, marcado como ativo, com breadcrumb', quote.current === "page" && quote.crumb === "Montar projeto", quote);
   const hover = await page.evaluate(() => getComputedStyle(document.querySelector('#sidebar nav a[href="/about"]')!).backgroundColor);
   await page.hover('#sidebar nav a[href="/about"]');
   await settle(page, 250);
@@ -211,7 +227,7 @@ test("menu ⋮ (desktop): teclado, Esc, clique fora, Tab, idioma e tema", async 
     open: !!document.querySelector('[role="menu"]'),
   }));
   const enNav = await navLabels(page);
-  check("EN: html lang=en, sidebar e CTA traduzidos, menu segue aberto", en.lang === "en" && enNav === "Home Solutions Cases About Contact" && en.cta === "Talk to ZTech" && en.open, { ...en, nav: enNav });
+  check("EN: html lang=en, sidebar e CTA traduzidos, menu segue aberto", en.lang === "en" && enNav === "Home Websites and systems Plans and pricing How it works Real projects About ZTech" && en.cta === "Talk to ZTech" && en.open, { ...en, nav: enNav });
   await page.click('[role="menuitemradio"]:has-text("Español")');
   await settle(page, 250);
   const es = await page.evaluate(() => ({
@@ -219,12 +235,12 @@ test("menu ⋮ (desktop): teclado, Esc, clique fora, Tab, idioma e tema", async 
     trig: document.querySelector('#sidebar button[aria-haspopup="menu"]')!.textContent!.trim(),
   }));
   const esNav = await navLabels(page);
-  check("ES: html lang=es, sidebar traduzida", es.lang === "es" && esNav === "Inicio Soluciones Casos Nosotros Contacto" && es.trig === "Preferencias", { ...es, nav: esNav });
+  check("ES: html lang=es, sidebar traduzida", es.lang === "es" && esNav === "Inicio Sitios y sistemas Planes y valores Cómo funciona Proyectos reales Sobre ZTech" && es.trig === "Preferencias", { ...es, nav: esNav });
   await page.click('[role="menuitemradio"]:has-text("Português")');
   await settle(page, 250);
   const ptLang = await page.evaluate(() => document.documentElement.lang);
   const ptNav = await navLabels(page);
-  check("PT: de volta, html lang=pt-BR", ptLang === "pt-BR" && ptNav === "Início Soluções Cases Sobre Contato", { lang: ptLang, nav: ptNav });
+  check("PT: de volta, html lang=pt-BR", ptLang === "pt-BR" && ptNav === "Início Sites e sistemas Planos e valores Como funciona Projetos reais Sobre a ZTech", { lang: ptLang, nav: ptNav });
   await page.screenshot({ path: test.info().outputPath("menu-open-1440.png") });
 
   // Tema
@@ -367,8 +383,14 @@ test("links do WhatsApp em / e /contact (390 e 1440px)", async ({ browser }) => 
       );
       const bad = links.filter((l) => l.href !== new URL(l.href).href || !l.href.startsWith("https://wa.me/5565992832422") || l.target !== "_blank" || !l.rel.includes("noopener"));
       const defaults = links.filter((l) => l.href === WA_OFFICIAL);
+      // Home: o caminho "Já tenho um site" leva uma mensagem própria (só um link).
+      const existing = route === "/" ? links.filter((l) => l.href === WA_EXISTING_SITE).length : 0;
       check(`${width}px ${route}: ${links.length} links WhatsApp (_blank, noopener, número oficial)`, links.length > 0 && bad.length === 0, bad);
-      check(`${width}px ${route}: todos com a mensagem oficial`, defaults.length === links.length, `${defaults.length}/${links.length}`);
+      check(
+        `${width}px ${route}: mensagem oficial (e a de site existente na Home)`,
+        defaults.length + existing === links.length && existing === (route === "/" ? 1 : 0),
+        `${defaults.length}+${existing}/${links.length}`,
+      );
     }
     await context.close();
   }
@@ -379,7 +401,7 @@ test("âncoras da Home ficam abaixo da Top Bar", async ({ browser }) => {
   const check = createCheck();
   const { context, page } = await newPage(browser, 1440);
   await page.goto(BASE + "/", { waitUntil: "networkidle" });
-  for (const id of ["problemas", "solucoes", "cases", "processo", "ia", "tecnologias", "contato"]) {
+  for (const id of ["entradas", "exemplos", "entrega", "processo", "contato"]) {
     await page.evaluate((i) => (location.hash = i), id);
     await settle(page, 300);
     const top = await page.evaluate((i) => Math.round(document.getElementById(i)!.getBoundingClientRect().top), id);

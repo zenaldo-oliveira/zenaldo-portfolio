@@ -25,7 +25,11 @@ export default defineConfig({
   use: {
     channel,
     headless: true,
-    trace: "retain-on-failure",
+    // Rastro só das falhas, sem screencast: a espiral do Hero repinta a cada
+    // quadro e o screencast codificava todos eles — com 3 workers, os testes
+    // da Home passavam de 10 min (medido: 3 testes em >260s com screencast,
+    // 18s só com snapshots do DOM). Os snapshots do DOM continuam no rastro.
+    trace: { mode: "retain-on-failure", screenshots: false },
   },
   webServer: {
     command: `npm run start -- -p ${PORT}`,

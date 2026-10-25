@@ -5,13 +5,14 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
 import {
-  Award,
+  AppWindow,
   Building2,
-  CodeXml,
+  ClipboardList,
   FolderKanban,
   House,
-  Layers,
   MessageSquare,
+  ReceiptText,
+  Route,
   PanelLeftClose,
   PanelLeftOpen,
   X,
@@ -22,19 +23,20 @@ import { Logo } from "@/components/layout/Logo";
 import { DESKTOP_QUERY, MobileMenu } from "@/components/layout/MobileMenu";
 import { useTranslations } from "@/lib/i18n/LanguageContext";
 import { useSidebarCollapsed } from "@/lib/preferences";
-import { isNavItemActive, MAIN_NAV, SECONDARY_NAV } from "@/lib/site";
+import { ABOUT_NAV, isNavItemActive, MAIN_NAV, QUOTE_NAV } from "@/lib/site";
 import type { NavItem } from "@/lib/site";
 
 export const SIDEBAR_ID = "sidebar";
 
 const NAV_ICONS: Record<NavItem["key"], LucideIcon> = {
   home: House,
-  services: Layers,
+  services: AppWindow,
+  plans: ReceiptText,
+  build: ClipboardList,
+  howItWorks: Route,
   projects: FolderKanban,
   about: Building2,
   contact: MessageSquare,
-  skills: CodeXml,
-  certificates: Award,
 };
 
 function subscribeToDesktop(onChange: () => void) {
@@ -176,28 +178,46 @@ export function Sidebar({ isDrawerOpen, onCloseDrawer }: SidebarProps) {
         <nav
           aria-label={t.sidebar.navLabel}
           // Recolhida: sem rolagem, para os tooltips poderem sair da barra
-          // (os 7 itens cabem em qualquer altura de desktop).
+          // (os 5 itens cabem em qualquer altura de desktop).
           className="flex-1 overflow-y-auto overflow-x-hidden px-2 py-3 lg:sidebar-collapsed:overflow-x-visible lg:sidebar-collapsed:overflow-y-visible"
         >
           <ul className="space-y-0.5">{MAIN_NAV.map(renderLink)}</ul>
-
-          <div className="mt-6">
-            <p className="px-3 pb-1.5 font-mono text-[11px] uppercase tracking-wider text-text-muted lg:sidebar-collapsed:sr-only">
-              {t.sidebar.moreTitle}
-            </p>
-            <div
-              aria-hidden="true"
-              className="mx-3 mb-2 hidden h-px bg-border lg:sidebar-collapsed:block"
-            />
-            <ul className="space-y-0.5">{SECONDARY_NAV.map(renderLink)}</ul>
-          </div>
         </nav>
 
-        <div className="shrink-0 border-t border-border p-2">
+        {/* Base: institucional, configurações e o único destaque — o pedido
+            de orçamento (fluxo de proposta em /build). */}
+        <div className="shrink-0 space-y-1 border-t border-border p-2">
+          <nav aria-label={t.sidebar.footerNavLabel}>
+            <ul>{renderLink(ABOUT_NAV)}</ul>
+          </nav>
           <GlobalControls />
+          <QuoteLink
+            label={t.sidebar.quoteCta}
+            isActive={isNavItemActive(QUOTE_NAV.href, pathname)}
+            onNavigate={() => onCloseDrawer(false)}
+          />
         </div>
       </div>
     </>
+  );
+}
+
+// Ação de orçamento: único item destacado da barra. Recolhida, vira só o
+// ícone com tooltip, como os demais itens.
+function QuoteLink({ label, isActive, onNavigate }: { label: string; isActive: boolean; onNavigate: () => void }) {
+  return (
+    <div className="sidebar-tip relative pt-1">
+      <Link
+        href={QUOTE_NAV.href}
+        aria-current={isActive ? "page" : undefined}
+        onClick={onNavigate}
+        className="flex h-10 items-center justify-center gap-2 rounded-md bg-cta px-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-cta-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background aria-[current=page]:ring-2 aria-[current=page]:ring-accent/60 lg:sidebar-collapsed:px-0"
+      >
+        <ClipboardList size={16} strokeWidth={2} aria-hidden="true" className="shrink-0" />
+        <span className="truncate lg:sidebar-collapsed:sr-only">{label}</span>
+      </Link>
+      <SidebarTooltip label={label} />
+    </div>
   );
 }
 

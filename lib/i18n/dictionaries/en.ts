@@ -1,13 +1,15 @@
+import { commercialEn } from "@/lib/i18n/dictionaries/commercial/en";
 import type { Dictionary } from "@/lib/i18n/types";
 
 export const en: Dictionary = {
   nav: {
     home: "Home",
-    about: "About",
-    services: "Solutions",
-    projects: "Cases",
-    skills: "Skills",
-    certificates: "Certificates",
+    about: "About ZTech",
+    services: "Websites and systems",
+    plans: "Plans and pricing",
+    build: "Build my project",
+    howItWorks: "How it works",
+    projects: "Real projects",
     contact: "Contact",
   },
   brand: {
@@ -17,7 +19,8 @@ export const en: Dictionary = {
   },
   sidebar: {
     navLabel: "Main navigation",
-    moreTitle: "More",
+    footerNavLabel: "Company",
+    quoteCta: "Request a quote",
     collapse: "Collapse sidebar",
     expand: "Expand sidebar",
   },
@@ -49,19 +52,18 @@ export const en: Dictionary = {
     whatsappHint: "on WhatsApp (opens in a new tab)",
   },
   globalControls: {
-    themeToLight: "Switch to light theme",
-    themeToDark: "Switch to dark theme",
     languageSelector: "Select language",
     languageMenuLabel: "Available languages",
   },
   home: {
     hero: {
-      eyebrow: "ZTech Solutions",
-      title: "Software that turns processes into digital products.",
+      eyebrow: "For small and mid-sized businesses",
+      title:
+        "We build websites, web systems and automations for your business.",
       description:
-        "We build web systems, apps, SaaS platforms, AI-powered solutions and tailor-made automations for businesses that want more productivity, control and scale.",
-      ctaPrimary: "Talk to ZTech",
-      ctaSecondary: "Explore projects",
+        "From a landing page to a custom system. You choose where to start, build your request in a few minutes and receive a proposal with setup and monthly fee.",
+      ctaPrimary: "I want to create my project",
+      ctaSecondary: "Explore the solutions",
       mockup: {
         caption: "Concept interface · ZLift Manager",
         modules: [
@@ -80,7 +82,6 @@ export const en: Dictionary = {
       },
     },
     capabilities: {
-      label: "What we build",
       items: [
         "Web Systems",
         "SaaS",
@@ -90,60 +91,11 @@ export const en: Dictionary = {
         "Integrations",
       ],
     },
-    problems: {
-      eyebrow: "The problem",
-      title: "Does your business still rely on manual processes?",
-      items: [
-        "Scattered spreadsheets",
-        "Manual processes",
-        "Decentralized information",
-        "Too many repetitive tasks",
-        "Systems that don't talk to each other",
-        "Hard to track operations",
-        "Lack of metrics",
-        "Manual customer service",
-      ],
-      beforeLabel: "Today",
-      afterLabel: "With tailor-made software",
-      quote: "Technology should simplify operations, not complicate them.",
-      cta: "I want to improve my process",
-    },
     solutions: {
-      eyebrow: "Solutions",
-      title: "We build digital solutions for different challenges.",
-      description:
-        "Enterprise systems, SaaS, artificial intelligence, automation, web systems and integrations.",
-      examplesLabel: "Real case",
       flow: ["Input", "AI", "Automation", "Result"],
-      items: [
-        {
-          title: "Custom systems",
-          description:
-            "Tailor-made systems for management, operations, clients and processes — instead of loose spreadsheets and manual control.",
-        },
-        {
-          title: "Apps",
-          description:
-            "Mobile apps built with React Native and Expo, connected to their own backend.",
-        },
-        {
-          title: "SaaS",
-          description:
-            "We turn a solution into a product: a scalable platform, ready to serve multiple clients.",
-        },
-        {
-          title: "AI & automation",
-          description:
-            "AI applied to customer service, lead qualification and support, plus repetitive processes automated across systems, WhatsApp and everyday tools.",
-        },
-      ],
-      viewAll: "View all solutions",
     },
     product: {
-      eyebrow: "Own product",
-      title: "A proprietary product in operation",
       tagline: "A platform for managing maintenance operations.",
-      flowLabel: "Centralized operational flow",
       flow: [
         "Clients",
         "Elevators",
@@ -156,61 +108,18 @@ export const en: Dictionary = {
         "Signature",
         "Report",
       ],
-      ctaPrimary: "Explore the project",
-      ctaSecondary: "Talk to ZTech",
-      caption: "Concept representation of the platform modules.",
     },
     cases: {
-      eyebrow: "Cases",
+      eyebrow: "Real projects",
       title: "Projects we've built",
       description:
         "Real examples of what we've already built — the problem, the solution and the technology behind each one.",
       explore: "Explore",
       similar: "I want something similar",
-      viewAll: "View all cases",
     },
     howWeWork: {
       eyebrow: "How we work",
       title: "From problem to software",
-      steps: [
-        { title: "Understand", description: "We understand the problem and map the process." },
-        { title: "Design", description: "We define the solution." },
-        { title: "Build", description: "We develop, test and ship to production." },
-        { title: "Evolve", description: "We evolve the solution." },
-      ],
-    },
-    technologies: {
-      eyebrow: "Technology",
-      title: "Built with modern technology",
-      description: "The stack used across ZTech projects, organized by capability.",
-      groups: {
-        web: "Web",
-        mobile: "Mobile",
-        backend: "Backend",
-        data: "Data",
-        ai: "AI / Automation",
-      },
-    },
-    ai: {
-      eyebrow: "AI & automation",
-      title: "Artificial intelligence applied to business.",
-      description:
-        "We use AI for customer service, lead qualification, automation, analytics, support and productivity — cutting repetitive manual work out of the operation.",
-      useCases: [
-        "Customer service",
-        "Lead qualification",
-        "Automation",
-        "Analytics",
-        "Support",
-        "Productivity",
-      ],
-      flow: {
-        input: "Message or data",
-        ai: "Artificial intelligence",
-        action: "Action in the system or WhatsApp",
-      },
-      proofLabel: "Real case",
-      proofText: "Dieta IA: an app that generates personalized diets with Gemini AI.",
     },
     finalCta: {
       title: "Got a process that could be better?",
@@ -229,7 +138,6 @@ export const en: Dictionary = {
     cta: "Talk to ZTech",
     secondaryCta: "Explore cases",
     capabilitiesTitle: "What we build",
-    whatWeDoEyebrow: "What we do",
     proof: {
       eyebrow: "Proof",
       title: "What we've already built",
@@ -255,65 +163,21 @@ export const en: Dictionary = {
       eyebrow: "Technical capability",
       title: "The technology we build with.",
       description:
-        "Development of enterprise systems, SaaS, automations and artificial intelligence solutions, using React, Next.js, TypeScript, Prisma and PostgreSQL.",
-      items: [
-        { name: "React", area: "Interfaces" },
-        { name: "Next.js", area: "Web applications" },
-        { name: "TypeScript", area: "Language" },
-        { name: "Node.js", area: "Backend" },
-        { name: "Prisma", area: "ORM" },
-        { name: "PostgreSQL", area: "Database" },
-        { name: "AI", area: "Gemini AI · OpenAI" },
-        { name: "Automation", area: "WhatsApp · integrations" },
-      ],
+        "The technologies we use to deliver, with the real projects where each one has been applied.",
+      groups: {
+        web: "Web",
+        mobile: "Mobile",
+        backend: "Backend",
+        data: "Data",
+        ai: "Artificial intelligence",
+        automation: "Automation",
+      },
+      appliedIn: "Applied in",
     },
     finalCta: {
       title: "Got a process that could be better?",
       subtitle: "Tell ZTech what your business needs.",
     },
-  },
-  services: {
-    eyebrow: "Solutions",
-    title: "We build digital solutions for different challenges.",
-    description:
-      "Development of enterprise systems, SaaS, automations and artificial intelligence solutions, using React, Next.js, TypeScript, Prisma and PostgreSQL.",
-    ctaPrimary: "Talk to ZTech",
-    ctaSecondary: "View projects",
-    indexLabel: "On this page",
-    labels: { problem: "Solves", application: "Real application", stack: "Stack" },
-    items: [
-      {
-        title: "Enterprise Systems",
-        description:
-          "Tailor-made systems for management, operations, clients and processes — instead of loose spreadsheets and manual control.",
-      },
-      {
-        title: "SaaS",
-        description:
-          "We turn a solution into a product: a scalable platform, ready to serve multiple clients.",
-      },
-      {
-        title: "Artificial Intelligence",
-        description:
-          "AI applied to customer service, lead qualification and support, cutting repetitive manual work.",
-      },
-      {
-        title: "Automation",
-        description:
-          "Repetitive processes automated across systems, WhatsApp and the company's everyday tools.",
-      },
-      {
-        title: "Web Systems",
-        description:
-          "Modern, responsive applications, built according to the real needs of the business.",
-      },
-      {
-        title: "Integrations",
-        description:
-          "We connect APIs, databases and services to eliminate rework between systems that don't talk to each other.",
-      },
-    ],
-    itemCta: "Talk about this solution",
   },
   projects: {
     badge: "Cases and Projects",
@@ -328,7 +192,10 @@ export const en: Dictionary = {
     githubLabel: "GitHub",
     media: {
       screenshotAlt: "Published home page of {title}",
-      phoneAlts: ["Start screen of the {title} app", "Diet plan generated by the {title} app"],
+      phoneAlts: [
+        "Start screen of the {title} app",
+        "Diet plan generated by the {title} app",
+      ],
     },
     carousel: {
       region: "Projects",
@@ -386,70 +253,18 @@ export const en: Dictionary = {
           "A mobile app integrated with a proprietary backend to centralize fleet management.",
         status: "In Development",
       },
-    ],
-  },
-  skills: {
-    eyebrow: "Technology",
-    title: "Technical capabilities",
-    description:
-      "Full Stack development, Artificial Intelligence and automations to build modern, scalable, results-focused solutions.",
-    groups: {
-      web: "Web",
-      mobile: "Mobile",
-      backend: "Backend",
-      data: "Data",
-      ai: "Artificial intelligence",
-      automation: "Automation",
-    },
-    appliedIn: "Applied in",
-    toolsTitle: "Everyday tools",
-  },
-  certificates: {
-    eyebrow: "Education",
-    title: "Education and certifications",
-    description:
-      "Academic background, specialization and ongoing studies of the person behind ZTech Solutions.",
-    formationTitle: "Academic background",
-    items: [
       {
-        title: "Systems Analysis and Development",
-        institution: "Degree",
-        status: "Completed",
+        category: "Website",
+        problem: "Digital presentation of a coffee shop.",
+        solution: "View the Cafeteria project screenshot.",
+        status: "Project",
       },
       {
-        title: "Full Stack Program",
-        institution: "Specialization",
-        status: "In progress",
+        category: "Website",
+        problem: "Digital presentation of a tourism business.",
+        solution: "View the Turismo project screenshot.",
+        status: "Project",
       },
-      { title: "React", institution: "Certification", status: "Coming soon" },
-      {
-        title: "Next.js",
-        institution: "Certification",
-        status: "Coming soon",
-      },
-      {
-        title: "TypeScript",
-        institution: "Certification",
-        status: "Coming soon",
-      },
-      {
-        title: "AI & Automation",
-        institution: "Certification",
-        status: "Coming soon",
-      },
-    ],
-    plannedTitle: "Planned certifications",
-    studyingTitle: "Currently studying",
-    studyingItems: [
-      "React Native",
-      "Next.js",
-      "Prisma",
-      "PostgreSQL",
-      "AI",
-      "AI Agents",
-      "WhatsApp Automation",
-      "OSINT",
-      "Docker",
     ],
   },
   contact: {
@@ -478,4 +293,5 @@ export const en: Dictionary = {
       "Your details are still in the form. If you prefer, send the same message directly on WhatsApp:",
     sendViaWhatsapp: "Send via WhatsApp",
   },
+  commercial: commercialEn,
 };

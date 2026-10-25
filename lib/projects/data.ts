@@ -4,6 +4,8 @@ import dietaHome from "@/public/projects/screenshots/dieta-ia-inicio.webp";
 import dietaResult from "@/public/projects/screenshots/dieta-ia-resultado.webp";
 import petShopShot from "@/public/projects/screenshots/pet-shop-premium.webp";
 import textToVoiceShot from "@/public/projects/screenshots/text-to-voice-ai.webp";
+import cafeteriaShot from "@/public/projects/screenshots/cafeteria.webp";
+import turismoShot from "@/public/projects/screenshots/turismo.webp";
 
 // Fonte única dos projetos reais da ZTech (Home e /projects). Nomes,
 // tecnologias e links não são traduzidos (nomes próprios / marcas reais).
@@ -78,21 +80,23 @@ export const PROJECTS: Project[] = [
     featured: false,
     media: { kind: "screenshot", src: textToVoiceShot },
   },
+
   {
     title: "EasyCar Mobile",
     technologies: ["React Native", "JavaScript", "Node.js"],
     github: "https://github.com/zenaldo-oliveira/Frontend-easycar-mobile",
     featured: false,
   },
-];
-
-// Tecnologias reais, agrupadas por capacidade — tiradas dos projetos acima,
-// da stack declarada em t.services.description e do próprio site (Supabase,
-// OpenAI e integração com WhatsApp existem neste código).
-export const TECH_GROUPS: { key: "web" | "mobile" | "backend" | "data" | "ai"; items: string[] }[] = [
-  { key: "web", items: ["Next.js", "React", "TypeScript", "Tailwind CSS"] },
-  { key: "mobile", items: ["React Native", "Expo", "React Query", "Zustand"] },
-  { key: "backend", items: ["Node.js", "Fastify", "APIs", "Railway"] },
-  { key: "data", items: ["PostgreSQL", "Prisma", "Supabase"] },
-  { key: "ai", items: ["Gemini AI", "OpenAI", "Web Speech API", "WhatsApp"] },
+  {
+    title: "Cafeteria",
+    technologies: [],
+    featured: false,
+    media: { kind: "screenshot", src: cafeteriaShot },
+  },
+  {
+    title: "Turismo",
+    technologies: [],
+    featured: false,
+    media: { kind: "screenshot", src: turismoShot },
+  },
 ];

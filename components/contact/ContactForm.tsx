@@ -20,7 +20,7 @@ function buildContactWhatsAppUrl({ name, whatsapp, email, message }: ContactData
   const text = `
 
 
-🚀 Novo contato pelo Portfólio
+🚀 Novo contato pelo site da ZTech
 
 👤 Nome: ${name}
 

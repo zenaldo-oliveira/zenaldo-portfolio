@@ -1,21 +1,22 @@
 import { test } from "@playwright/test";
 import type { Browser, Page } from "@playwright/test";
-import { BASE, WA_OFFICIAL, createCheck, finish, newContext, scrollThrough } from "./support/helpers";
+import { BASE, PROJECT_TITLES, WA_EXISTING_SITE, WA_OFFICIAL, createCheck, finish, newContext, scrollThrough } from "./support/helpers";
 
 // Todas as rotas: SEO (H1 estático, metadata), overflow, texto invisível,
 // WhatsApp oficial, índice de /services, filtros de /projects, formulário de
 // /contact (API de leads SIMULADA — nenhum lead real é criado), reduced
-// motion e tema claro. (124 verificações)
+// motion, tema claro e redirecionamentos das páginas antigas do portfólio.
 
 // H1 esperado de cada rota (idioma padrão: PT).
 const ROUTES: Record<string, string> = {
-  "/": "Software que transforma processos",
-  "/services": "Construímos soluções digitais",
+  "/": "Sites para apresentar sua empresa. Sistemas para facilitar sua operação.",
+  "/services": "Soluções para vender mais e organizar a operação.",
+  "/plans": "Escolha o site ou sistema que sua empresa precisa.",
+  "/build": "Monte seu projeto em poucos passos.",
+  "/how-it-works": "Do diagnóstico ao suporte contínuo.",
   "/projects": "Projetos que construímos",
   "/about": "Tecnologia para transformar problemas reais",
   "/contact": "Vamos conversar sobre seu projeto.",
-  "/skills": "Capacidades técnicas",
-  "/certificates": "Formação e certificações",
 };
 const PATHS = Object.keys(ROUTES);
 
@@ -47,8 +48,32 @@ test("SEO: H1 único e estático no HTML do servidor + metadata", async ({ brows
   finish(check);
 });
 
+test("/skills e /certificates: redirecionamento permanente para /about, sem link nem sitemap", async ({ browser }) => {
+  const check = createCheck();
+  const context = await ctx(browser, 1440);
+  for (const [from, to] of [["/skills", "/about#tecnologias"], ["/certificates", "/about"]]) {
+    const response = await context.request.get(BASE + from, { maxRedirects: 0 });
+    check(`${from}: 308 para ${to}`, response.status() === 308 && response.headers()["location"] === to, [response.status(), response.headers()["location"]]);
+  }
+  const sitemap = await (await context.request.get(BASE + "/sitemap.xml")).text();
+  check("sitemap sem as páginas removidas", !/\/(skills|certificates)</.test(sitemap) && sitemap.includes("/about<"));
+
+  const page = await context.newPage();
+  await page.goto(BASE + "/skills", { waitUntil: "networkidle" });
+  const about = await page.evaluate(() => ({
+    path: location.pathname + location.hash,
+    areas: document.querySelectorAll("#tecnologias dt").length,
+    applied: document.querySelector("#tecnologias")?.textContent?.includes("Aplicado em"),
+    links: [...document.querySelectorAll<HTMLAnchorElement>("a[href]")].map((a) => a.getAttribute("href")).filter((h) => /^\/(skills|certificates)/.test(h ?? "")),
+  }));
+  check("chega em /about#tecnologias com as 6 áreas e onde foram aplicadas", about.path === "/about#tecnologias" && about.areas === 6 && !!about.applied, about);
+  check("nenhum link para as páginas removidas (sidebar, rodapé, conteúdo)", about.links.length === 0, about.links);
+  await context.close();
+  finish(check);
+});
+
 for (const width of [1440, 1280, 1024, 768, 390, 360]) {
-  test(`${width}px: 7 rotas sem overflow, sem texto invisível e sem erros`, async ({ browser }) => {
+  test(`${width}px: ${PATHS.length} rotas sem overflow, sem texto invisível e sem erros`, async ({ browser }) => {
     const check = createCheck();
     const context = await ctx(browser, width);
     const page = await context.newPage();
@@ -95,7 +120,8 @@ test("WhatsApp: todos os CTAs com a mensagem oficial, _blank e noopener", async 
     const links = await page.evaluate(() =>
       [...document.querySelectorAll<HTMLAnchorElement>('a[href^="https://wa.me"]')].map((a) => ({ href: a.href, target: a.target, rel: a.rel })),
     );
-    const bad = links.filter((l) => l.href !== WA_OFFICIAL || l.target !== "_blank" || !l.rel.includes("noopener"));
+    // A Home tem também o caminho "Já tenho um site", com mensagem própria.
+    const bad = links.filter((l) => (l.href !== WA_OFFICIAL && !(route === "/" && l.href === WA_EXISTING_SITE)) || l.target !== "_blank" || !l.rel.includes("noopener"));
     check(`${route}: ${links.length} links de WhatsApp com a mensagem oficial, _blank e noopener`, links.length > 0 && bad.length === 0, bad.slice(0, 2));
   }
   await context.close();
@@ -109,9 +135,9 @@ test("/services: catálogo de 7 soluções e índice com âncoras", async ({ bro
   await page.goto(BASE + "/services", { waitUntil: "networkidle" });
   const n = await page.evaluate(() => document.querySelectorAll("main article[id]").length);
   check("/services: 7 soluções no catálogo", n === 7, n);
-  await page.click('nav a[href="#integracoes"]');
+  await page.click('nav a[href="#automation"]');
   await page.waitForTimeout(900);
-  const top = await page.evaluate(() => Math.round(document.getElementById("integracoes")!.getBoundingClientRect().top));
+  const top = await page.evaluate(() => Math.round(document.getElementById("automation")!.getBoundingClientRect().top));
   check("/services: índice rola até a solução (abaixo da Top Bar)", top >= 56 && top < 200, top);
   await context.close();
   finish(check);
@@ -124,12 +150,16 @@ test("/projects: filtro por categoria", async ({ browser }) => {
   await page.goto(BASE + "/projects", { waitUntil: "networkidle" });
   const count = () => page.evaluate(() => document.querySelectorAll('[aria-roledescription="slide"]').length);
 
-  check("/projects: 6 cases com filtro 'Todos'", (await count()) === 6);
+  check(`/projects: ${PROJECT_TITLES.length} cases com filtro 'Todos'`, (await count()) === PROJECT_TITLES.length);
   await page.click('button[aria-pressed]:has-text("Aplicativo Mobile")');
   await page.waitForTimeout(500);
   const names = await page.evaluate(() => [...document.querySelectorAll('[aria-roledescription="slide"]')].map((s) => s.getAttribute("aria-label")));
   check("/projects: filtro 'Aplicativo Mobile' → Dieta IA e EasyCar", names.length === 2 && names.join().includes("Dieta IA") && names.join().includes("EasyCar Mobile"), names);
   check("/projects: botão do filtro ativo com aria-pressed", await page.evaluate(() => document.querySelector('button[aria-pressed="true"]')?.textContent === "Aplicativo Mobile"));
+  await page.getByRole("button", { name: "Site", exact: true }).click();
+  await page.waitForTimeout(500);
+  const sites = await page.evaluate(() => [...document.querySelectorAll('[aria-roledescription="slide"]')].map((s) => s.getAttribute("aria-label")));
+  check("/projects: filtro 'Site' → Cafeteria e Turismo", sites.length === 2 && sites.join().includes("Cafeteria") && sites.join().includes("Turismo"), sites);
   await page.click('button[aria-pressed]:has-text("Ferramenta Web")');
   await page.waitForTimeout(500);
   const single = await page.evaluate(() => ({
@@ -139,7 +169,7 @@ test("/projects: filtro por categoria", async ({ browser }) => {
   check("/projects: filtro com 1 case esconde setas/indicadores", single.slides === 1 && single.arrows === 0, single);
   await page.click('button[aria-pressed]:has-text("Todos")');
   await page.waitForTimeout(500);
-  check("/projects: voltar para 'Todos' → 6", (await count()) === 6);
+  check(`/projects: voltar para 'Todos' → ${PROJECT_TITLES.length}`, (await count()) === PROJECT_TITLES.length);
 
   await context.close();
   finish(check);
@@ -186,7 +216,7 @@ test("/contact: formulário (API de leads simulada) — sucesso e erro", async (
   finish(check);
 });
 
-test("reduced motion: 7 rotas sem erros de console", async ({ browser }) => {
+test(`reduced motion: ${PATHS.length} rotas sem erros de console`, async ({ browser }) => {
   const check = createCheck();
   const context = await ctx(browser, 390, { reducedMotion: "reduce" });
   const page = await context.newPage();
@@ -195,12 +225,12 @@ test("reduced motion: 7 rotas sem erros de console", async ({ browser }) => {
     if (m.type() === "error") errors.push(`${page.url()}: ${m.text().slice(0, 60)}`);
   });
   for (const route of PATHS) await page.goto(BASE + route, { waitUntil: "networkidle" });
-  check("reduced motion: 7 rotas sem erros de console (sem #418)", errors.length === 0, errors.slice(0, 3));
+  check(`reduced motion: ${PATHS.length} rotas sem erros de console (sem #418)`, errors.length === 0, errors.slice(0, 3));
   await context.close();
   finish(check);
 });
 
-test("tema claro: 7 rotas sem erros (com prints)", async ({ browser }) => {
+test(`tema claro: ${PATHS.length} rotas sem erros (com prints)`, async ({ browser }) => {
   const check = createCheck();
   const context = await ctx(browser, 1440, { theme: "light" });
   const page = await context.newPage();
@@ -211,7 +241,7 @@ test("tema claro: 7 rotas sem erros (com prints)", async ({ browser }) => {
     await scrollThrough(page);
     await page.screenshot({ path: test.info().outputPath(`light-${fileName(route)}-1440-full.png`), fullPage: true });
   }
-  check("tema claro: 7 rotas sem erros", errors.length === 0, errors.slice(0, 2));
+  check(`tema claro: ${PATHS.length} rotas sem erros`, errors.length === 0, errors.slice(0, 2));
   await context.close();
   finish(check);
 });

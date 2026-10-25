@@ -6,12 +6,32 @@ import type { Browser, BrowserContext, BrowserContextOptions, Page } from "@play
 export const BASE = `http://localhost:${process.env.E2E_PORT ?? 3920}`;
 
 export const WIDTHS = [360, 390, 768, 1024, 1280, 1440];
-export const ROUTES = ["/", "/services", "/projects", "/about", "/contact", "/skills", "/certificates"];
+export const ROUTES = ["/", "/services", "/plans", "/build", "/how-it-works", "/projects", "/about", "/contact"];
+
+// Projetos reais cadastrados em lib/projects/data.ts, na mesma ordem. Lista
+// explícita (os testes não importam a aplicação: os dados importam imagens
+// .webp que o Node não carrega) — se o cadastro mudar, este é o lugar a
+// revisar, e os testes de /projects passam a acusar a diferença.
+export const PROJECT_TITLES = [
+  "ZLift Manager",
+  "Dieta IA",
+  "Pet Shop Premium",
+  "Barber Shop Premium",
+  "Text To Voice AI",
+  "EasyCar Mobile",
+  "Cafeteria",
+  "Turismo",
+] as const;
 
 // Mensagem oficial do WhatsApp (lib/contact/whatsapp.ts).
 export const WA_MESSAGE =
   "Olá! Conheci a ZTech pelo site e gostaria de conversar sobre um projeto para minha empresa.";
 export const WA_OFFICIAL = new URL(`https://wa.me/5565992832422?text=${encodeURIComponent(WA_MESSAGE)}`).href;
+
+// Home, caminho "Já tenho um site": mensagem contextual própria.
+export const WA_EXISTING_SITE = new URL(
+  `https://wa.me/5565992832422?text=${encodeURIComponent("Olá! Já tenho um site e gostaria de solicitar uma análise da ZTech. Endereço do site:")}`,
+).href;
 
 export type Check = ((name: string, ok: unknown, detail?: unknown) => void) & {
   count: () => number;
@@ -81,5 +101,11 @@ export async function scrollThrough(page: Page, step = 500, pause = 50, settleMs
 
 export const settle = (page: Page, ms = 350) => page.waitForTimeout(ms);
 
-export const horizontalOverflow = (page: Page) =>
-  page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+// Texto do título como o leitor de tela recebe: sem a camada visual da
+// animação (letras com aria-hidden do AnimatedH1), com espaços normalizados.
+export const headingText = (page: Page, selector = "h1") =>
+  page.locator(selector).first().evaluate((heading) => {
+    const copy = heading.cloneNode(true) as HTMLElement;
+    copy.querySelectorAll('[aria-hidden="true"]').forEach((node) => node.remove());
+    return (copy.textContent ?? "").replace(/\s+/g, " ").trim();
+  });

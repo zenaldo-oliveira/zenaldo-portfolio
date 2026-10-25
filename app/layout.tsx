@@ -1,4 +1,5 @@
-import { FloatingWhatsapp } from "@/components/floating-whatsapp";
+import Script from "next/script";
+import { FloatingWhatsapp } from "@/components/layout/FloatingWhatsapp";
 import { AppShell } from "@/components/layout/AppShell";
 import { PageBackground } from "@/components/layout/PageBackground";
 import type { Metadata } from "next";
@@ -6,12 +7,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
-
-// O Chat ZTech AI (components/AIAssistant.tsx, app/api/chat/route.ts) foi
-// removido da interface pública nesta etapa, mas mantido como código legado
-// — nenhuma página depende dele (confirmado via auditoria) e /api/leads,
-// ContactForm e a notificação continuam funcionando normalmente sem ele.
-// Reative importando e renderizando <AIAssistant /> novamente se necessário.
 
 // Executa antes do primeiro paint para evitar flash: aplica no <html> o tema
 // salvo (data-theme) e o estado recolhido da Sidebar (data-sidebar). Sem
@@ -80,7 +75,11 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: PREFERENCES_INIT_SCRIPT }} />
+        <Script
+          id="ztech-preferences-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: PREFERENCES_INIT_SCRIPT }}
+        />
       </head>
       <body className="bg-background text-foreground">
         <PageBackground />

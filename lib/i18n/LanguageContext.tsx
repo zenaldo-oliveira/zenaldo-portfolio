@@ -26,7 +26,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<LanguageCode>(DEFAULT_LANGUAGE);
 
   // Lê a preferência salva só no client, depois da hidratação (evita mismatch
-  // SSR/client, mesmo padrão já usado no Sidebar e no ThemeToggle) — o render
+  // SSR/client) — o render
   // inicial (servidor e client) sempre usa o idioma padrão de forma consistente.
   useEffect(() => {
     const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
